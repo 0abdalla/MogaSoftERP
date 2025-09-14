@@ -42,6 +42,7 @@ public class PriceQuotationItemResponse
     public decimal Quantity { get; set; }
     public decimal UnitPrice { get; set; }
     public string? Unit { get; set; }
-    public decimal Total { get; set; }
     public string? Notes { get; set; }
+
+    public decimal TotalPrice { get; set; }
 }

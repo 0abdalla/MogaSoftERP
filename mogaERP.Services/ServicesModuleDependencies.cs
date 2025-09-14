@@ -23,6 +23,8 @@ public static class ServicesModuleDependencies
         services.AddScoped<IPurchaseRequestService, PurchaseRequestService>();
         services.AddScoped<ISupplierService, SupplierService>();
         services.AddScoped<IPriceQuotationService, PriceQuotationService>();
+        services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
+
 
 
 

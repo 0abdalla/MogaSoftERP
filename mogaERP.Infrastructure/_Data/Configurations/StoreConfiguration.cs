@@ -1,6 +1,4 @@
-﻿using mogaERP.Infrastructure.Constants;
-
-namespace mogaERP.Infrastructure._Data.Configurations;
+﻿namespace mogaERP.Infrastructure._Data.Configurations;
 public class StoreConfiguration : IEntityTypeConfiguration<Store>
 {
     public void Configure(EntityTypeBuilder<Store> builder)

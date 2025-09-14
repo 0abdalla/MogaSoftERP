@@ -1,4 +1,6 @@
-﻿namespace mogaERP.Domain.Entities;
+﻿using mogaERP.Domain.Enums;
+
+namespace mogaERP.Domain.Entities;
 public class Supplier : BaseEntity
 {
     public string AccountCode { get; set; } = string.Empty;
@@ -15,4 +17,8 @@ public class Supplier : BaseEntity
     public string Email { get; set; } = string.Empty;
     public string? Website { get; set; }
     public string? Notes { get; set; }
+
+    public SupplierPaymentType PaymentType { get; set; } // Cash, Credit 
+    public decimal? CreditLimit { get; set; } // حد الائتمان
+    public decimal? CurrentBalance { get; set; } // الرصيد الحالي
 }

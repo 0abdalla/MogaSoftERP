@@ -173,7 +173,7 @@ public class PurchaseRequestService(IUnitOfWork unitOfWork, ILogger<PurchaseRequ
                             Name = i.Item.Name,
                             Quantity = i.Quantity,
                             UnitPrice = i.UnitPrice,
-                            Total = i.Quantity * i.UnitPrice,
+                            TotalPrice = i.Quantity * i.UnitPrice,
                             Notes = i.Notes,
                             Unit = i.Item.Unit != null ? i.Item.Unit.Name : null
                         }).ToList()
