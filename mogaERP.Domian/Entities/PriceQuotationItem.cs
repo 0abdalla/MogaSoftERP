@@ -1,14 +1,10 @@
-﻿using mogaERP.Domain.Constants;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace mogaERP.Domain.Entities;
-
-[Table("PriceQuotationItems", Schema = SchemaNames.Procurement)]
+﻿namespace mogaERP.Domain.Entities;
 public class PriceQuotationItem
 {
     public int Id { get; set; }
     public decimal Quantity { get; set; }
     public decimal UnitPrice { get; set; }
+    public decimal Total => Quantity * UnitPrice;
     public string? Notes { get; set; }
 
 

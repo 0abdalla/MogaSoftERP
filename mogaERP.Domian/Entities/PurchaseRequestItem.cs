@@ -1,9 +1,4 @@
-﻿using mogaERP.Domain.Constants;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace mogaERP.Domain.Entities;
-
-[Table("PurchaseRequestItems", Schema = SchemaNames.Procurement)]
+﻿namespace mogaERP.Domain.Entities;
 public class PurchaseRequestItem
 {
     public int Id { get; set; }

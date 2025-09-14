@@ -1,4 +1,5 @@
-﻿namespace mogaERP.Infrastructure._Data.Configurations;
+﻿
+namespace mogaERP.Infrastructure._Data.Configurations;
 public class PurchaseRequestConfiguration : IEntityTypeConfiguration<PurchaseRequest>
 {
     public void Configure(EntityTypeBuilder<PurchaseRequest> builder)

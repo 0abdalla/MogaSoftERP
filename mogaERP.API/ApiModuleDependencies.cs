@@ -2,15 +2,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using mogaERP.Domain.Common;
 using mogaERP.Domain.Entities;
-using mogaERP.Domain.Enums;
 using mogaERP.Domain.Interfaces.Auth;
 using mogaERP.Infrastructure._Data;
 using mogaERP.Services.Services.Auth;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
 
 namespace mogaERP.API;
@@ -68,12 +65,7 @@ public static class ApiModuleDependencies
                         new List<string>()
                     }
                 });
-
-            // نخلي SupplierPaymentType يظهر كـ string
-            MapEnumAsString<SupplierPaymentType>(options);
         });
-
-
 
         services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
@@ -135,19 +127,5 @@ public static class ApiModuleDependencies
 
 
         return services;
-    }
-
-
-    private static void MapEnumAsString<TEnum>(SwaggerGenOptions options) where TEnum : Enum
-    {
-        options.MapType<TEnum>(() =>
-            new OpenApiSchema
-            {
-                Type = "string",
-                Enum = Enum.GetNames(typeof(TEnum))
-                           .Select(name => new OpenApiString(name))
-                           .Cast<IOpenApiAny>()
-                           .ToList()
-            });
     }
 }

@@ -102,7 +102,7 @@ public class PriceQuotationService(IUnitOfWork unitOfWork) : IPriceQuotationServ
                          Name = i.Item.Name,
                          Quantity = i.Quantity,
                          UnitPrice = i.UnitPrice,
-                         TotalPrice = i.Quantity * i.UnitPrice,
+                         Total = i.Quantity * i.UnitPrice,
                          Notes = i.Notes,
                          Unit = i.Item.Unit.Name ?? "",
                      }).ToList()
@@ -144,7 +144,7 @@ public class PriceQuotationService(IUnitOfWork unitOfWork) : IPriceQuotationServ
                      Name = i.Item.Name,
                      Quantity = i.Quantity,
                      UnitPrice = i.UnitPrice,
-                     TotalPrice = i.Quantity * i.UnitPrice,
+                     Total = i.Quantity * i.UnitPrice,
                      Notes = i.Notes,
                      Unit = i.Item.Unit.Name ?? "",
 
@@ -300,7 +300,7 @@ public class PriceQuotationService(IUnitOfWork unitOfWork) : IPriceQuotationServ
                           Name = i.Item.Name,
                           Quantity = i.Quantity,
                           UnitPrice = i.UnitPrice,
-                          TotalPrice = i.Quantity * i.UnitPrice,
+                          Total = i.Quantity * i.UnitPrice,
                           Notes = i.Notes
                       }).ToList()
                   })
@@ -350,7 +350,7 @@ public class PriceQuotationService(IUnitOfWork unitOfWork) : IPriceQuotationServ
                         Name = i.Item.Name,
                         Quantity = i.Quantity,
                         UnitPrice = i.UnitPrice,
-                        TotalPrice = i.Quantity * i.UnitPrice,
+                        Total = i.Quantity * i.UnitPrice,
                         Notes = i.Notes,
                         Unit = i.Item.Unit.Name
                     }).ToList()

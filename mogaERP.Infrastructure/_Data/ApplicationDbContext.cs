@@ -17,8 +17,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<PriceQuotation> PriceQuotations { get; set; }
     public DbSet<PriceQuotationItem> PriceQuotationItems { get; set; }
-    public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
-    public DbSet<PurchaseOrderItem> PurchaseOrderItems { get; set; }
 
 
 

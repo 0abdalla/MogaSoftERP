@@ -504,101 +504,7 @@ namespace mogaERP.Infrastructure.Migrations
 
                     b.HasIndex("PriceQuotationId");
 
-                    b.ToTable("PriceQuotationItems", "Procurement");
-                });
-
-            modelBuilder.Entity("mogaERP.Domain.Entities.PurchaseOrder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedById")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateOnly>("OrderDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("OrderNumber")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<int?>("PurchaseRequestId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ReferenceNumber")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SupplierId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("PurchaseRequestId");
-
-                    b.HasIndex("SupplierId");
-
-                    b.HasIndex("UpdatedById");
-
-                    b.ToTable("PurchaseOrders", "Procurement");
-                });
-
-            modelBuilder.Entity("mogaERP.Domain.Entities.PurchaseOrderItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PurchaseOrderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("RequestedQuantity")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("PurchaseOrderId");
-
-                    b.ToTable("PurchaseOrderItems", "Procurement");
+                    b.ToTable("PriceQuotationItems");
                 });
 
             modelBuilder.Entity("mogaERP.Domain.Entities.PurchaseRequest", b =>
@@ -694,7 +600,7 @@ namespace mogaERP.Infrastructure.Migrations
 
                     b.HasIndex("PurchaseRequestId");
 
-                    b.ToTable("PurchaseRequestItems", "Procurement");
+                    b.ToTable("PurchaseRequestItems");
                 });
 
             modelBuilder.Entity("mogaERP.Domain.Entities.Store", b =>
@@ -772,12 +678,6 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal?>("CreditLimit")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("CurrentBalance")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -806,9 +706,6 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Property<string>("Notes")
                         .HasMaxLength(1050)
                         .HasColumnType("nvarchar(1050)");
-
-                    b.Property<int>("PaymentType")
-                        .HasColumnType("int");
 
                     b.Property<string>("Phone1")
                         .IsRequired()
@@ -1041,56 +938,6 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Navigation("PriceQuotation");
                 });
 
-            modelBuilder.Entity("mogaERP.Domain.Entities.PurchaseOrder", b =>
-                {
-                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("mogaERP.Domain.Entities.PurchaseRequest", "PurchaseRequest")
-                        .WithMany()
-                        .HasForeignKey("PurchaseRequestId");
-
-                    b.HasOne("mogaERP.Domain.Entities.Supplier", "Supplier")
-                        .WithMany()
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById");
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("PurchaseRequest");
-
-                    b.Navigation("Supplier");
-
-                    b.Navigation("UpdatedBy");
-                });
-
-            modelBuilder.Entity("mogaERP.Domain.Entities.PurchaseOrderItem", b =>
-                {
-                    b.HasOne("mogaERP.Domain.Entities.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("mogaERP.Domain.Entities.PurchaseOrder", "PurchaseOrder")
-                        .WithMany("Items")
-                        .HasForeignKey("PurchaseOrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-
-                    b.Navigation("PurchaseOrder");
-                });
-
             modelBuilder.Entity("mogaERP.Domain.Entities.PurchaseRequest", b =>
                 {
                     b.HasOne("mogaERP.Domain.Entities.PriceQuotation", "AwardedQuotation")
@@ -1192,11 +1039,6 @@ namespace mogaERP.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("mogaERP.Domain.Entities.PriceQuotation", b =>
-                {
-                    b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("mogaERP.Domain.Entities.PurchaseOrder", b =>
                 {
                     b.Navigation("Items");
                 });
