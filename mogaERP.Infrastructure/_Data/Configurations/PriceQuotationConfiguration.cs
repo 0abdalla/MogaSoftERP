@@ -1,5 +1,4 @@
-﻿
-namespace mogaERP.Infrastructure._Data.Configurations;
+﻿namespace mogaERP.Infrastructure._Data.Configurations;
 public class PriceQuotationConfiguration : IEntityTypeConfiguration<PriceQuotation>
 {
     public void Configure(EntityTypeBuilder<PriceQuotation> builder)

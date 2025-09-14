@@ -1,4 +1,4 @@
-﻿namespace mogaERP.Infrastructure.Constants;
+﻿namespace mogaERP.Domain.Constants;
 public static class SchemaNames
 {
     public const string MasterData = "MasterData";
