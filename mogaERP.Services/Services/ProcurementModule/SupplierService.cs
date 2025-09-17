@@ -1,5 +1,4 @@
-﻿using MapsterMapper;
-using mogaERP.Domain.Contracts.ProcurementModule.Supplier;
+﻿using mogaERP.Domain.Contracts.ProcurementModule.Supplier;
 using mogaERP.Domain.Interfaces.ProcurementModule;
 
 namespace mogaERP.Services.Services.ProcurementModule;
@@ -13,8 +12,21 @@ public class SupplierService(IUnitOfWork unitOfWork, IMapper mapper) : ISupplier
         try
         {
             var supplier = _mapper.Map<Supplier>(request);
+
+            SupplierPaymentType paymentType = SupplierPaymentType.Cash;
+
+            // check if payment type is valid as enum
+            if (!string.IsNullOrEmpty(request.PaymentType) &&
+                !Enum.TryParse<SupplierPaymentType>(request.PaymentType, out paymentType))
+            {
+                return ApiResponse<string>.Failure(AppErrors.TransactionFailed, "نوع الدفع غير صالح");
+            }
+
+            supplier.PaymentType = paymentType;
+
             await _unitOfWork.Repository<Supplier>().AddAsync(supplier, cancellationToken);
             await _unitOfWork.CompleteAsync(cancellationToken);
+
             return ApiResponse<string>.Success(AppErrors.AddSuccess, supplier.Id.ToString());
         }
         catch (Exception)

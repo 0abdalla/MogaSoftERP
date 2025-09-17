@@ -1,8 +1,5 @@
 ﻿using mogaERP.Domain.Contracts.InventoryModule.Stores;
-using mogaERP.Domain.Entities;
-using mogaERP.Domain.Interfaces.Common;
 using mogaERP.Domain.Interfaces.InventoryModule;
-using mogaERP.Domain.Wrappers;
 
 namespace mogaERP.Services.Services.InventoryModule;
 public class StoreService(IUnitOfWork unitOfWork) : IStoreService
@@ -19,6 +16,8 @@ public class StoreService(IUnitOfWork unitOfWork) : IStoreService
                 Address = request.Address,
                 Code = request.Code,
                 PhoneNumber = request.PhoneNumber,
+
+                StoreTypeId = request.StoreTypeId,
             };
 
             await _unitOfWork.Repository<Store>().AddAsync(store, cancellationToken);
@@ -56,10 +55,23 @@ public class StoreService(IUnitOfWork unitOfWork) : IStoreService
         }
     }
 
-    public async Task<ApiResponse<IReadOnlyList<StoreResponse>>> GetAllStoresAsync(CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<IReadOnlyList<StoreResponse>>> GetAllStoresAsync(SearchRequest request, CancellationToken cancellationToken = default)
     {
-        var stores = await _unitOfWork.Repository<Store>()
-            .Query(s => !s.IsDeleted)
+        var query = _unitOfWork.Repository<Store>()
+         .Query(s => !s.IsDeleted)
+         .Include(s => s.StoreType)
+         .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+        {
+            var search = request.SearchTerm.ToLower();
+
+            query = query.Where(s =>
+                s.Name.ToLower().Contains(search) ||
+                s.Code.ToLower().Contains(search));
+        }
+
+        var stores = await query
             .Select(s => new StoreResponse
             {
                 Id = s.Id,
@@ -67,6 +79,8 @@ public class StoreService(IUnitOfWork unitOfWork) : IStoreService
                 Address = s.Address,
                 Code = s.Code,
                 PhoneNumber = s.PhoneNumber,
+                StoreTypeId = s.StoreTypeId,
+                StoreTypeName = s.StoreType != null ? s.StoreType.Name : string.Empty,
             })
             .ToListAsync(cancellationToken);
 
@@ -79,6 +93,7 @@ public class StoreService(IUnitOfWork unitOfWork) : IStoreService
                         .Query(s => s.Id == id && !s.IsDeleted)
                         .Include(s => s.CreatedBy)
                         .Include(s => s.UpdatedBy)
+                        .Include(s => s.StoreType)
                         .FirstOrDefaultAsync(cancellationToken);
 
         if (store == null)
@@ -93,7 +108,8 @@ public class StoreService(IUnitOfWork unitOfWork) : IStoreService
             Address = store.Address,
             Code = store.Code,
             PhoneNumber = store.PhoneNumber,
-
+            StoreTypeName = store.StoreType != null ? store.StoreType.Name : string.Empty,
+            StoreTypeId = store.StoreTypeId,
             // Audit 
             CreatedBy = store?.CreatedBy?.UserName ?? string.Empty,
             CreatedOn = store.CreatedOn,
@@ -120,6 +136,7 @@ public class StoreService(IUnitOfWork unitOfWork) : IStoreService
             store.Address = request.Address;
             store.Code = request.Code;
             store.PhoneNumber = request.PhoneNumber;
+            store.StoreTypeId = request.StoreTypeId;
 
             _unitOfWork.Repository<Store>().Update(store);
             await _unitOfWork.CompleteAsync(cancellationToken);

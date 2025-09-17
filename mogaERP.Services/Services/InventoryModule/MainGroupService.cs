@@ -46,10 +46,18 @@ public class MainGroupService(IUnitOfWork unitOfWork) : IMainGroupService
 
     }
 
-    public async Task<ApiResponse<IReadOnlyList<MainGroupResponse>>> GetAllMainGroupsAsync(CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<IReadOnlyList<MainGroupResponse>>> GetAllMainGroupsAsync(SearchRequest request, CancellationToken cancellationToken = default)
     {
-        var mainGroups = await _unitOfWork.Repository<MainGroup>()
-            .Query(mg => !mg.IsDeleted)
+        var query = _unitOfWork.Repository<MainGroup>()
+         .Query(mg => !mg.IsDeleted);
+
+        if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+        {
+            var search = request.SearchTerm.ToLower();
+            query = query.Where(mg => mg.Name.ToLower().Contains(search));
+        }
+
+        var mainGroups = await query
             .Select(mg => new MainGroupResponse
             {
                 Id = mg.Id,

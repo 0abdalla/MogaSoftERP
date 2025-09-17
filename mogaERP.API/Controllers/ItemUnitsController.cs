@@ -8,9 +8,9 @@ public class ItemUnitsController(IItemUnitService itemUnitService) : BaseApiCont
     private readonly IItemUnitService _itemUnitService = itemUnitService;
 
     [HttpGet]
-    public async Task<IActionResult> GetAllItemUnits(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllItemUnits([FromQuery] SearchRequest request, CancellationToken cancellationToken)
     {
-        var result = await _itemUnitService.GetAllItemUnitsAsync(cancellationToken);
+        var result = await _itemUnitService.GetAllItemUnitsAsync(request, cancellationToken);
         return result.IsSuccess ? Ok(result) : BadRequest(result);
     }
 

@@ -19,6 +19,15 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<PriceQuotationItem> PriceQuotationItems { get; set; }
     public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
     public DbSet<PurchaseOrderItem> PurchaseOrderItems { get; set; }
+    public DbSet<ReceiptPermission> ReceiptPermissions { get; set; }
+    public DbSet<ReceiptPermissionItem> ReceiptPermissionItems { get; set; }
+    public DbSet<DailyRestriction> DailyRestrictions { get; set; }
+    public DbSet<DailyRestrictionDetail> DailyRestrictionDetails { get; set; }
+    public DbSet<StoreType> StoreTypes { get; set; }
+    public DbSet<AccountTree> AccountTrees { get; set; }
+    public DbSet<AccountingGuidance> AccountingGuidances { get; set; }
+    public DbSet<CostCenterTree> CostCenterTrees { get; set; }
+
 
 
 

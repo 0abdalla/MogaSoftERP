@@ -1,7 +1,8 @@
 ﻿namespace mogaERP.Services.Specifications;
 public class SupplierSpecification : BaseSpecification<Supplier>
 {
-    public SupplierSpecification(SearchRequest request)
+    public SupplierSpecification(SearchRequest request) :
+        base(i => !i.IsDeleted)
     {
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {

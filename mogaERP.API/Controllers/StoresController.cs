@@ -36,9 +36,9 @@ public class StoresController(IStoreService storeService) : BaseApiController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllStores(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllStores([FromQuery] SearchRequest request, CancellationToken cancellationToken)
     {
-        var result = await _storeService.GetAllStoresAsync(cancellationToken);
+        var result = await _storeService.GetAllStoresAsync(request, cancellationToken);
         return result.IsSuccess ? Ok(result) : BadRequest(result);
     }
 }

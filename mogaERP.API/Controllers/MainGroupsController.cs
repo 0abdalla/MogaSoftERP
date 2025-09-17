@@ -36,9 +36,9 @@ public class MainGroupsController(IMainGroupService mainGroupService) : BaseApiC
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllMainGroups(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllMainGroups([FromQuery] SearchRequest request, CancellationToken cancellationToken)
     {
-        var result = await _mainGroupService.GetAllMainGroupsAsync(cancellationToken);
+        var result = await _mainGroupService.GetAllMainGroupsAsync(request, cancellationToken);
         return result.IsSuccess ? Ok(result) : BadRequest(result);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using mogaERP.Domain.Contracts.Common;
-using mogaERP.Domain.Enums;
 
 namespace mogaERP.Domain.Contracts.ProcurementModule.Supplier;
 public class SupplierRequest
@@ -19,7 +18,7 @@ public class SupplierRequest
     public string? Website { get; set; }
     public string? Notes { get; set; }
 
-    public SupplierPaymentType PaymentType { get; set; }
+    public string PaymentType { get; set; }
     public decimal? CreditLimit { get; set; }
 }
 
@@ -40,4 +39,7 @@ public class SupplierResponse : AuditResponse
     public string? Email { get; set; }
     public string? Website { get; set; }
     public string? Notes { get; set; }
+
+    public string PaymentType { get; set; }
+    public decimal? CreditLimit { get; set; }
 }

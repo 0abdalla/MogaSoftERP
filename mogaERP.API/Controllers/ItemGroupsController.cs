@@ -36,9 +36,9 @@ public class ItemGroupsController(IItemGroupService itemGroupService) : BaseApiC
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllItemGroups(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllItemGroups([FromQuery] SearchRequest request, CancellationToken cancellationToken)
     {
-        var result = await _itemGroupService.GetAllItemGroupsAsync(cancellationToken);
+        var result = await _itemGroupService.GetAllItemGroupsAsync(request, cancellationToken);
         return result.IsSuccess ? Ok(result) : BadRequest(result);
     }
 }

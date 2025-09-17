@@ -25,6 +25,7 @@ public class MappingConfiguration : IRegister
 
         config.NewConfig<SupplierRequest, Supplier>()
             .Ignore(dest => dest.Id)
+            .Ignore(dest => dest.PaymentType)
             .Ignore(dest => dest.CreatedOn)
             .Ignore(dest => dest.UpdatedOn)
             .Ignore(dest => dest.CreatedById)
@@ -32,7 +33,8 @@ public class MappingConfiguration : IRegister
 
         config.NewConfig<Supplier, SupplierResponse>()
             .Map(dest => dest.CreatedBy, src => src.CreatedBy != null ? src.CreatedBy.UserName : string.Empty)
-            .Map(dest => dest.UpdatedBy, src => src.UpdatedBy != null ? src.UpdatedBy.UserName : string.Empty);
+            .Map(dest => dest.UpdatedBy, src => src.UpdatedBy != null ? src.UpdatedBy.UserName : string.Empty)
+            .Map(dest => dest.PaymentType, src => src.PaymentType.ToString());
 
     }
 }

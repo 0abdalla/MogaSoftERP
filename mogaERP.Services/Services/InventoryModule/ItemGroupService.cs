@@ -46,11 +46,21 @@ public class ItemGroupService(IUnitOfWork unitOfWork) : IItemGroupService
 
     }
 
-    public async Task<ApiResponse<IReadOnlyList<ItemGroupResponse>>> GetAllItemGroupsAsync(CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<IReadOnlyList<ItemGroupResponse>>> GetAllItemGroupsAsync(SearchRequest request, CancellationToken cancellationToken = default)
     {
-        var itemGroups = await _unitOfWork.Repository<ItemGroup>()
-            .Query(ig => !ig.IsDeleted)
-            .Include(ig => ig.MainGroup)
+        var query = _unitOfWork.Repository<ItemGroup>()
+        .Query(ig => !ig.IsDeleted)
+        .Include(ig => ig.MainGroup)
+        .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+        {
+            var search = request.SearchTerm.ToLower();
+            query = query.Where(ig =>
+                ig.Name.ToLower().Contains(search));
+        }
+
+        var itemGroups = await query
             .Select(ig => new ItemGroupResponse
             {
                 Id = ig.Id,
@@ -59,6 +69,7 @@ public class ItemGroupService(IUnitOfWork unitOfWork) : IItemGroupService
                 MainGroupName = ig.MainGroup != null ? ig.MainGroup.Name : null
             })
             .ToListAsync(cancellationToken);
+
         return ApiResponse<IReadOnlyList<ItemGroupResponse>>.Success(AppErrors.Success, itemGroups);
 
     }

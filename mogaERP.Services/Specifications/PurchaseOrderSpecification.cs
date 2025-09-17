@@ -2,6 +2,7 @@
 public class PurchaseOrderSpecification : BaseSpecification<PurchaseOrder>
 {
     public PurchaseOrderSpecification(SearchRequest request, bool asNoTracking = false)
+        : base(x => !x.IsDeleted)
     {
         AddIncludes();
 

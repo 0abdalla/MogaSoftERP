@@ -1,8 +1,10 @@
 ﻿using Mapster;
 using Microsoft.Extensions.DependencyInjection;
+using mogaERP.Domain.Interfaces.AccountingModule;
 using mogaERP.Domain.Interfaces.Auth;
 using mogaERP.Domain.Interfaces.InventoryModule;
 using mogaERP.Domain.Interfaces.ProcurementModule;
+using mogaERP.Services.Services.AccountingModule;
 using mogaERP.Services.Services.Auth;
 using mogaERP.Services.Services.InventoryModule;
 using mogaERP.Services.Services.ProcurementModule;
@@ -24,8 +26,9 @@ public static class ServicesModuleDependencies
         services.AddScoped<ISupplierService, SupplierService>();
         services.AddScoped<IPriceQuotationService, PriceQuotationService>();
         services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
-
-
+        services.AddScoped<IStoreTypeService, StoreTypeService>();
+        services.AddScoped<IReceiptPermissionService, ReceiptPermissionService>();
+        services.AddScoped<IDailyRestrictionService, DailyRestrictionService>();
 
 
         services.AddMapsterConfig();

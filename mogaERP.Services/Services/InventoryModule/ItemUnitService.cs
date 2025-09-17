@@ -47,10 +47,18 @@ public class ItemUnitService(IUnitOfWork unitOfWork) : IItemUnitService
 
     }
 
-    public async Task<ApiResponse<IReadOnlyList<ItemUnitResponse>>> GetAllItemUnitsAsync(CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<IReadOnlyList<ItemUnitResponse>>> GetAllItemUnitsAsync(SearchRequest request, CancellationToken cancellationToken = default)
     {
-        var units = await _unitOfWork.Repository<ItemUnit>()
-            .Query(u => !u.IsDeleted)
+        var query = _unitOfWork.Repository<ItemUnit>()
+         .Query(u => !u.IsDeleted);
+
+        if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+        {
+            var search = request.SearchTerm.ToLower();
+            query = query.Where(u => u.Name.ToLower().Contains(search));
+        }
+
+        var units = await query
             .Select(u => new ItemUnitResponse
             {
                 Id = u.Id,
@@ -59,7 +67,6 @@ public class ItemUnitService(IUnitOfWork unitOfWork) : IItemUnitService
             .ToListAsync(cancellationToken);
 
         return ApiResponse<IReadOnlyList<ItemUnitResponse>>.Success(AppErrors.Success, units);
-
     }
 
     public async Task<ApiResponse<ItemUnitResponse>> GetItemUnitByIdAsync(int id, CancellationToken cancellationToken = default)

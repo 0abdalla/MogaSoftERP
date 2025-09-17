@@ -7,5 +7,5 @@ public interface IMainGroupService
     Task<ApiResponse<string>> UpdateMainGroupAsync(int id, MainGroupRequest request, CancellationToken cancellationToken = default);
     Task<ApiResponse<string>> DeleteMainGroupAsync(int id, CancellationToken cancellationToken = default);
     Task<ApiResponse<MainGroupResponse>> GetMainGroupByIdAsync(int id, CancellationToken cancellationToken = default);
-    Task<ApiResponse<IReadOnlyList<MainGroupResponse>>> GetAllMainGroupsAsync(CancellationToken cancellationToken = default);
+    Task<ApiResponse<IReadOnlyList<MainGroupResponse>>> GetAllMainGroupsAsync(SearchRequest request, CancellationToken cancellationToken = default);
 }

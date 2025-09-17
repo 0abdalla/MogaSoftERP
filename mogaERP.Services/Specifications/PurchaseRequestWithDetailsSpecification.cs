@@ -9,6 +9,7 @@ public class PurchaseRequestWithDetailsSpecification : BaseSpecification<Purchas
     }
 
     public PurchaseRequestWithDetailsSpecification(SearchRequest request, bool asNoTracking = false)
+        : base(x => !x.IsDeleted)
     {
         AddIncludes();
 

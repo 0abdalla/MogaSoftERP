@@ -5,4 +5,7 @@ public class Store : BaseEntity
     public string? Code { get; set; }
     public string? Address { get; set; }
     public string? PhoneNumber { get; set; }
+
+    public int? StoreTypeId { get; set; }
+    public StoreType StoreType { get; set; } = default!;
 }
