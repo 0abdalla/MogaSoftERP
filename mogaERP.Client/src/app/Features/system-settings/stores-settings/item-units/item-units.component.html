@@ -1,0 +1,42 @@
+<main id="list-items">
+    <div class="container-fluid">
+      <p-toast position="top-left"></p-toast>
+        <div class="row">
+            <div class="col-12 mt-3">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>رقم الصنف</th>
+                            <th>اسم الصنف</th>
+                            <th>الإجراءات</th>
+                          </tr>
+                        </thead>
+                        <tbody *ngIf="itemsUnits().length > 0">
+                          <tr *ngFor="let item of itemsUnits()">
+                            <td>{{ item.id }}</td>
+                            <td class="fw-bold">{{ item.name }}</td>
+                            <td>                            
+                              <button class="btn btn-warning mx-1" (click)="editItem(item.id)">
+                                  <i class="fa fa-edit"></i>
+                              </button>                          
+                              <button class="btn btn-danger mx-1" (click)="deleteItem(item.id)">
+                                  <i class="fa fa-trash"></i>
+                              </button>  
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody *ngIf="itemsUnits()?.length === 0">
+                          <td class="text-center" colspan="6">
+                            لا يوجد أصناف حتى الان
+                          </td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+

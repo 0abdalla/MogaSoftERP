@@ -1,0 +1,42 @@
+<main id="list-main-groups">
+    <div class="container-fluid">
+      <p-toast position="top-left"></p-toast>
+        <div class="row">
+            <div class="col-12 mt-3">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>اسم مجموعة الأصناف</th>
+                            <!-- <th>الغرض</th> -->
+                            <th>الإجراءات</th>
+                          </tr>
+                        </thead>
+                        <tbody *ngIf="itemsGroups().length > 0">
+                          <tr *ngFor="let order of itemsGroups()">
+                            <td class="fw-bold">{{ order.name }}</td>
+                            <!-- <td>{{ order.purpose || '-' }}</td> -->
+                            <td>                            
+                              <button class="btn btn-warning mx-1" (click)="editItemGroup(order.id)">
+                                  <i class="fa fa-edit"></i>
+                              </button>                          
+                              <button class="btn btn-danger mx-1" (click)="deleteItemGroup(order.id)">
+                                  <i class="fa fa-trash"></i>
+                              </button>  
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody *ngIf="itemsGroups()?.length === 0">
+                          <td class="text-center" colspan="6">
+                            لا يوجد مجموعات أصناف حتى الان
+                          </td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+

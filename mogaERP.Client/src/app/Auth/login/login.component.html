@@ -1,0 +1,90 @@
+<main id="login" >
+    <div class="bg-layer-3"></div>
+    <div class="d-flex justify-content-center align-items-center min-vh-100">
+      <div class="carde shadow-lg p-4" style="width: 100%; max-width: 450px;">  
+        <div class="text-center">
+          <img src="assets/vendors/imgs/logo.png" width="211" alt="Logo">
+        </div>
+        <form [formGroup]="loignForm" (ngSubmit)="onLogin()">
+          <div class="mb-3">
+            <label class="form-label">إسم المستخدم</label>
+            <input
+              placeholder="إسم المستخدم"
+              type="text"
+              class="form-control"
+              formControlName="userName"
+            />
+            <div *ngIf="loignForm.get('userName')?.invalid && loignForm.get('userName')?.touched" class="text-danger">
+               إسم المستخدم مطلوب
+            </div>
+          </div>
+    
+          <div class="mb-3">
+            <label class="form-label">كلمة المرور</label>
+            <div class="input-group">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                placeholder="كلمة المرور"
+                class="form-control"
+                formControlName="password"
+              />
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="togglePassword()"
+                tabindex="-1"
+              >
+                <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+              </button>
+            </div>
+            
+            <div *ngIf="loignForm.get('password')?.invalid && loignForm.get('password')?.touched" class="text-danger">
+              كلمة المرور مطلوبة
+            </div>
+          </div>  
+          
+          <div *ngIf="message" class="text-danger text-center mb-2">
+            {{ message }}
+          </div>
+          <button type="submit" [disabled]="loignForm.invalid" class="btn-blue w-100">تسجيل الدخول</button>
+          <div class="text-center mt-3">
+            <p>هل نسيت كلمة المرور ؟ 
+              <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#forgetPasswordModal">تغيير كلمة المرور</a>
+            </p>         
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+  
+  
+  <div class="modal fade" id="forgetPasswordModal" tabindex="-1" aria-labelledby="forgetPasswordModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="forgetPasswordModalLabel">إعادة تعيين كلمة المرور</h5>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="forgetPassword">
+            <div class="mb-3">
+              <label class="form-label">المستخدم</label>
+              <input type="text" class="form-control shadow-none" formControlName="userName" placeholder="ادخل المستخدم" />
+              <div *ngIf="forgetPassword.get('userName')?.invalid && forgetPassword.get('userName')?.touched" class="text-danger">
+                المستخدم مطلوب
+              </div>
+            </div>
+          </form>
+          <div *ngIf="forgetMessage" class="text-danger text-center">
+            {{ forgetMessage }}
+          </div>
+        </div>
+        <div class="text-center pb-2">
+          <button type="button" class="btn-blue" (click)="onForgetPassword()" [disabled]="forgetPassword.invalid">
+            إرسال
+          </button>
+          <button type="button" class="btn-red mx-2" data-bs-dismiss="modal">خروج</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
