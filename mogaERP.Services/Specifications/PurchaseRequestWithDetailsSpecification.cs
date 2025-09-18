@@ -31,6 +31,8 @@ public class PurchaseRequestWithDetailsSpecification : BaseSpecification<Purchas
 
         if (asNoTracking)
             ApplyAsNoTracking();
+
+        ApplyOrderByDescending(x => x.Id);
     }
 
 
@@ -39,7 +41,10 @@ public class PurchaseRequestWithDetailsSpecification : BaseSpecification<Purchas
         AddInclude(x => x.Store);
         AddInclude(x => x.CreatedBy);
         AddInclude(x => x.UpdatedBy);
-
+        AddInclude(x => x.AwardedQuotation);
+        AddInclude(x => x.AwardedQuotation.Items);
+        AddInclude("AwardedQuotation.Items.Item");
+        AddInclude("AwardedQuotation.Items.Item.Unit");
         AddInclude(x => x.Items);
         AddInclude("Items.Item");
     }

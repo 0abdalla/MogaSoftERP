@@ -2,10 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using mogaERP.Domain.Interfaces.AccountingModule;
 using mogaERP.Domain.Interfaces.Auth;
+using mogaERP.Domain.Interfaces.HR_Module;
 using mogaERP.Domain.Interfaces.InventoryModule;
 using mogaERP.Domain.Interfaces.ProcurementModule;
 using mogaERP.Services.Services.AccountingModule;
 using mogaERP.Services.Services.Auth;
+using mogaERP.Services.Services.HR_Module;
 using mogaERP.Services.Services.InventoryModule;
 using mogaERP.Services.Services.ProcurementModule;
 using System.Reflection;
@@ -29,6 +31,9 @@ public static class ServicesModuleDependencies
         services.AddScoped<IStoreTypeService, StoreTypeService>();
         services.AddScoped<IReceiptPermissionService, ReceiptPermissionService>();
         services.AddScoped<IDailyRestrictionService, DailyRestrictionService>();
+        services.AddScoped<IJobDepartmentService, JobDepartmentService>();
+        services.AddScoped<IDisbursementRequestService, DisbursementRequestService>();
+
 
 
         services.AddMapsterConfig();

@@ -153,7 +153,8 @@ public class PurchaseOrderService(IUnitOfWork unitOfWork) : IPurchaseOrderServic
                     RequestedQuantity = i.RequestedQuantity,
                     Quantity = i.Quantity,
                     UnitPrice = i.UnitPrice,
-                }).ToList()
+
+                }).ToList(),
             };
 
             return ApiResponse<PurchaseOrderResponse>.Success(AppErrors.Success, response);

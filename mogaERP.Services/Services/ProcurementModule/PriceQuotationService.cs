@@ -156,6 +156,8 @@ public class PriceQuotationService(IUnitOfWork unitOfWork) : IPriceQuotationServ
                  UpdatedBy = x.UpdatedBy != null ? x.UpdatedBy.UserName : null,
                  UpdatedById = x.UpdatedById,
                  UpdatedOn = x.UpdatedOn,
+
+
              })
              .FirstOrDefaultAsync(cancellationToken);
 

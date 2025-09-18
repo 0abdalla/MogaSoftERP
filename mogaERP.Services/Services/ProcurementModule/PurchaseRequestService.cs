@@ -119,6 +119,7 @@ public class PurchaseRequestService(IUnitOfWork unitOfWork, ILogger<PurchaseRequ
     public async Task<ApiResponse<PurchaseRequestResponse>> GetPurchaseRequestByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         var spec = new PurchaseRequestWithDetailsSpecification(id);
+
         var purchaseRequest = await _unitOfWork.Repository<PurchaseRequest>()
             .GetEntityWithSpecAsync(spec, cancellationToken);
 
@@ -211,7 +212,7 @@ public class PurchaseRequestService(IUnitOfWork unitOfWork, ILogger<PurchaseRequ
             // Handle Items updates
 
             var existingItems = await _unitOfWork.Repository<PurchaseRequestItem>()
-                .Query(i => i.PurchaseRequestId == id)
+                .Query(i => i.PurchaseRequestId == id, asNoTracking: false)
                 .ToListAsync(cancellationToken);
 
             var requestItemIds = request.Items.Select(ri => ri.ItemId).ToHashSet();

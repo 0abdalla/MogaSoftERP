@@ -1,1 +1,2 @@
-﻿global using mogaERP.Domain.Wrappers;
+﻿global using mogaERP.Domain.Enums;
+global using mogaERP.Domain.Wrappers;
