@@ -29,6 +29,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<CostCenterTree> CostCenterTrees { get; set; }
     public DbSet<JobDepartment> JobDepartments { get; set; }
     public DbSet<DisbursementRequestItem> DisbursementRequestItems { get; set; }
+    public DbSet<DisbursementRequest> DisbursementRequests { get; set; }
+    public DbSet<MaterialIssuePermission> MaterialIssuePermissions { get; set; }
+    public DbSet<MaterialIssueItem> MaterialIssueItems { get; set; }
+
+
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

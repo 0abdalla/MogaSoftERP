@@ -33,6 +33,8 @@ public static class ServicesModuleDependencies
         services.AddScoped<IDailyRestrictionService, DailyRestrictionService>();
         services.AddScoped<IJobDepartmentService, JobDepartmentService>();
         services.AddScoped<IDisbursementRequestService, DisbursementRequestService>();
+        services.AddScoped<IMaterialIssuePermissionService, MaterialIssuePermissionService>();
+
 
 
 
