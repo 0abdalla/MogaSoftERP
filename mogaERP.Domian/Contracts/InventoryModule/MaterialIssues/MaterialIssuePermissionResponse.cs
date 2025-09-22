@@ -1,4 +1,4 @@
-﻿using mogaERP.Domain.Contracts.AccountingModule;
+﻿using mogaERP.Domain.Contracts.AccountingModule.DailyRestriction;
 using mogaERP.Domain.Contracts.Common;
 
 namespace mogaERP.Domain.Contracts.InventoryModule.MaterialIssues;

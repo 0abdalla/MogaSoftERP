@@ -32,6 +32,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<DisbursementRequest> DisbursementRequests { get; set; }
     public DbSet<MaterialIssuePermission> MaterialIssuePermissions { get; set; }
     public DbSet<MaterialIssueItem> MaterialIssueItems { get; set; }
+    public DbSet<Bank> Banks { get; set; }
+    public DbSet<AdditionNotice> AdditionNotices { get; set; }
 
 
 

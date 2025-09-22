@@ -34,6 +34,9 @@ public static class ServicesModuleDependencies
         services.AddScoped<IJobDepartmentService, JobDepartmentService>();
         services.AddScoped<IDisbursementRequestService, DisbursementRequestService>();
         services.AddScoped<IMaterialIssuePermissionService, MaterialIssuePermissionService>();
+        services.AddScoped<IBankService, BankService>();
+        services.AddScoped<IAdditionNotificationService, AdditionNotificationService>();
+
 
 
 

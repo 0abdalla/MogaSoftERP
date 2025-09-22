@@ -1,4 +1,4 @@
-﻿namespace mogaERP.Domain.Contracts.AccountingModule;
+﻿namespace mogaERP.Domain.Contracts.AccountingModule.DailyRestriction;
 public class PartialDailyRestrictionResponse
 {
     public int? Id { get; set; }
