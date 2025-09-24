@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mogaERP.Infrastructure._Data;
 
@@ -11,9 +12,11 @@ using mogaERP.Infrastructure._Data;
 namespace mogaERP.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250924093533_AddDebitNoticeTable")]
+    partial class AddDebitNoticeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -593,8 +596,6 @@ namespace mogaERP.Infrastructure.Migrations
                     b.HasIndex("AccountingGuidanceId");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("RestrictionTypeId");
 
                     b.HasIndex("UpdatedById");
 
@@ -1512,48 +1513,6 @@ namespace mogaERP.Infrastructure.Migrations
                     b.ToTable("ReceiptPermissionItems", "Inventory");
                 });
 
-            modelBuilder.Entity("mogaERP.Domain.Entities.RestrictionType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedById")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("UpdatedById");
-
-                    b.ToTable("RestrictionTypes", "Accounting");
-                });
-
             modelBuilder.Entity("mogaERP.Domain.Entities.Store", b =>
                 {
                     b.Property<int>("Id")
@@ -1888,10 +1847,6 @@ namespace mogaERP.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("mogaERP.Domain.Entities.RestrictionType", "RestrictionType")
-                        .WithMany("DailyRestrictions")
-                        .HasForeignKey("RestrictionTypeId");
-
                     b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById");
@@ -1899,8 +1854,6 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Navigation("AccountingGuidance");
 
                     b.Navigation("CreatedBy");
-
-                    b.Navigation("RestrictionType");
 
                     b.Navigation("UpdatedBy");
                 });
@@ -2391,23 +2344,6 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Navigation("ReceiptPermission");
                 });
 
-            modelBuilder.Entity("mogaERP.Domain.Entities.RestrictionType", b =>
-                {
-                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById");
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("UpdatedBy");
-                });
-
             modelBuilder.Entity("mogaERP.Domain.Entities.Store", b =>
                 {
                     b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
@@ -2515,11 +2451,6 @@ namespace mogaERP.Infrastructure.Migrations
             modelBuilder.Entity("mogaERP.Domain.Entities.ReceiptPermission", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("mogaERP.Domain.Entities.RestrictionType", b =>
-                {
-                    b.Navigation("DailyRestrictions");
                 });
 #pragma warning restore 612, 618
         }
