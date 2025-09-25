@@ -36,6 +36,21 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<AdditionNotice> AdditionNotices { get; set; }
 
 
+    public DbSet<JobType> JobTypes { get; set; }
+    public DbSet<JobTitle> JobTitles { get; set; }
+    public DbSet<JobLevel> JobLevels { get; set; }
+    public DbSet<Branch> Branches { get; set; }
+    public DbSet<Staff> Staff { get; set; }
+    public DbSet<StaffAttachments> StaffAttachments { get; set; }
+    public DbSet<EmployeeAdvance> EmployeeAdvances { get; set; }
+    public DbSet<AttendanceSalary> AttendanceSalaries { get; set; }
+
+
+
+
+
+
+
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
