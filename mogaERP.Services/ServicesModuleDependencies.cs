@@ -7,6 +7,7 @@ using mogaERP.Domain.Interfaces.InventoryModule;
 using mogaERP.Domain.Interfaces.ProcurementModule;
 using mogaERP.Services.Services.AccountingModule;
 using mogaERP.Services.Services.Auth;
+using mogaERP.Services.Services.Common;
 using mogaERP.Services.Services.HR_Module;
 using mogaERP.Services.Services.InventoryModule;
 using mogaERP.Services.Services.ProcurementModule;
@@ -33,6 +34,21 @@ public static class ServicesModuleDependencies
         services.AddScoped<IDailyRestrictionService, DailyRestrictionService>();
         services.AddScoped<IJobDepartmentService, JobDepartmentService>();
         services.AddScoped<IDisbursementRequestService, DisbursementRequestService>();
+        services.AddScoped<IMaterialIssuePermissionService, MaterialIssuePermissionService>();
+        services.AddScoped<IBankService, BankService>();
+        services.AddScoped<IAdditionNotificationService, AdditionNotificationService>();
+        services.AddScoped<IDebitNoticeService, DebitNoticeService>();
+        services.AddScoped<IDailyRestrictionService, DailyRestrictionService>();
+        services.AddScoped<IRestrictionTypeService, RestrictionTypeService>();
+
+        services.AddScoped<IJobLevelService, JobLevelService>();
+        services.AddScoped<IJobTitleService, JobTitleService>();
+        services.AddScoped<IJobTypeService, JobTypeService>();
+
+        services.AddScoped<IStaffService, StaffService>();
+        services.AddScoped<IFileService, FileService>();
+
+
 
 
 

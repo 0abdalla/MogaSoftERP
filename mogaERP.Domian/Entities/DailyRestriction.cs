@@ -9,9 +9,6 @@ public class DailyRestriction : BaseEntity
 
     public int? AccountingGuidanceId { get; set; }
     public AccountingGuidance? AccountingGuidance { get; set; } = default!;
+    public RestrictionType? RestrictionType { get; set; } = default!;
     public ICollection<DailyRestrictionDetail> Details { get; set; } = new List<DailyRestrictionDetail>();
-
-
-    //public RestrictionType? RestrictionType { get; set; } = default!;
-    //public string? LedgerNumber { get; set; }                     // رقم الدفتر
 }

@@ -28,6 +28,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="LinqKit.Core" Version="1.2.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.3.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
 			<PrivateAssets>all</PrivateAssets>

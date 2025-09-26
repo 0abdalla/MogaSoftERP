@@ -35,6 +35,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	
+	<ItemGroup>
 		<ProjectReference Include="..\mogaERP.Domian\mogaERP.Domain.csproj" />
 	</ItemGroup>
 

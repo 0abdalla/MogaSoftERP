@@ -1,4 +1,4 @@
-﻿using mogaERP.Domain.Contracts.AccountingModule;
+﻿using mogaERP.Domain.Contracts.AccountingModule.DailyRestriction;
 using mogaERP.Domain.Contracts.InventoryModule.ReceiptPermissions;
 
 namespace mogaERP.Domain.Interfaces.InventoryModule;

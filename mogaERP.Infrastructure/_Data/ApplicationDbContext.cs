@@ -29,6 +29,28 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<CostCenterTree> CostCenterTrees { get; set; }
     public DbSet<JobDepartment> JobDepartments { get; set; }
     public DbSet<DisbursementRequestItem> DisbursementRequestItems { get; set; }
+    public DbSet<DisbursementRequest> DisbursementRequests { get; set; }
+    public DbSet<MaterialIssuePermission> MaterialIssuePermissions { get; set; }
+    public DbSet<MaterialIssueItem> MaterialIssueItems { get; set; }
+    public DbSet<Bank> Banks { get; set; }
+    public DbSet<AdditionNotice> AdditionNotices { get; set; }
+
+
+    public DbSet<JobType> JobTypes { get; set; }
+    public DbSet<JobTitle> JobTitles { get; set; }
+    public DbSet<JobLevel> JobLevels { get; set; }
+    public DbSet<Branch> Branches { get; set; }
+    public DbSet<Staff> Staff { get; set; }
+    public DbSet<StaffAttachments> StaffAttachments { get; set; }
+    public DbSet<EmployeeAdvance> EmployeeAdvances { get; set; }
+    public DbSet<AttendanceSalary> AttendanceSalaries { get; set; }
+
+
+
+
+
+
+
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
