@@ -120,8 +120,8 @@ export class MenuService {
         {
           displayName: 'القيود اليومية',
           icon: 'fa-solid fa-circle',
-          route: 'restrictions',
-          pageName: 'Restrictions'
+          route: 'fin-tree/daily-entries',
+          pageName: 'DailyEntries'
         },
         {
           displayName: 'رواتب الموظفين',
@@ -149,31 +149,31 @@ export class MenuService {
             {
               displayName: 'الموظفين',
               icon: 'fa-solid fa-circle',
-              route: 'staff/list',
+              route: 'hr/employees',
               pageName: 'StaffList'
             },
             {
               displayName: 'الأقسام',
               icon: 'fa-solid fa-circle',
-              route: 'staff/department-admin',
+              route: 'hr/departments',
               pageName: 'DepartmentAdmin'
             },
             {
               displayName: 'المستويات الوظيفية',
               icon: 'fa-solid fa-circle',
-              route: 'staff/job-levels',
+              route: 'hr/job-levels',
               pageName: 'JobLevels'
             },
             {
               displayName: 'تصنيف الوظائف',
               icon: 'fa-solid fa-circle',
-              route: 'staff/classification',
+              route: 'hr/job-categories',
               pageName: 'Classification'
             },
             {
               displayName: 'الوظائف',
               icon: 'fa-solid fa-circle',
-              route: 'staff/job-management',
+              route: 'hr/job-management',
               pageName: 'JobManagement'
             }
           ]
@@ -181,7 +181,7 @@ export class MenuService {
         {
           displayName: 'الأجازات',
           icon: 'fa-solid fa-circle',
-          route: '/staff/vacation',
+          route: 'hr/vacation',
           pageName: 'Vacation'
         },
         {

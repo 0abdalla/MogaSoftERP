@@ -5,12 +5,14 @@ import { FinTreeRoutingModule } from './fin-tree-routing.module';
 import { AdditionNotificationsComponent } from './bank-actions/addition-notifications/addition-notifications.component';
 import { DebitNotificationsComponent } from './bank-actions/debit-notifications/debit-notifications.component';
 import { SharedModule } from '../../shared/shared.module';
+import { EntriesComponent } from './entries/entries.component';
 
 
 @NgModule({
   declarations: [
     AdditionNotificationsComponent,
-    DebitNotificationsComponent
+    DebitNotificationsComponent,
+    EntriesComponent
   ],
   imports: [
     CommonModule,

@@ -3,6 +3,7 @@ import { environment } from '../../../env/environment';
 import { HttpClient } from '@angular/common/http';
 import { debitNotification } from '../models/fin-tree/banks/debit';
 import { catchError , Observable, of } from 'rxjs';
+import { DailyEntry } from '../models/fin-tree/entries';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class FinanceService {
   additionNotifications = signal<any[]>([])
   banks = signal<any[]>([])
   accounts = signal<any[]>([])
+  dailyEntries = signal<DailyEntry[]>([])
   constructor(private http : HttpClient) { }
 
   // ============================================== Banks ============================================== 
@@ -84,5 +86,33 @@ export class FinanceService {
   }
   deleteAdditionNotification(id: number) {
     return this.http.delete<any>(`${this.baseUrl}AdditionNotification/${id}`);
+  }
+  // ============================================== Daily Entries ============================================== 
+  getDailyEntries(
+    pageNumber: number,
+    pageSize: number,
+    searchTerm: string = '',
+    sortDescending: boolean = true
+  ): Observable<{ data: DailyEntry[]; totalCount: number }> {
+    this.loading.set(true);
+    const url = `${this.baseUrl}DailyRestrictions?PageNumber=${pageNumber}&PageSize=${pageSize}&SearchTerm=${searchTerm}&SortDescending=${sortDescending}`;
+    return this.http.get<{ data: DailyEntry[]; totalCount: number }>(url).pipe(
+      catchError(err => {
+        console.error('Error fetching daily entries', err);
+        return of({ data: [], totalCount: 0 });
+      })
+    );
+  }  
+  getDailyEntryById(id: number) {
+    return this.http.get<DailyEntry>(`${this.baseUrl}DailyRestrictions/${id}`);
+  }
+  addDailyEntry(dailyEntry: DailyEntry) {
+    return this.http.post<DailyEntry>(`${this.baseUrl}DailyRestrictions`, dailyEntry);
+  }
+  updateDailyEntry(id: number, dailyEntry: DailyEntry) {
+    return this.http.put<DailyEntry>(`${this.baseUrl}DailyRestrictions/${id}`, dailyEntry);
+  }
+  deleteDailyEntry(id: number) {
+    return this.http.delete<DailyEntry>(`${this.baseUrl}DailyRestrictions/${id}`);
   }
 }

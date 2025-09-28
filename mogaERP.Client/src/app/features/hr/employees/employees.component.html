@@ -1,0 +1,227 @@
+<main id="list-employees">
+    <div class="container-fluid mt-4">
+      <!-- Breadcrumb and Add Button -->
+      <div class="top">
+        <div class="d-flex justify-content-between align-items-center">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 justify-content-center flex-row-reverse" dir="rtl">
+              <li class="breadcrumb-item active" aria-current="page">الموظفين</li>
+              <li class="breadcrumb-item"><a routerLink="/dashboard">إدارة الشركة</a></li>
+            </ol>
+          </nav>
+          <div>
+            <button class="btn-blue" routerLink="/hr/add-employee">إضافة موظف</button>
+          </div>
+        </div>
+      </div>
+      <p-toast position="top-left"></p-toast>
+      <hr />
+  
+      <!-- Search and Actions -->
+      <div class="grid-list">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="search-wrapper">
+            <input
+              type="text"
+              class="form-control search-input"
+              [(ngModel)]="searchTerm"
+              (keyup.enter)="search()"
+              placeholder="ابحث بإسم الموظف..."
+            />
+            <span class="search-icon">
+              <i class="bi bi-search"></i>
+            </span>
+          </div>
+          <div>
+            <button class="btn-outline-blue me-2">فلتر</button>
+            <button class="btn-orange me-2">تصدير</button>
+            <i class="fa-solid fs-5 fa-print me-2"></i>
+            <i class="fa-solid fs-5 fa-rotate-right me-2"></i>
+            <i class="fa-solid fs-5 fa-expand me-2"></i>
+          </div>
+        </div>
+  
+        <!-- Table -->
+        <table class="table table-bordered table-hover table">
+          <thead class="table-light">
+            <tr>
+                <th>الإسم</th>
+                <th>الوظيفة</th>
+                <th>القسم</th>
+                <th>الحالة</th>
+                <!-- <th></th> -->
+            </tr>
+          </thead>
+          <tbody *ngIf="employees">
+            <tr *ngFor="let employee of employees; trackBy: trackByEmployee" (click)="openStaffModal(employee.id)" data-bs-toggle="modal" data-bs-target="#employeeDetailsModal" style="cursor: pointer">
+              <td class="id">{{ employee.fullName }}</td>
+              <td>{{ employee.jobTitleName }}</td>
+              <td>{{ employee.jobDepartmentName }}</td>
+              <td>
+                <span class="status-dot me-2" [ngClass]="getStatusDotClass(employee.status)"></span>
+                {{ getStatusName(employee.status) }}
+              </td>
+              <!-- <td class="text-center">
+                <div class="dropdown">
+                  <button class="btn p-0 border-0 bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots fs-5" style="color: var(--text-blue);"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end custom-dropdown" dir="rtl">
+                    <li><button class="dropdown-item" (click)="editEmployee(employee.id)">تعديل</button></li>
+                    <hr class="m-0">
+                    <li><button class="dropdown-item custom-danger" (click)="deleteEmployee(employee.id)">حذف</button></li>
+                  </ul>
+                </div>
+              </td> -->
+              
+              
+            </tr>
+          </tbody>
+          <tbody *ngIf="employees?.length === 0">
+            <tr>
+              <td colspan="6" class="text-center">لا يوجد موظفين</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <!-- Pagination --> 
+        <div class="d-flex justify-content-between align-items-center mt-3" *ngIf="totalCount > pageSize">
+            <nav >
+               <ul class="pagination pagination-sm mb-0"> 
+                <li class="page-item" [class.disabled]="currentPage === 1"> <button class="page-link" (click)="goToPage(currentPage - 1)">&lt;</button> 
+                </li> 
+                <li class="page-item" *ngFor="let p of [].constructor(math.ceil(totalCount / pageSize)); let i = index" [class.active]="currentPage === i + 1" > 
+                <button class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</button> 
+                </li> 
+                <li class="page-item" [class.disabled]="currentPage === math.ceil(totalCount / pageSize)"> 
+                <button class="page-link" (click)="goToPage(currentPage + 1)">&gt;</button> 
+                </li> 
+               </ul> 
+            </nav> 
+            <div class="pagination-counter">
+              <p class="m-0 text-secondary">
+                عرض
+                <span class="mx-1 fw-bold text-blue">{{
+                  currentPage
+                }}</span>
+                من
+                <span class="mx-1 fw-bold text-blue">{{ math.ceil(totalCount / pageSize) }}</span>
+              </p>
+            </div>
+          </div>
+
+      </div>
+    </div>
+</main>
+
+
+<div class="modal fade" id="employeeDetailsModal" tabindex="-1" aria-labelledby="employeeDetailsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div #employeeDetailsPDF>
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="employeeDetailsLabel">تفاصيل الموظف</h5>
+                </div>
+    
+                <div class="modal-body p-4">
+                    <h4>👤 البيانات الشخصية</h4>
+                    <div class="row mb-3">
+                        <div class="col-lg-4">
+                            <strong>الإسم الكامل:</strong> <span>{{ selectedEmployee?.fullName || '---' }}</span>
+                        </div>
+                        <div class="col-lg-4">
+                            <strong>الرقم القومي:</strong> <span>{{ selectedEmployee?.nationalId || '---' }}</span>
+                        </div>
+    
+                        <div class="col-lg-4">
+                            <strong>النوع:</strong> <span>{{ selectedEmployee?.gender || '---' }}</span>
+                        </div>
+                        <div class="col-lg-4">
+                            <strong>الحالة الاجتماعية:</strong> <span>{{ selectedEmployee?.maritalStatus || '---' }}</span>
+                        </div>
+                        <div class="col-lg-4">
+                            <strong>تاريخ الميلاد:</strong> <span>{{ selectedEmployee?.dateOfBirth || '---' }}</span>
+                        </div>
+    
+                    </div>
+    
+                    <hr>
+    
+                    <h4>💼 معلومات الوظيفة</h4>
+                    <div class="row mb-3">
+                        <div class="col-lg-4">
+                            <strong>المسمى الوظيفي:</strong> <span>{{ selectedEmployee?.jobTitleName || '---' }}</span>
+                        </div>
+                        <div class="col-lg-4">
+                            <strong>القسم:</strong> <span>{{ selectedEmployee?.jobDepartmentName || '---' }}</span>
+                        </div>
+                        <div class="col-lg-4">
+                            <strong>الفرع:</strong> <span>{{ selectedEmployee?.branchName || '---' }}</span>
+                        </div>
+                        <div class="col-lg-4">
+                            <strong>تاريخ التعيين:</strong> <span>{{ selectedEmployee?.hireDate || '---' }}</span>
+                        </div>
+                        <div class="col-lg-4">
+                            <strong>الحالة:</strong> <span> {{ selectedEmployee?.status || '---' }} </span>
+                        </div>
+                    </div>
+    
+                    <hr>
+    
+                    <h4>📞 معلومات الاتصال</h4>
+                    <div class="row mb-3">
+                        <div class="col-lg-4">
+                            <strong>رقم الهاتف:</strong> <span>{{ selectedEmployee?.phoneNumber || '---' }}</span>
+                        </div>
+                        <div class="col-lg-4">
+                            <strong>البريد الإلكتروني:</strong> <span>{{ selectedEmployee?.email || '---' }}</span>
+                        </div>
+                        <div class="col-lg-4">
+                            <strong>العنوان:</strong> <span>{{ selectedEmployee?.address || '---' }}</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <h4>💰بيانات المرتب</h4>
+                    <div class="row mb-3">
+                        <div class="col-lg-3">
+                          <strong>المرتب الأساسي:</strong>
+                          <span>{{ selectedEmployee?.basicSalary | number : '1.2-2' }} جنيه</span>
+                        </div>
+                        <div class="col-lg-3">
+                          <strong>البدلات:</strong>
+                          <span>{{ selectedEmployee?.allowances | number : '1.2-2' }} جنيه</span>
+                        </div>
+                        <div class="col-lg-3">
+                          <strong>الخصومات:</strong>
+                          <span>{{ selectedEmployee?.deductions | number : '1.2-2' }} جنيه</span>
+                        </div>
+                        <div class="col-lg-3">
+                          <strong>صافي المرتب:</strong>
+                          <span>{{ selectedEmployee?.netSalary | number : '1.2-2' }} جنيه</span>
+                        </div>
+                      </div>                      
+    
+                    <hr>
+    
+                    <h4>📝 ملاحظات</h4>
+                    <p class="text-muted">{{ selectedEmployee?.notes || 'لا يوجد ملاحظات' }}</p>
+                </div>
+            </div>
+
+            <div class="modal-footer row">
+                <div class="col-4 m-0">
+                    <button class="btn col-12 btn-outline-warning" (click)="editEmployee()">تعديل البيانات</button>
+                </div>
+                <!-- <div class="col-4 m-0">
+                    <button class="btn col-12 btn-outline-info" (click)="print()">طباعة</button>
+                </div> -->
+                <div class="col-4 m-0">
+                    <button class="btn col-12 btn-outline-primary" (click)="exportToPDF()">تحويل إلى PDF</button>
+                </div>
+                <div class="col-4 m-0">
+                    <button class="btn col-12 btn-outline-primary" (click)="suspendEmployee()">تعليق مؤقت</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
