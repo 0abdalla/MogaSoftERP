@@ -1,13 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Chart } from 'angular-highcharts';
 import { ChartModule } from 'angular-highcharts';
-
 @Component({
   selector: 'app-dashboard',
-  standalone: true,
-  imports: [ChartModule , CommonModule],
-  templateUrl: './dashboard.component.html'
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
   finStatChart!: Chart;
@@ -49,7 +46,7 @@ export class DashboardComponent {
         type: 'pie',
         renderTo: 'fin-stat',
         height: '100%',
-        width: null,
+        width: undefined,
         style: { fontFamily: 'Tajawal' }
       },
       title: {
@@ -77,15 +74,15 @@ export class DashboardComponent {
           fontSize: '14px',
           fontWeight: 'bold'
         },
-        labelFormatter: function () {
-          if (this.name === 'إيرادات') {
-            return 'إيرادات (أخضر)';
-          }
-          if (this.name === 'مصروفات') {
-            return 'مصروفات (أحمر)';
-          }
-          return this.name;
-        }
+        // labelFormatter: function () {
+        //   if (this.name === 'إيرادات') {
+        //     return 'إيرادات (أخضر)';
+        //   }
+        //   if (this.name === 'مصروفات') {
+        //     return 'مصروفات (أحمر)';
+        //   }
+        //   return this.name;
+        // }
       },
       
       series: [
@@ -106,7 +103,7 @@ export class DashboardComponent {
         type: 'pie',
         renderTo: 'projects-stat',
         height: '100%',
-        width: null,
+        width: undefined,
         style: { fontFamily: 'Tajawal' }
       },
       title: {
@@ -210,7 +207,7 @@ export class DashboardComponent {
       chart: {
         type: 'pie',
         height: '100%',
-        width: null,
+        width: undefined,
         style: { fontFamily: 'Tajawal' }
       },
       title: { text: 'المصروفات حسب النوع' },

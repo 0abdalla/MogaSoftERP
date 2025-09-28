@@ -1,1 +1,285 @@
-<p>providers works!</p>
+<main id="list-providers">
+    <div class="container-fluid mt-4">
+      <!-- Breadcrumb and Add Button -->
+      <div class="top">
+        <div class="d-flex justify-content-between align-items-center">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 justify-content-center flex-row-reverse" dir="rtl">
+              <li class="breadcrumb-item active" aria-current="page">الموردين</li>
+              <li class="breadcrumb-item"><a routerLink="/dashboard">إدارة الشركة</a></li>
+            </ol>
+          </nav>
+          <div>
+            <button class="btn-blue" data-bs-toggle="modal" data-bs-target="#addProviderModal">إضافة مورد</button>
+          </div>
+        </div>
+      </div>
+      <p-toast position="top-left"></p-toast>
+
+  
+      <hr />
+  
+      <!-- Search and Actions -->
+      <div class="grid-list">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="search-wrapper">
+            <input
+              type="text"
+              class="form-control search-input"
+              [(ngModel)]="searchTerm"
+              (keyup.enter)="search()"
+              placeholder="ابحث بإسم المورد..."
+            />
+            <span class="search-icon">
+              <i class="bi bi-search"></i>
+            </span>
+          </div>
+          <div>
+            <button class="btn-outline-blue me-2">فلتر</button>
+            <button class="btn-orange me-2">تصدير</button>
+            <i class="fa-solid fs-5 fa-print me-2"></i>
+            <i class="fa-solid fs-5 fa-rotate-right me-2"></i>
+            <i class="fa-solid fs-5 fa-expand me-2"></i>
+          </div>
+        </div>
+  
+        <!-- Table -->
+        <table class="table table-bordered table-hover">
+          <thead class="table-light">
+            <tr>
+                <th>كود الحساب</th>
+                <th>إسم المورد</th>
+                <th>إسم المسئول</th>
+                <th>رقم الهاتف</th>
+                <th>الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="providers.length > 0">
+            <tr *ngFor="let provider of providers; trackBy: trackByProvider">
+              <td class="id">{{ provider.accountCode }}</td>
+              <td>{{ provider.name }}</td>
+              <td>{{ provider.responsibleName1 }}</td>
+              <td>{{ provider.phone1 }}</td>
+              <!-- <td>
+                <span
+                  class="custom-badge text-white"
+                  [ngStyle]="{ backgroundColor: getStatusColor(order.status) }"
+                >
+                  {{ getStatusName(order.status) }}
+                </span>
+              </td> -->
+              <!-- <td>
+                <button class="btn btn-primary btn-sm mx-1"><i class="fa fa-print"></i></button>
+                <button class="btn btn-warning btn-sm mx-1" (click)="editPurchaseRequest(order.id)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm mx-1" (click)="deletePurchaseRequest(order.id)">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td> -->
+              <td class="text-center">
+                <div class="dropdown">
+                  <button class="btn p-0 border-0 bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots fs-5" style="color: var(--text-blue);"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end custom-dropdown" dir="rtl">
+                    <li><button class="dropdown-item" (click)="editProvider(provider.id)">تعديل</button></li>
+                    <hr class="m-0">
+                    <li><button class="dropdown-item custom-danger" (click)="deleteProvider(provider.id)">حذف</button></li>
+                  </ul>
+                </div>
+              </td>
+              
+              
+            </tr>
+          </tbody>
+          <tbody *ngIf="providers.length === 0">
+            <tr>
+              <td colspan="6" class="text-center">لا يوجد موردين</td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <!-- <div dir="rtl">
+          <p-paginator
+          [rows]="pageSize"
+          [totalRecords]="totalCount"
+          [rowsPerPageOptions]=""
+          [showFirstLastIcon]="true"
+          [showJumpToPageDropdown]="false"
+          [showPageLinks]="true"
+          [pageLinkSize]="5"
+          [dir]="'rtl'"
+          [currentPageReportTemplate]="'عرض {first} إلى {last} من {totalRecords}'"
+          (onPageChange)="onPageChange($event)">
+        </p-paginator>
+        </div> -->
+  
+        <!-- Pagination --> 
+        <div class="d-flex justify-content-between align-items-center mt-3" *ngIf="totalCount > pageSize">
+          <nav >
+             <ul class="pagination pagination-sm mb-0"> 
+              <li class="page-item" [class.disabled]="currentPage === 1"> <button class="page-link" (click)="goToPage(currentPage - 1)">&lt;</button> 
+              </li> 
+              <li class="page-item" *ngFor="let p of [].constructor(math.ceil(totalCount / pageSize)); let i = index" [class.active]="currentPage === i + 1" > 
+              <button class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</button> 
+              </li> 
+              <li class="page-item" [class.disabled]="currentPage === math.ceil(totalCount / pageSize)"> 
+              <button class="page-link" (click)="goToPage(currentPage + 1)">&gt;</button> 
+              </li> 
+             </ul> 
+          </nav> 
+          <div class="pagination-counter">
+            <p class="m-0 text-secondary">
+              عرض
+              <span class="mx-1 fw-bold text-blue">{{
+                currentPage
+              }}</span>
+              من
+              <span class="mx-1 fw-bold text-blue">{{ math.ceil(totalCount / pageSize) }}</span>
+            </p>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </main>
+  
+  
+
+<div class="modal fade" id="addProviderModal" tabindex="-1" aria-labelledby="addProviderModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title" id="addProviderModalLabel">
+                    {{ isEditMode ? 'تعديل مورد' : 'إضافة مورد' }}
+                </h5>                  
+            </div>
+            <div class="modal-body" style="background-image: url('assets/vendors/imgs/pattern.png'); background-size: cover;">
+                <form [formGroup]="providersForm" (ngSubmit)="addProvider()">
+                    <div class="row p-3 mb-3">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">تكويد الحسابات</label>
+                                <input type="text" formControlName="accountCode" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label class="form-label">اسم المورد</label>
+                                <input type="text" formControlName="name" class="form-control shadow-none text-end" placeholder="أدخل اسم المورد">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">العنوان</label>
+                                <input type="text" formControlName="address" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">اسم المسئول</label>
+                                <input type="text" formControlName="responsibleName1" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">اسم المسئول 2</label>
+                                <input type="text" formControlName="responsibleName2" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">هاتف العميل</label>
+                                <input type="text" formControlName="phone1" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">هاتف العميل 2</label>
+                                <input type="text" formControlName="phone2" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">الرقم الضريبي</label>
+                                <input type="text" formControlName="taxNumber" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">السجل التجاري</label>
+                                <input type="text" formControlName="job" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">الفاكس 1</label>
+                                <input type="number" formControlName="fax1" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">الفاكس 2</label>
+                                <input type="number" formControlName="fax2" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">طريقة الدفع</label>
+                                <select formControlName="paymentType" class="form-select shadow-none text-end">
+                                    <option value="Cash">كاش</option>
+                                    <option value="Credit">آجل</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">حد الإئتمان</label>
+                                <input type="number" formControlName="creditLimit" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row p-3 mb-3">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">البريد الإلكتروني</label>
+                                <input type="email" formControlName="email" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">الموقع على الشبكة</label>
+                                <input type="text" formControlName="website" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">ملاحظات</label>
+                                <textarea formControlName="notes" class="form-control shadow-none text-end"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn-blue px-4" [disabled]="providersForm.invalid">
+                            {{ isEditMode ? 'حفظ التعديلات' : 'إضافة المورد' }}
+                        </button>      
+                        <button class="btn-orange mx-2" data-bs-dismiss="modal" (click)="resetForm()">خروج</button>                    
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

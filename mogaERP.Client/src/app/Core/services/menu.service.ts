@@ -46,20 +46,20 @@ export class MenuService {
         {
           displayName: 'إذن إستلام ',
           icon: 'fa-solid fa-circle',
-          route: 'inventories/add-items',
-          pageName: 'AddItems'
+          route: 'inventory/recipt-permissions',
+          pageName: 'ReciptPermissions'
         },
         {
           displayName: 'طلب صرف ',
           icon: 'fa-solid fa-circle',
-          route: 'inventories/issue-request',
-          pageName: 'IssueRequest'
+          route: 'inventory/exchange-request',
+          pageName: 'ExchangeRequest'
         },
         {
           displayName: 'إذن صرف',
           icon: 'fa-solid fa-circle',
-          route: 'inventories/issue-items',
-          pageName: 'IssueItems'
+          route: 'inventory/exchange-permissions',
+          pageName: 'ExchangePermissions'
         }
       ]
     },
@@ -106,13 +106,13 @@ export class MenuService {
             {
               displayName: 'اشعار اضافة',
               icon: 'fa-solid fa-circle',
-              route: 'fin-tree/bank/add-notice',
+              route: 'fin-tree/bank-actions/addition-notifications',
               pageName: 'AddNotice'
             },
             {
               displayName: 'اشعار خصم',
               icon: 'fa-solid fa-circle',
-              route: 'fin-tree/bank/discount-notice',
+              route: 'fin-tree/bank-actions/debit-notifications',
               pageName: 'DiscountNotice'
             },
           ]
@@ -233,7 +233,7 @@ export class MenuService {
     {
       displayName: 'إدارة المهام',
       icon: 'fa-solid fa-list-check',
-      route: '/tasks',
+      route: '/task-mangment/tasks',
       pageName: 'Tasks',
       isGroup: false
     },
@@ -250,13 +250,13 @@ export class MenuService {
         {
           displayName: 'العملاء',
           icon: 'fa-solid fa-circle',
-          route: 'customers',
+          route: '/system-settings/customers',
           pageName: 'CustomerList'
         },
         {
           displayName: 'الموردين',
           icon: 'fa-solid fa-circle',
-          route: '/providers/provider-list',
+          route: '/system-settings/providers',
           pageName: 'ProviderList'
         },
         {

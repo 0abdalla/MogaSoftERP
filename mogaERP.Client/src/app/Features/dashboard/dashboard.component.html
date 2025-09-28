@@ -1,245 +1,245 @@
 <div class="dashboard-header">
-  </div>
-  
-  <div class="container-fluid">
-    <div class="row g-3 stat-row">
-  
-      <!-- Card 1 -->
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="card shadow-sm text-center p-3 h-100">
-          <div class="icon mb-2 text-primary">
-            <img src="../../../assets/vendors/imgs/icon1.png" alt="" width="80" height="80">
-          </div>
-          <h6 class="text-muted">إجمالي الأرباح</h6>
-          <h5 class="text-primary">3000 $</h5>
-        </div>
-      </div>
-  
-      <!-- Card 2 -->
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="card shadow-sm text-center p-3 h-100">
-          <div class="icon mb-2 text-danger">
-            <img src="../../../assets/vendors/imgs/icon2.png" alt="" width="80" height="80">
-          </div>
-          <h6 class="text-muted">إجمالي المصروفات</h6>
-          <h5 class="text-danger">3000 $</h5>
-        </div>
-      </div>
-  
-      <!-- Card 3 -->
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="card shadow-sm text-center p-3 h-100">
-          <div class="icon mb-2 text-success">
-            <img src="../../../assets/vendors/imgs/icon3.png" alt="" width="80" height="80">
-          </div>
-          <h6 class="text-muted">عدد المشاريع</h6>
-          <h5 class="text-success">2100</h5>
-        </div>
-      </div>
-  
-      <!-- Card 4 -->
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="card shadow-sm text-center p-3 h-100">
-          <div class="icon mb-2 text-warning">
-            <img src="../../../assets/vendors/imgs/icon4.png" alt="" width="80" height="80">
-          </div>
-          <h6 class="text-muted">عدد العملاء</h6>
-          <h5 class="text-warning">61</h5>
-        </div>
-      </div>
-          
-    </div>
-    <div class="row g-3 mt-5">
-        <div class="chart col-12 col-sm-6 col-md-4 col-lg-12 mt-3 bg-white p-3">
-            <div [chart]="servicesChart"></div>
-          </div>
-    </div>
-    <div class="row g-3 mt-3 align-items-stretch">
-        <!-- Financial Chart -->
-        <div class="chart col-lg-4">
-          <div class="card shadow-sm text-center h-100 p-3">
-            <div class="chart-container">
-              <div [chart]="finStatChart"></div>
-            </div>
-          </div>
-        </div>
-      
-        <!-- Projects Chart -->
-        <div class="chart col-lg-4">
-          <div class="card shadow-sm text-center h-100 p-3">
-            <div class="chart-container">
-              <div [chart]="projectsChart"></div>
-            </div>
-          </div>
-        </div>
-      
-        <!-- Expenses by Type -->
-        <div class="chart col-lg-4">
-          <div class="card shadow-sm text-center h-100 p-3">
-            <div class="chart-container">
-              <div [chart]="expensesByTypeChart"></div>
-            </div>
-          </div>
-        </div>
-    </div>
-    <div class="row g-3 mt-3">
-        <div class="col-lg-6">
-          <div class="card shadow-sm h-100 p-3">
-            <div [chart]="revenuesByDeptChart"></div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="card shadow-sm h-100 p-3">
-            <div [chart]="clientGrowthChart"></div>
-          </div>
-        </div>
-    </div>
-    <div class="row g-3 mt-3">
-        <!-- أفضل الموظفين -->
-        <div class="col-lg-4">
-          <div class="card shadow-sm h-100">
-            <div class="card-header bg-white border-0 fw-bold">
-              أفضل الموظفين
-            </div>
-            <ul class="list-group list-group-flush p-0">
-              <li class="list-group-item d-flex align-items-center">
-                <div class="avatar-circle bg-primary text-white me-2">O</div>
-                <div class="flex-grow-1 mx-2">
-                  <div class="fw-semibold">عمر مجدالإسلام</div>
-                  <small class="text-muted">التطوير</small>
-                </div>
-                <span class="badge bg-success rounded-pill">99%</span>
-              </li>
-              <li class="list-group-item d-flex align-items-center">
-                <div class="avatar-circle bg-primary text-white me-2">S</div>
-                <div class="flex-grow-1 mx-2">
-                  <div class="fw-semibold">سارة محمود</div>
-                  <small class="text-muted">التسويق</small>
-                </div>
-                <span class="badge bg-success rounded-pill">95%</span>
-              </li>
-              <li class="list-group-item d-flex align-items-center">
-                <div class="avatar-circle bg-primary text-white me-2">Y</div>
-                <div class="flex-grow-1 mx-2">
-                  <div class="fw-semibold">يحيى موسى</div>
-                  <small class="text-muted">التسويق</small>
-                </div>
-                <span class="badge bg-success rounded-pill">95%</span>
-              </li>
-              <li class="list-group-item d-flex align-items-center">
-                <div class="avatar-circle bg-primary text-white me-2">A</div>
-                <div class="flex-grow-1 mx-2">
-                  <div class="fw-semibold">آية علاء</div>
-                  <small class="text-muted">التصوير</small>
-                </div>
-                <span class="badge bg-success rounded-pill">92%</span>
-              </li>
-              <li class="list-group-item d-flex align-items-center">
-                <div class="avatar-circle bg-primary text-white me-2">M</div>
-                <div class="flex-grow-1 mx-2">
-                  <div class="fw-semibold">إسلام الطيار</div>
-                  <small class="text-muted">التطوير</small>
-                </div>
-                <span class="badge bg-success rounded-pill">86%</span>
-              </li>
-              
-            </ul>
-          </div>
-        </div>
-      
-        <!-- أفضل العملاء -->
-        <div class="col-lg-4">
-          <div class="card shadow-sm h-100">
-            <div class="card-header bg-white border-0 fw-bold">
-              أفضل العملاء
-            </div>
-            <ul class="list-group list-group-flush p-0">
-              <li class="list-group-item d-flex align-items-center">
-                <div class="avatar-circle bg-primary text-white me-2">JSM</div>
-                <div class="flex-grow-1 mx-2">
-                  <div class="fw-semibold">الجمعية الشرعية</div>
-                  <small class="text-muted">30 مشروع</small>
-                </div>
-                <span class="badge bg-primary rounded-pill">+120K</span>
-              </li>
-              <li class="list-group-item d-flex align-items-center">
-                <div class="avatar-circle bg-primary text-white me-2">CIU</div>
-                <div class="flex-grow-1 mx-2">
-                  <div class="fw-semibold">الجامعة الكندية</div>
-                  <small class="text-muted">20 مشروع</small>
-                </div>
-                <span class="badge bg-primary rounded-pill">+85K</span>
-              </li>
-              <li class="list-group-item d-flex align-items-center">
-                <div class="avatar-circle bg-primary text-white me-2">MTA</div>
-                <div class="flex-grow-1 mx-2">
-                  <div class="fw-semibold">مركز تجميل أيمن</div>
-                  <small class="text-muted">8 مشروع</small>
-                </div>
-                <span class="badge bg-primary rounded-pill">+85K</span>
-              </li>
-              <li class="list-group-item d-flex align-items-center">
-                <div class="avatar-circle bg-primary text-white me-2">MFH</div>
-                <div class="flex-grow-1 mx-2">
-                  <div class="fw-semibold">مصنع الفهد</div>
-                  <small class="text-muted">5 مشروع</small>
-                </div>
-                <span class="badge bg-primary rounded-pill">+85K</span>
-              </li>
-              <li class="list-group-item d-flex align-items-center">
-                <div class="avatar-circle bg-primary text-white me-2">ART</div>
-                <div class="flex-grow-1 mx-2">
-                  <div class="fw-semibold">شركة عرب تيك</div>
-                  <small class="text-muted">3 مشروع</small>
-                </div>
-                <span class="badge bg-primary rounded-pill">+85K</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      
-        <!-- آخر المشاريع -->
-        <div class="col-lg-4">
-            <div class="card shadow-sm h-100">
-            <div class="card-header bg-white border-0 fw-bold">
-                آخر المشاريع
-            </div>
-            <ul class="list-group list-group-flush project-list p-0">
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>موقع تجارة إلكترونية</span>
-                <span class="badge bg-warning text-dark">قيد التنفيذ</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>تطبيق موبايل</span>
-                <span class="badge bg-success">تم التسليم</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>كاميرات مراقبة</span>
-                <span class="badge bg-danger">متوقف</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>لوحة تحكم ERP</span>
-                <span class="badge bg-warning text-dark">قيد التنفيذ</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>حملة تسويق إلكتروني</span>
-                <span class="badge bg-success">تم التسليم</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>نظام حضور وانصراف</span>
-                <span class="badge bg-warning text-dark">قيد التنفيذ</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>ماكينات تصوير</span>
-                <span class="badge bg-success">تم التسليم</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>بلوتر هندسي</span>
-                <span class="badge bg-danger">متوقف</span>
-                </li>
-            </ul>
-            </div>
-        </div>
+</div>
 
+<div class="container-fluid">
+  <div class="row g-3 stat-row">
+
+    <!-- Card 1 -->
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card shadow-sm text-center p-3 h-100">
+        <div class="icon mb-2 text-primary">
+          <img src="../../../assets/vendors/imgs/icon1.png" alt="" width="80" height="80">
+        </div>
+        <h6 class="text-muted">إجمالي الأرباح</h6>
+        <h5 class="text-primary">3000 $</h5>
+      </div>
     </div>
+
+    <!-- Card 2 -->
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card shadow-sm text-center p-3 h-100">
+        <div class="icon mb-2 custom-danger">
+          <img src="../../../assets/vendors/imgs/icon2.png" alt="" width="80" height="80">
+        </div>
+        <h6 class="text-muted">إجمالي المصروفات</h6>
+        <h5 class="custom-danger">3000 $</h5>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card shadow-sm text-center p-3 h-100">
+        <div class="icon mb-2 text-success">
+          <img src="../../../assets/vendors/imgs/icon3.png" alt="" width="80" height="80">
+        </div>
+        <h6 class="text-muted">عدد المشاريع</h6>
+        <h5 class="text-success">2100</h5>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card shadow-sm text-center p-3 h-100">
+        <div class="icon mb-2 text-warning">
+          <img src="../../../assets/vendors/imgs/icon4.png" alt="" width="80" height="80">
+        </div>
+        <h6 class="text-muted">عدد العملاء</h6>
+        <h5 class="text-warning">61</h5>
+      </div>
+    </div>
+        
+  </div>
+  <div class="row g-3 mt-5">
+      <div class="chart col-12 col-sm-6 col-md-4 col-lg-12 mt-3 bg-white p-3">
+          <div [chart]="servicesChart"></div>
+        </div>
+  </div>
+  <div class="row g-3 mt-3 align-items-stretch">
+      <!-- Financial Chart -->
+      <div class="chart col-lg-4">
+        <div class="card shadow-sm text-center h-100 p-3">
+          <div class="chart-container">
+            <div [chart]="finStatChart"></div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Projects Chart -->
+      <div class="chart col-lg-4">
+        <div class="card shadow-sm text-center h-100 p-3">
+          <div class="chart-container">
+            <div [chart]="projectsChart"></div>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Expenses by Type -->
+      <div class="chart col-lg-4">
+        <div class="card shadow-sm text-center h-100 p-3">
+          <div class="chart-container">
+            <div [chart]="expensesByTypeChart"></div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="row g-3 mt-3">
+      <div class="col-lg-6">
+        <div class="card shadow-sm h-100 p-3">
+          <div [chart]="revenuesByDeptChart"></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card shadow-sm h-100 p-3">
+          <div [chart]="clientGrowthChart"></div>
+        </div>
+      </div>
+  </div>
+  <div class="row g-3 mt-3">
+      <!-- أفضل الموظفين -->
+      <div class="col-lg-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-white border-0 fw-bold">
+            أفضل الموظفين
+          </div>
+          <ul class="list-group list-group-flush p-0">
+            <li class="list-group-item d-flex align-items-center">
+              <div class="avatar-circle bg-primary text-white me-2">O</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="fw-semibold">عمر مجدالإسلام</div>
+                <small class="text-muted">التطوير</small>
+              </div>
+              <span class="badge bg-success rounded-pill">99%</span>
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <div class="avatar-circle bg-primary text-white me-2">S</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="fw-semibold">سارة محمود</div>
+                <small class="text-muted">التسويق</small>
+              </div>
+              <span class="badge bg-success rounded-pill">95%</span>
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <div class="avatar-circle bg-primary text-white me-2">Y</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="fw-semibold">يحيى موسى</div>
+                <small class="text-muted">التسويق</small>
+              </div>
+              <span class="badge bg-success rounded-pill">95%</span>
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <div class="avatar-circle bg-primary text-white me-2">A</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="fw-semibold">آية علاء</div>
+                <small class="text-muted">التصوير</small>
+              </div>
+              <span class="badge bg-success rounded-pill">92%</span>
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <div class="avatar-circle bg-primary text-white me-2">M</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="fw-semibold">إسلام الطيار</div>
+                <small class="text-muted">التطوير</small>
+              </div>
+              <span class="badge bg-success rounded-pill">86%</span>
+            </li>
+            
+          </ul>
+        </div>
+      </div>
+    
+      <!-- أفضل العملاء -->
+      <div class="col-lg-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-white border-0 fw-bold">
+            أفضل العملاء
+          </div>
+          <ul class="list-group list-group-flush p-0">
+            <li class="list-group-item d-flex align-items-center">
+              <div class="avatar-circle bg-primary text-white me-2">JSM</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="fw-semibold">الجمعية الشرعية</div>
+                <small class="text-muted">30 مشروع</small>
+              </div>
+              <span class="badge bg-primary rounded-pill">+120K</span>
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <div class="avatar-circle bg-primary text-white me-2">CIU</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="fw-semibold">الجامعة الكندية</div>
+                <small class="text-muted">20 مشروع</small>
+              </div>
+              <span class="badge bg-primary rounded-pill">+85K</span>
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <div class="avatar-circle bg-primary text-white me-2">MTA</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="fw-semibold">مركز تجميل أيمن</div>
+                <small class="text-muted">8 مشروع</small>
+              </div>
+              <span class="badge bg-primary rounded-pill">+85K</span>
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <div class="avatar-circle bg-primary text-white me-2">MFH</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="fw-semibold">مصنع الفهد</div>
+                <small class="text-muted">5 مشروع</small>
+              </div>
+              <span class="badge bg-primary rounded-pill">+85K</span>
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <div class="avatar-circle bg-primary text-white me-2">ART</div>
+              <div class="flex-grow-1 mx-2">
+                <div class="fw-semibold">شركة عرب تيك</div>
+                <small class="text-muted">3 مشروع</small>
+              </div>
+              <span class="badge bg-primary rounded-pill">+85K</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    
+      <!-- آخر المشاريع -->
+      <div class="col-lg-4">
+          <div class="card shadow-sm h-100">
+          <div class="card-header bg-white border-0 fw-bold">
+              آخر المشاريع
+          </div>
+          <ul class="list-group list-group-flush project-list p-0">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>موقع تجارة إلكترونية</span>
+              <span class="badge bg-warning text-dark">قيد التنفيذ</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>تطبيق موبايل</span>
+              <span class="badge bg-success">تم التسليم</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>كاميرات مراقبة</span>
+              <span class="badge bg-danger">متوقف</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>لوحة تحكم ERP</span>
+              <span class="badge bg-warning text-dark">قيد التنفيذ</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>حملة تسويق إلكتروني</span>
+              <span class="badge bg-success">تم التسليم</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>نظام حضور وانصراف</span>
+              <span class="badge bg-warning text-dark">قيد التنفيذ</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>ماكينات تصوير</span>
+              <span class="badge bg-success">تم التسليم</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>بلوتر هندسي</span>
+              <span class="badge bg-danger">متوقف</span>
+              </li>
+          </ul>
+          </div>
+      </div>
+
+  </div>
 </div>

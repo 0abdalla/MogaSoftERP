@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-treasuries',
-  standalone: true,
   templateUrl: './treasuries.component.html',
   styleUrl: './treasuries.component.css'
 })

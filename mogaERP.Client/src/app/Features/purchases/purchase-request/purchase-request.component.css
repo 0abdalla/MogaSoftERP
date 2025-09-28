@@ -1,171 +1,224 @@
-#list-purchase-request {
-    min-height: 90vh;
+#list-purchase-request{
+    min-height: 100vh;
 }
-
-.card {
-    position: relative;
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0px 12px 24px -4px #919EAB1F;
-    overflow: hidden;
-    h4 {
-        font-weight: 700;
-        font-size: 18px;
-        line-height: 100%;
-        letter-spacing: 0%;
-    }
-    p {
-        font-weight: 700;
-        font-size: 26px;
-        line-height: 100%;
-        letter-spacing: 0%;
-        text-align: center;
-    }
-}
-
-.pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.vector {
-    position: absolute;
-    top: 0px;
-    left: -160px;
-    object-fit: cover;
-}
-
-table {
-    width: 100%;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-    overflow: hidden;
-    border: none;
-    padding-bottom: 0;
-    margin-bottom: 0;
-}
-
-th {
-    color: #5A607F;
-}
-
-th,
-td {
-    border: none;
-    padding: 15px;
-}
-
-td {
-    text-align: start;
-    vertical-align: middle;
-    border-bottom: 1px solid #E6E9F4;
-}
-
-.table td p {
-    font-size: 14px;
-    padding: 4px 5px 7px;
-    border-radius: 8px;
-    color: white;
-    width: 100%;
-    height: 30px;
+.toolbar {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    transition: all 0.3s ease;
-}
-
-.pagination-container {
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    border-top: 2px solid #e9e9ee;
-    background-color: white;
-}
-
-.my-pagination {
-    background-color: transparent !important;
-}
-
-.my-pagination ::ng-deep .ngx-pagination .current {
-    background: #ECF2FF;
-    color: #576CAB;
-    border-radius: 6px;
-    text-align: center !important;
-}
-
-.my-pagination ::ng-deep .ngx-pagination {
-    margin-top: 14px !important;
-    padding-left: 0 !important;
-}
-
-.my-pagination ::ng-deep .ngx-pagination a {
-    background: none;
-    font-size: 16px;
-    border-radius: 6px;
-    color: #5A607F;
-    margin-inline: 3px !important;
-    text-align: center !important;
-    text-decoration: none !important;
-    transition: all 0.3s ease;
-}
-
-.my-pagination ::ng-deep .ngx-pagination a:hover {
-    background: #ECF2FF;
-    border-radius: 6px;
-    color: #576CAB;
-}
-
-.my-pagination ::ng-deep .ngx-pagination .disabled {
-    color: gray;
-    margin-inline: 3px;
-    text-decoration: none;
-    text-align: center !important;
-}
-
-.col-2 {
-    width: calc(95.7% / 6) !important;
-}
-
-.percentage {
-    p {
-        font-weight: 700;
-        font-size: 14px;
-        line-height: 100%;
-        letter-spacing: 0%;
-    }
-    .fa-circle-arrow-up {
-        font-size: 14px;
-    }
-}
-
-.table td p.status-pill {
-    width: auto;
-    min-width: 120px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    padding: 4px 10px;
-    border-radius: 8px;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .search-bar { padding: 5px; }
+  .search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .search-input {
+    padding-right: 40px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    box-shadow: none;
+    height: 38px;
     font-size: 14px;
-    color: white;
-    height: 30px;
-    transition: all 0.3s ease;
+  }
+  .search-input:focus{
+    border: 1px solid var(--main-color);
+  }
+  
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    color: #888;
+    cursor: pointer;
+  }
+  
+  .filter-btn, .export-btn, .add-task-btn { padding: 5px 10px; }
+  
+  table { width: 100%; border-collapse: collapse; }
+  tr{
+    border-top: 0 !important;
+    border-bottom: 1px solid #0000000F !important;
+  }
+  th, td { border: 1px solid #ddd; padding: 15px; text-align: right; }
+  th { 
+    background-color: #FAFAFA !important;
+    color: #191C20 !important;
+    border: none;
+ }
+  
+  .pagination { margin-top: 10px; }
+  .pagination button { margin: 0 5px; }
+
+  .pagination .page-item .page-link {
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    padding: 0;
+    margin: 0 3px;
+    font-size: 16px;
     font-weight: 500;
+    color: #43474E;
+    border-radius: 5px;
+    border: 1px solid #D9D9D9;
+    box-shadow: none;
+    transition: 0.2s ease;
+  }
+  
+  
+  .pagination .page-item.active .page-link {
+    background-color: white;
+    color: var(--text-blue);
+    border-color: var(--text-blue);
+  }
+  
+  .pagination .page-item .page-link:hover {
+    background-color: #f1f1f1;
+  }
+  .text-blue{
+    color: var(--text-blue);
+  }
+
+  .grid-list{
+    background-color: white;
+    border-radius: 15px;
+    padding: 10px;
+    table{
+        text-align: right;
+        td{
+            border: none !important;
+        }
+    }
+  }
+  .id{
+      font-weight: 600;
+      color: var(--text-blue);
+      text-decoration: underline;
+      cursor: pointer;
+  }
+  .status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .fa-solid{
+    cursor: pointer;
+  }
+
+.badge{
+    border-radius: 100% !important;
+    font-size: 14px !important;
+}
+.custom-badge {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 16px;
+  display: inline-block;
+  padding: 0;
+  font-weight: 500;
+  color: white;
 }
 
-.avatar-circle {
-    width: 40px;
-    height: 40px;
-    background-color: #576CAB;
-    color: #fff;
-    border-radius: 50%;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 34px;
-    letter-spacing: 0px;
-    text-align: center;
+.bg-success{
+    background-color: #52C41A !important;
 }
+.bg-danger{
+    background-color: #FF4D4D !important;
+}
+
+.user-image {
+  margin-left: -15px;
+  border: 2px solid #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.user-image:hover {
+  transform: scale(1.1);
+  z-index: 2;
+}
+
+.custom-dropdown {
+    min-width: 175px;
+    color: black;
+    border: none;
+    border-radius: 2px;
+    /* padding: 8px 0; */
+    box-shadow: 0px 2px 8px 0px #00000026;
+  }
+  
+  .custom-dropdown .dropdown-item {
+    /* padding: 10px 15px; */
+    text-align: right;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+  }
+  
+  .custom-dropdown .dropdown-item:hover {
+    background-color: #f1f1f1;
+  }
+/* 
+::ng-deep .p-paginator {
+    direction: rtl !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+    padding: 0.5rem 1rem !important;
+  }
+  
+  ::ng-deep .p-paginator .p-paginator-first,
+  ::ng-deep .p-paginator .p-paginator-prev,
+  ::ng-deep .p-paginator .p-paginator-pages,
+  ::ng-deep .p-paginator .p-paginator-next,
+  ::ng-deep .p-paginator .p-paginator-last {
+    order: initial !important;
+    margin: 0 0.25rem !important;
+  }
+  ::ng-deep .p-paginator .p-paginator-page {
+    width: 30px;
+    height: 30px;
+    color: #43474E;
+    border: 1px solid #D9D9D9;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 2px;
+    transition: 0.3s;
+  }
+  ::ng-deep .p-paginator .p-paginator-page.p-highlight {
+    background-color: white !important;
+    color: var(--text-blue) !important;
+    border: 1px solid var(--text-blue) !important;
+    border-radius: 4px !important;
+  }
+  
+  ::ng-deep .p-paginator .p-paginator-page:hover {
+    background-color: #D9D9D9 !important;
+  }
+  
+  ::ng-deep .p-paginator .p-paginator-rpp-options .p-dropdown {
+    margin: 0 0.5rem !important;
+  }
+   */
+   :host ::ng-deep .p-float-label {
+    width: 100%;
+  }
+  :host ::ng-deep .p-float-label label {
+    right: 10px;
+    left: auto;
+  }
+  :host ::ng-deep .p-inputtext {
+    height: 40px;
+    padding: 4px 8px;
+    font-size: 1rem;
+  }

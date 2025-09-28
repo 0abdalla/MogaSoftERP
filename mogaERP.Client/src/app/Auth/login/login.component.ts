@@ -1,27 +1,11 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { trigger, transition, style, animate } from '@angular/animations';
-import { AuthService } from '../../Core/services/auth.service';
-
+import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule , ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('200ms ease-in', style({ opacity: 1 })),
-      ]),
-      transition(':leave', [
-        animate('200ms ease-out', style({ opacity: 0 })),
-      ])
-    ])
-  ],
+  styleUrl: './login.component.css'
 })
 export class LoginComponent {
   loignForm!: FormGroup;

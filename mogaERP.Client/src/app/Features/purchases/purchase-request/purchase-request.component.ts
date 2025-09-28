@@ -1,29 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { Component } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { forkJoin } from 'rxjs';
-declare var bootstrap: any;
 import Swal from 'sweetalert2';
-import { PurchaseRequest } from '../../../Models/purchases/purchase-request';
-import { Store } from '../../../Models/system-settings/stores/stores';
-import { Items } from '../../../Models/system-settings/stores/items';
-import { MainGroups } from '../../../Models/system-settings/stores/maingroup';
-import { ItemsUnits } from '../../../Models/system-settings/stores/itemsUnits';
-import { PurchaseService } from '../../../Core/services/purchase.service';
-import { SystemSettingsService } from '../../../Core/services/system-settings.service';
-import { ToastModule } from "primeng/toast";
-import { CommonModule } from '@angular/common';
-
+import { PurchaseRequest } from '../../../core/models/purchase/purchase-request';
+import { Items } from '../../../core/models/system-settings/item';
+import { ItemsUnits } from '../../../core/models/system-settings/itemUnits';
+import { MainGroups } from '../../../core/models/system-settings/maingroup';
+import { Store } from '../../../core/models/system-settings/stores';
+import { PurchaseService } from '../../../core/services/purchase.service';
+import { SysSettingsService } from '../../../core/services/sys-settings.service';
+import { MessageService } from 'primeng/api';
+declare var bootstrap : any;
 @Component({
   selector: 'app-purchase-request',
-  standalone: true,
   templateUrl: './purchase-request.component.html',
   styleUrl: './purchase-request.component.css',
-  providers:[MessageService],
-  imports: [ToastModule,FormsModule,CommonModule,ReactiveFormsModule],
-  // changeDetection: ChangeDetectionStrategy.OnPush
+  providers:[MessageService]
 })
-export class PurchaseRequestComponent implements OnInit {
+export class PurchaseRequestComponent {
   userName: string = '';
   get today(): string {
     const date = new Date();
@@ -45,11 +39,19 @@ export class PurchaseRequestComponent implements OnInit {
   isFilter: boolean = false;
   // 
   purchaseRequests: PurchaseRequest[] = [];
-  totalCount: number = 0;
 
   // pagination state
-  pageNumber: number = 1;
   pageSize: number = 2;
+  totalCount: number = 100;
+  currentPage: number = 1;
+
+  onPageChange(event: any) {
+    this.pageSize = event.rows;
+    this.currentPage = event.page + 1;
+    this.loadPurchaseRequests();
+  }
+  
+
   searchTerm: string = '';
   // 
   stores: Store[] = [];
@@ -61,7 +63,7 @@ export class PurchaseRequestComponent implements OnInit {
   itemForm: FormGroup;
   // 
   purNumber: string = '';
-  constructor(private fb: FormBuilder , private purchaseService : PurchaseService , private systemSettingsService : SystemSettingsService){
+  constructor(private fb: FormBuilder , private purchaseService : PurchaseService , private systemSettingsService : SysSettingsService , private messageService : MessageService){
     this.purchaseRequestForm = this.fb.group({
       requestDate: [new Date().toISOString().substring(0, 10)], // Today Date Validator Required
       purpose: [null, Validators.required],
@@ -119,20 +121,28 @@ export class PurchaseRequestComponent implements OnInit {
 
   getStatusName(type: string): string {
     const map: { [key: string]: string } = {
-      Approved: 'تم الموافقة',
+      Approved: 'تمت الموافقة',
       Pending: 'قيد الانتظار',
       Rejected: 'مرفوض'
     };
     return map[type] || type;
   }
-  getStatusColor(type: string): string {
-    const map: { [key: string]: string } = {
-      Approved: '#198654',
-      Pending: '#FFA500',
-      Rejected: '#dc3545'
-    };
-    return map[type] || '#000000';
-  }
+  // getStatusColor(type: string): string {
+  //   const map: { [key: string]: string } = {
+  //     Approved: '#198654',
+  //     Pending: '#FFA500',
+  //     Rejected: '#dc3545'
+  //   };
+  //   return map[type] || '#000000';
+  // }
+  getStatusDotClass(status: string): string {
+    switch (status) {
+      case 'Approved': return 'bg-success';
+      case 'Pending': return 'bg-warning';
+      case 'Rejected': return 'bg-danger';
+      default: return 'bg-secondary';
+    }
+  }  
   getItemName(itemId: number | string): string {
     const item = this.allItems?.find(i => i.id == itemId);
     return item ? item.name : '—';
@@ -147,7 +157,7 @@ export class PurchaseRequestComponent implements OnInit {
   
   // 
   loadPurchaseRequests() {
-    this.purchaseService.getPurchaseRequests(this.pageNumber, this.pageSize, this.searchTerm).subscribe((res) => {
+    this.purchaseService.getPurchaseRequests(this.currentPage, this.pageSize, this.searchTerm).subscribe((res) => {
       this.purchaseRequests = res.result.data;
       this.totalCount = res.result.totalCount;
       console.log('Purchase Requests:', this.purchaseRequests);
@@ -156,9 +166,9 @@ export class PurchaseRequestComponent implements OnInit {
 
   loadInitialData() {
     forkJoin({
-      items: this.systemSettingsService.getAllItems(),
-      units: this.systemSettingsService.getAllItemsUnits(),
-      stores: this.systemSettingsService.getAllStores(),
+      items: this.systemSettingsService.getAllItems(1, 100, '', true),
+      units: this.systemSettingsService.getAllItemsUnits(1, 100, '', true),
+      stores: this.systemSettingsService.getAllStores(''),
       groups: this.systemSettingsService.getAllItemsGroups()
     }).subscribe(({ items, units, stores, groups }) => {
       this.allItems = items.result.data;
@@ -174,12 +184,12 @@ export class PurchaseRequestComponent implements OnInit {
   
   // pagination handlers
   goToPage(page: number) {
-    this.pageNumber = page;
+    this.currentPage = page;
     this.loadPurchaseRequests();
   }
 
   search() {
-    this.pageNumber = 1;
+    this.currentPage = 1;
     this.loadPurchaseRequests();
   }
   resetSearch(){
@@ -194,27 +204,27 @@ export class PurchaseRequestComponent implements OnInit {
       this.purchaseRequestForm.markAllAsTouched();
       return;
     }
-    const formData = {
-      ...this.purchaseRequestForm.value,
-      notes: this.purchaseRequestForm.value.notes ?? '',
-      storeId: Number(this.purchaseRequestForm.value.storeId),
-      items: this.purchaseRequestForm.value.items.map((item: any) => ({
-        ...item,
-        itemId: Number(item.itemId),
-        notes: item.notes ?? ''
-      }))
-    };
-  
+
+    const formData = this.purchaseRequestForm.value;
+
     if (this.isEditMode && this.currentPurchaseRequestId) {
       this.purchaseService.updatePurchaseRequest(this.currentPurchaseRequestId, formData).subscribe({
         next: (res: any) => {
           if (res.isSuccess === true) {
-            const index = this.purchaseRequests.findIndex(p => p.id === this.currentPurchaseRequestId);
-            if (index !== -1) {
-              this.purchaseRequests[index] = { ...this.purchaseRequests[index], ...formData };
-            }
+            this.messageService.add({
+              severity: 'success',
+              summary: 'تم التعديل',
+              detail: `${res.message}`
+            });
+            // this.CloseModal();
+            this.loadPurchaseRequests();
+            console.log(res);
           } else {
-            console.error('فشل التعديل:', res);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'فشل التعديل',
+              detail: `${res.message}`
+            });
           }
         },
         error: (err) => {
@@ -224,38 +234,48 @@ export class PurchaseRequestComponent implements OnInit {
     } else {
       this.purchaseService.addPurchaseRequest(formData).subscribe({
         next: (res: any) => {
-          this.purNumber = res.result;
+          this.purNumber = res.results;
           if (res.isSuccess === true) {
-            this.purchaseRequests = [res.result, ...this.purchaseRequests];
-            this.totalCount++;
+            this.messageService.add({
+              severity: 'success',
+              summary: 'تم الإضافة',
+              detail: `${res.message}`
+            });
+            // this.CloseModal();
+            this.purchaseRequestForm.reset();
+            console.log(res);
+            this.loadPurchaseRequests();
+            this.generatePurchaseRequestPDFById(res.results);
           } else {
-            console.error('فشل الإضافة:', res);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'فشل الإضافة',
+              detail: `${res.message}`
+            });
+            console.log(res);
+            console.log(formData);
+            
           }
         },
         error: (err) => {
           console.error('فشل الإضافة:', err);
-          console.log('FormData sent:', formData);
         }
       });
     }
   }
-  
-  generatePurchaseRequestPDFById(id: number){
-    
-  }
-  editPurchaseRequest(id: number){
+  editPurchaseRequest(id: number) {
     this.isEditMode = true;
     this.currentPurchaseRequestId = id;
 
     this.purchaseService.getPurchaseRequestById(id).subscribe({
-      next: (data : any) => {
-        this.request = data.result;
+      next: (res:any) => {
+        this.request = res.result;
         console.log(this.request);
         this.purchaseRequestForm.patchValue({
-          purpose: this.request.purpose || '',
-          storeId: this.request.storeId || '',
-          notes: this.request.notes || '',
-          items: this.request.items || []
+          purpose: this.request.purpose,
+          storeId: this.request.storeId,
+          notes: this.request.notes,
+          items: this.request.items
         });
 
         const modal = new bootstrap.Modal(document.getElementById('addPurchaseRequestModal')!);
@@ -266,7 +286,7 @@ export class PurchaseRequestComponent implements OnInit {
       }
     });
   }
-  deletePurchaseRequest(id: number){
+  deletePurchaseRequest(id: number) {
     Swal.fire({
       title: 'هل أنت متأكد؟',
       text: 'هل أنت متأكد من حذف طلب الشراء؟',
@@ -288,6 +308,10 @@ export class PurchaseRequestComponent implements OnInit {
         });
       }
     });
+  }
+
+  generatePurchaseRequestPDFById(id: number){
+    
   }
   addItem(){
 

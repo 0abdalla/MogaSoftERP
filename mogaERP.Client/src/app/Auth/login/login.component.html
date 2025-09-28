@@ -14,7 +14,7 @@
               class="form-control"
               formControlName="userName"
             />
-            <div *ngIf="loignForm.get('userName')?.invalid && loignForm.get('userName')?.touched" class="text-danger">
+            <div *ngIf="loignForm.get('userName')?.invalid && loignForm.get('userName')?.touched" class="custom-danger">
                إسم المستخدم مطلوب
             </div>
           </div>
@@ -38,12 +38,12 @@
               </button>
             </div>
             
-            <div *ngIf="loignForm.get('password')?.invalid && loignForm.get('password')?.touched" class="text-danger">
+            <div *ngIf="loignForm.get('password')?.invalid && loignForm.get('password')?.touched" class="custom-danger">
               كلمة المرور مطلوبة
             </div>
           </div>  
           
-          <div *ngIf="message" class="text-danger text-center mb-2">
+          <div *ngIf="message" class="custom-danger text-center mb-2">
             {{ message }}
           </div>
           <button type="submit" [disabled]="loignForm.invalid" class="btn-blue w-100">تسجيل الدخول</button>
@@ -69,12 +69,12 @@
             <div class="mb-3">
               <label class="form-label">المستخدم</label>
               <input type="text" class="form-control shadow-none" formControlName="userName" placeholder="ادخل المستخدم" />
-              <div *ngIf="forgetPassword.get('userName')?.invalid && forgetPassword.get('userName')?.touched" class="text-danger">
+              <div *ngIf="forgetPassword.get('userName')?.invalid && forgetPassword.get('userName')?.touched" class="custom-danger">
                 المستخدم مطلوب
               </div>
             </div>
           </form>
-          <div *ngIf="forgetMessage" class="text-danger text-center">
+          <div *ngIf="forgetMessage" class="custom-danger text-center">
             {{ forgetMessage }}
           </div>
         </div>
@@ -82,7 +82,7 @@
           <button type="button" class="btn-blue" (click)="onForgetPassword()" [disabled]="forgetPassword.invalid">
             إرسال
           </button>
-          <button type="button" class="btn-red mx-2" data-bs-dismiss="modal">خروج</button>
+          <button type="button" class="btn-orange mx-2" data-bs-dismiss="modal">خروج</button>
         </div>
       </div>
     </div>

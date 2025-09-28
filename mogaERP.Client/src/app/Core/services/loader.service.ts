@@ -1,6 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class LoaderService {
   private requests = 0;
   loading = signal(false);

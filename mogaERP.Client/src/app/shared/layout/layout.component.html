@@ -1,0 +1,105 @@
+<div class="layout">
+  
+    <div class="sidebar py-2" [class.collapsed]="isCollapsed">
+      <button class="toggle-btn" (click)="toggleSidebar()" aria-label="Toggle Sidebar">
+          <i class="fa" [ngClass]="{'fa-chevron-right': isCollapsed, 'fa-chevron-left': !isCollapsed}"></i>
+      </button>
+      
+      <ul class="menu p-2">
+          <li *ngFor="let item of menusList">
+              <ng-container *ngIf="!item.isGroup && !item.subMenus">
+                  <a [routerLink]="item.route" routerLinkActive="activSide">
+                      <i [class]="item.icon"></i>
+                      <span *ngIf="!isCollapsed">{{ item.displayName }}</span>
+                  </a>
+              </ng-container>
+  
+              <ng-container *ngIf="item.subMenus && item.subMenus.length > 0">
+                  <a (click)="toggleMainMenu(item.displayName)">
+                      <i [class]="item.icon"></i>
+                      <span *ngIf="!isCollapsed">{{ item.displayName }}</span>
+                      <i class="fa ms-auto" [ngClass]="{
+            'fa-chevron-up': activeMenu === item.displayName,
+            'fa-chevron-down': activeMenu !== item.displayName
+          }" *ngIf="!isCollapsed"></i>
+                  </a>
+  
+                  <ul class="submenu" [ngClass]="{'open': activeMenu === item.displayName}" *ngIf="!isCollapsed">
+                      <li *ngFor="let child of item.subMenus">
+                          <ng-container *ngIf="!child.subMenus">
+                              <a [routerLink]="child.route" routerLinkActive="activSide" style="margin-right: 20px;">
+                                  <i [class]="child.icon"></i>
+                                  <span *ngIf="!isCollapsed">{{ child.displayName }}</span>
+                              </a>
+                          </ng-container>
+  
+                          <ng-container *ngIf="child.subMenus && child.subMenus.length > 0">
+                              <a (click)="toggleChildMenu(child.displayName)" style="margin-right: 20px;">
+                                  <i [class]="child.icon"></i>
+                                  <span *ngIf="!isCollapsed">{{ child.displayName }}</span>
+                                  <i class="fa ms-auto" [ngClass]="{
+                  'fa-chevron-up': activeChildMenu === child.displayName,
+                  'fa-chevron-down': activeChildMenu !== child.displayName
+                }" *ngIf="!isCollapsed"></i>
+                              </a>
+  
+                              <ul class="submenu" [ngClass]="{'open': activeChildMenu === child.displayName}" *ngIf="!isCollapsed">
+                                  <li *ngFor="let subChild of child.subMenus">
+                                      <a [routerLink]="subChild.route" routerLinkActive="activSub" class="a-subMenu" style="margin-right: 40px;">
+                                          <i [class]="subChild.icon"></i> {{ subChild.displayName }}
+                                      </a>
+                                  </li>
+                              </ul>
+                          </ng-container>
+                      </li>
+                  </ul>
+              </ng-container>
+          </li>
+      </ul>
+      <div class="logout d-flex align-items-center justify-content-center px-4 custom-danger" (click)="logout()">
+          <a class="text-decoration-none custom-danger" *ngIf="!isCollapsed">تسجيل الخروج</a>
+          <i class="fa fa-sign-out-alt ms-auto"></i>
+      </div>
+    </div>
+    
+    <div class="main">
+        <header class="header">
+          <!-- <div class="search">
+            <input type="text" placeholder="Search Text" />
+            <button><i class="pi pi-search"></i></button>
+          </div> -->
+          <div class="header-left">
+              <!-- <span class="route">{{routeNow}}</span> -->
+              <div class="user-profile">
+                <img src="assets/vendors/imgs/logo.png" class="img-fluid" alt="Logo" />
+              </div>
+          </div>
+    
+          <div class="actions">
+            <button class="notification">
+              <i class="pi pi-bell"></i>
+              <span class="badge">21</span>
+            </button>
+            <!-- <div class="carde d-flex justify-content-center">
+              <i class="pi pi-bell text-3xl" pBadge value="2"></i>
+            </div> -->
+    
+            <div class="profile">
+              <img src="assets/vendors/imgs/Avatar.png" alt="User" />
+              <span>Omar Magd</span>
+              <i class="pi pi-chevron-down"></i>
+            </div>
+          </div>
+        </header>
+    
+        <main class="content">
+          <!-- <div class="container-fluid mb-3">
+              <span class="date">{{routeNow}}</span>
+          </div> -->
+          <div class="container-fluid">
+            <router-outlet></router-outlet>
+          </div>
+        </main>
+      </div>
+    </div>
+    

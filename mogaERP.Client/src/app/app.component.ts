@@ -1,15 +1,11 @@
 import { Component } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { LoaderComponent } from "./Core/interceptors/loader/loader.component";
-import { LayoutComponent } from "./Shared/components/layout/layout.component";
-import { NgIf } from '@angular/common';
-import { filter } from 'rxjs';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, LoaderComponent, LayoutComponent,NgIf],
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'mogaERP.Client';

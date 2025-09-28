@@ -1,0 +1,249 @@
+<main id="list-exchange-requests">
+    <div class="container-fluid mt-4">
+      <!-- Breadcrumb and Add Button -->
+      <div class="top">
+        <div class="d-flex justify-content-between align-items-center">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 justify-content-center flex-row-reverse" dir="rtl">
+              <li class="breadcrumb-item active" aria-current="page">إذن الصرف</li>
+              <li class="breadcrumb-item"><a routerLink="/dashboard">إدارة الشركة</a></li>
+            </ol>
+          </nav>
+          <div>
+            <button class="btn-blue" data-bs-toggle="modal" data-bs-target="#addExchangePermissionModal">إضافة إذن صرف</button>
+          </div>
+        </div>
+      </div>
+      <p-toast position="top-left"></p-toast>
+      <hr />
+  
+      <!-- Search and Actions -->
+      <div class="grid-list">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="search-wrapper">
+            <input
+              type="text"
+              class="form-control search-input"
+              [(ngModel)]="searchTerm"
+              (keyup.enter)="search()"
+              placeholder="ابحث برقم الإذن..."
+            />
+            <span class="search-icon">
+              <i class="bi bi-search"></i>
+            </span>
+          </div>
+          <div>
+            <button class="btn-outline-blue me-2">فلتر</button>
+            <button class="btn-orange me-2">تصدير</button>
+            <i class="fa-solid fs-5 fa-print me-2"></i>
+            <i class="fa-solid fs-5 fa-rotate-right me-2"></i>
+            <i class="fa-solid fs-5 fa-expand me-2"></i>
+          </div>
+        </div>
+  
+        <!-- Table -->
+        <table class="table table-bordered table-hover">
+          <thead class="table-light">
+            <tr>
+                <th>طلب الصرف</th>
+                <th>التاريخ</th>
+                <th>جهة الطلب</th>
+                <th>الحالة</th>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody *ngIf="exchangeRequests">
+            <tr *ngFor="let order of exchangeRequests; trackBy: trackByExchangePermission">
+              <td class="id">{{ order.number }}</td>
+              <td>{{ order.date | date: 'yyyy-MM-dd' }}</td>
+              <td>{{ order.jobDepartmentName }}</td>
+              <!-- <td>
+                <span
+                  class="custom-badge text-white"
+                  [ngStyle]="{ backgroundColor: getStatusColor(order.status) }"
+                >
+                  {{ getStatusName(order.status) }}
+                </span>
+              </td> -->
+              <td>
+                <span class="status-dot me-2" [ngClass]="getStatusDotClass(order.status)"></span>
+                {{ getStatusName(order.status) }}
+              </td>
+              <!-- <td>
+                <button class="btn btn-primary btn-sm mx-1"><i class="fa fa-print"></i></button>
+                <button class="btn btn-warning btn-sm mx-1" (click)="editPurchaseRequest(order.id)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm mx-1" (click)="deletePurchaseRequest(order.id)">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td> -->
+              <td class="text-center">
+                <div class="dropdown">
+                  <button class="btn p-0 border-0 bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots fs-5" style="color: var(--text-blue);"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end custom-dropdown" dir="rtl">
+                    <li><button class="dropdown-item" (click)="generateExchangePermissionPDFById(order.id)">طباعة</button></li>
+                    <hr class="m-0">
+                    <li><button class="dropdown-item" (click)="editExchangePermission(order.id)">تعديل</button></li>
+                    <hr class="m-0">
+                    <li><button class="dropdown-item custom-danger" (click)="deleteExchangePermission(order.id)">حذف</button></li>
+                  </ul>
+                </div>
+              </td>
+              
+              
+            </tr>
+          </tbody>
+          <tbody *ngIf="exchangeRequests?.length === 0">
+            <tr>
+              <td colspan="6" class="text-center">لا يوجد إذن صرف</td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <!-- <div dir="rtl">
+          <p-paginator
+          [rows]="pageSize"
+          [totalRecords]="totalCount"
+          [rowsPerPageOptions]=""
+          [showFirstLastIcon]="true"
+          [showJumpToPageDropdown]="false"
+          [showPageLinks]="true"
+          [pageLinkSize]="5"
+          [dir]="'rtl'"
+          [currentPageReportTemplate]="'عرض {first} إلى {last} من {totalRecords}'"
+          (onPageChange)="onPageChange($event)">
+        </p-paginator>
+        </div> -->
+  
+        <!-- Pagination --> 
+        <div class="d-flex justify-content-between align-items-center mt-3" *ngIf="totalCount > pageSize">
+          <nav >
+             <ul class="pagination pagination-sm mb-0"> 
+              <li class="page-item" [class.disabled]="currentPage === 1"> <button class="page-link" (click)="goToPage(currentPage - 1)">&lt;</button> 
+              </li> 
+              <li class="page-item" *ngFor="let p of [].constructor(math.ceil(totalCount / pageSize)); let i = index" [class.active]="currentPage === i + 1" > 
+              <button class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</button> 
+              </li> 
+              <li class="page-item" [class.disabled]="currentPage === math.ceil(totalCount / pageSize)"> 
+              <button class="page-link" (click)="goToPage(currentPage + 1)">&gt;</button> 
+              </li> 
+             </ul> 
+          </nav> 
+          <div class="pagination-counter">
+            <p class="m-0 text-secondary">
+              عرض
+              <span class="mx-1 fw-bold text-blue">{{
+                currentPage
+              }}</span>
+              من
+              <span class="mx-1 fw-bold text-blue">{{ math.ceil(totalCount / pageSize) }}</span>
+            </p>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </main>
+  
+  
+
+<div class="modal fade" id="addExchangePermissionModal" tabindex="-1" aria-labelledby="addExchangePermissionModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title" id="addExchangePermissionModalLabel">
+                    {{isEditMode ? 'تعديل طلب صرف' : 'طلب صرف جديد'}}
+                </h5>
+            </div>
+            <div class="modal-body" style="background-image: url('assets/vendors/imgs/pattern.png'); background-size: cover;">
+                <form [formGroup]="exchangePermissionForm" (ngSubmit)="addExchangePermission()">
+                    <div class="p-3 mb-3">
+                        <div class="row gy-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label">التاريخ</label>
+                                <input type="date" class="form-control shadow-none text-end" formControlName="date" />
+                                <div class="text-danger" *ngIf="exchangePermissionForm.get('date')?.errors?.['notToday'] && exchangePermissionForm.get('date')?.touched">
+                                    لا يمكن اختيار تاريخ سابق
+                                  </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">جهة الطلب</label>
+                                <!-- <select class="form-select shadow-none" formControlName="jobDepartmentId">
+                                    <option value="" selected disabled>اختر جهة الطلب</option>
+                                    <option *ngFor="let dep of jobDeps" [value]="dep.id">{{ dep.name }}</option>
+                                </select> -->
+                                <ng-select
+                                   [items]="jobDeps"
+                                   bindLabel="name"
+                                   bindValue="id"
+                                   placeholder="اختر جهة الطلب"
+                                   formControlName="jobDepartmentId"
+                                   class="text-end shadow-none w-100"
+                                   [searchable]="true"
+                                 >
+                                 </ng-select>
+                            </div>
+
+                            <div formArrayName="items">
+                                <div class="row mb-3" *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+                                  <div class="col-md-4">
+                                    <label class="form-label">الصنف</label>
+                                    <!-- <select class="form-select shadow-none" formControlName="itemId">
+                                      <option disabled selected value="">اختر الصنف</option>
+                                      <option *ngFor="let i of allItems" [value]="i.id">{{ i.nameAr }}</option>
+                                    </select> -->
+                                    <ng-select
+                                       [items]="allItems"
+                                       bindLabel="name"
+                                       bindValue="id"
+                                       placeholder="اختر الصنف"
+                                       formControlName="itemId"
+                                       class="text-end shadow-none w-100"
+                                       [searchable]="true"
+                                     >
+                                     </ng-select>
+                                  </div>
+
+                                  <div class="col-md-4">
+                                    <label class="form-label">الكمية</label>
+                                    <input type="number" class="form-control shadow-none" formControlName="quantity" min="1">
+                                  </div>
+                              
+                                  <div class="col-md-4 d-flex align-items-end mt-1">
+                                    <button type="button" class="btn btn-danger" (click)="removeItemRow(i)" *ngIf="items.length > 1">
+                                      <i class="fa fa-trash"></i>
+                                    </button>
+                                  </div>
+                                </div>
+                              
+                                <div class="text-start mb-3">
+                                  <button type="button" class="btn btn-success" (click)="addItemRow()">
+                                    <i class="fa fa-plus"></i> إضافة صنف
+                                  </button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label">ملاحظات</label>
+                                <textarea rows="3" class="form-control shadow-none text-end" formControlName="notes"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn-blue px-5 mx-2" [disabled]="exchangePermissionForm.invalid">
+                            {{isEditMode ? 'تعديل طلب صرف' : 'إضافة طلب صرف'}}
+                        </button>
+                        <button class="btn-red mx-2" data-bs-dismiss="modal" (click)="resetForm()">خروج</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

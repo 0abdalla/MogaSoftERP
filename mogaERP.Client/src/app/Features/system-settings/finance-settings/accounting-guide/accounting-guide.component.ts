@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-accounting-guide',
-  standalone: true,
   templateUrl: './accounting-guide.component.html',
   styleUrl: './accounting-guide.component.css'
 })

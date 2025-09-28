@@ -5,4 +5,4 @@ export class MenuSidebarItem {
     isGroup?: boolean;
     pageName?: string;
     subMenus?: MenuSidebarItem[] = [];
-  }
+}

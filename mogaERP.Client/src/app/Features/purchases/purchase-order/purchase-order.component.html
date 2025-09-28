@@ -1,1 +1,245 @@
-<p>purchase-order works!</p>
+<main id="list-purchase-order">
+    <div class="container-fluid mt-4">
+      <!-- Breadcrumb and Add Button -->
+      <div class="top">
+        <div class="d-flex justify-content-between align-items-center">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 justify-content-center flex-row-reverse" dir="rtl">
+              <li class="breadcrumb-item active" aria-current="page">أوامر التوريد</li>
+              <li class="breadcrumb-item"><a routerLink="/dashboard">إدارة الشركة</a></li>
+            </ol>
+          </nav>
+          <div>
+            <button class="btn-blue" data-bs-toggle="modal" data-bs-target="#addPurchaseorderModal">إضافة أمر توريد</button>
+          </div>
+        </div>
+      </div>
+  
+      <hr />
+  
+      <!-- Search and Actions -->
+      <div class="grid-list">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="search-wrapper">
+            <input
+              type="text"
+              class="form-control search-input"
+              [(ngModel)]="searchTerm"
+              (keyup.enter)="search()"
+              placeholder="ابحث برقم أمر التوريد..."
+            />
+            <span class="search-icon">
+              <i class="bi bi-search"></i>
+            </span>
+          </div>
+          <div>
+            <button class="btn-outline-blue me-2">فلتر</button>
+            <button class="btn-orange me-2">تصدير</button>
+            <i class="fa-solid fs-5 fa-print me-2"></i>
+            <i class="fa-solid fs-5 fa-rotate-right me-2"></i>
+            <i class="fa-solid fs-5 fa-expand me-2"></i>
+          </div>
+        </div>
+  
+        <!-- Table -->
+        <table class="table table-bordered table-hover">
+          <thead class="table-light">
+            <tr>
+                <th>رقم أمر التوريد</th>
+                <th>رقم طلب الشراء</th>
+                <th>تاريخ أمر التوريد</th>
+                <th>اسم المورد</th>
+                <th></th>
+              </tr>
+          </thead>
+          <tbody *ngIf="purchaseOrders.length > 0">
+            <tr *ngFor="let order of purchaseOrders; trackBy: trackByOrder">
+              <td class="id">{{ order.orderNumber }}</td>
+              <td>{{ order.purchaseRequestNumber || '-' }}</td>
+              <td>{{ order.orderDate | date: 'yyyy-MM-dd' }}</td>
+              <td>{{ order.supplierName || '-' }}</td>
+              <!-- <td>
+                <span
+                  class="custom-badge text-white"
+                  [ngStyle]="{ backgroundColor: getStatusColor(order.status) }"
+                >
+                  {{ getStatusName(order.status) }}
+                </span>
+              </td> -->
+              <!-- <td>
+                <button class="btn btn-primary btn-sm mx-1"><i class="fa fa-print"></i></button>
+                <button class="btn btn-warning btn-sm mx-1" (click)="editPurchaseRequest(order.id)">
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm mx-1" (click)="deletePurchaseRequest(order.id)">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td> -->
+              <td class="text-center">
+                <div class="dropdown">
+                  <button class="btn p-0 border-0 bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots fs-5" style="color: var(--text-blue);"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end custom-dropdown" dir="rtl">
+                    <li><button class="dropdown-item" (click)="generatePurchaseOrderPDFById(order.id)">طباعة</button></li>
+                    <hr class="m-0">
+                    <li><button class="dropdown-item" (click)="editPurchaseOrder(order.id)">تعديل</button></li>
+                    <hr class="m-0">
+                    <li><button class="dropdown-item custom-danger" (click)="deletePurchaseOrder(order.id)">حذف</button></li>
+                  </ul>
+                </div>
+              </td>
+              
+              
+            </tr>
+          </tbody>
+          <tbody *ngIf="purchaseOrders.length === 0">
+            <tr>
+              <td colspan="6" class="text-center">لا يوجد أوامر توريد</td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <!-- <div dir="rtl">
+          <p-paginator
+          [rows]="pageSize"
+          [totalRecords]="totalCount"
+          [rowsPerPageOptions]=""
+          [showFirstLastIcon]="true"
+          [showJumpToPageDropdown]="false"
+          [showPageLinks]="true"
+          [pageLinkSize]="5"
+          [dir]="'rtl'"
+          [currentPageReportTemplate]="'عرض {first} إلى {last} من {totalRecords}'"
+          (onPageChange)="onPageChange($event)">
+        </p-paginator>
+        </div> -->
+  
+        <!-- Pagination --> 
+        <div class="d-flex justify-content-between align-items-center mt-3" *ngIf="totalCount > pageSize">
+          <nav >
+             <ul class="pagination pagination-sm mb-0"> 
+              <li class="page-item" [class.disabled]="currentPage === 1"> <button class="page-link" (click)="goToPage(currentPage - 1)">&lt;</button> 
+              </li> 
+              <li class="page-item" *ngFor="let p of [].constructor(math.ceil(totalCount / pageSize)); let i = index" [class.active]="currentPage === i + 1" > 
+              <button class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</button> 
+              </li> 
+              <li class="page-item" [class.disabled]="currentPage === math.ceil(totalCount / pageSize)"> 
+              <button class="page-link" (click)="goToPage(currentPage + 1)">&gt;</button> 
+              </li> 
+             </ul> 
+          </nav> 
+          <div class="pagination-counter">
+            <p class="m-0 text-secondary">
+              عرض
+              <span class="mx-1 fw-bold text-blue">{{
+                currentPage
+              }}</span>
+              من
+              <span class="mx-1 fw-bold text-blue">{{ math.ceil(totalCount / pageSize) }}</span>
+            </p>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </main>
+  
+  
+
+<div class="modal fade" id="addPurchaseorderModal" tabindex="-1" aria-labelledby="addPurchaseorderModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+          <div class="modal-header justify-content-center">
+              <h5 class="modal-title" id="addPurchaseorderModalLabel">
+                  {{ isEditMode ? 'تعديل أمر توريد ' : 'إضافة أمر توريد ' }}
+              </h5>                  
+          </div>
+          <div class="modal-body" style="background-image: url('assets/vendors/imgs/pattern.png'); background-size: cover;">
+              <form [formGroup]="purchaseOrderForm" (ngSubmit)="addPurchaseOrder()">
+                  <div class="row p-3 mb-3">
+
+                    <div class="form-group mb-3">
+                      <label class="form-label">رقم طلب الشراء</label>
+                      <ng-select
+                        [items]="purchaseRequests"
+                        bindLabel="requestNumber"
+                        bindValue="id"
+                        placeholder="اختر طلب الشراء"
+                        formControlName="purchaseRequestId"
+                        class="text-end shadow-none w-100"
+                        [searchable]="true"
+                      >
+                      </ng-select>
+                    </div>
+
+                      <div class="col-md-12">
+                          <div class="form-group">
+                              <label class="form-label">اسم المورد</label>
+                              <select class="form-select shadow-none" formControlName="supplierId">
+                                <option disabled selected value="">اختر المورد</option>
+                                <option *ngFor="let i of allSuppliers" [value]="i.id">{{ i.name }}</option>
+                              </select>
+                          </div>
+                      </div>
+
+                      <div class="col-md-12 mt-3">
+                          <div class="form-group">
+                              <label class="form-label">ملاحظات</label>
+                              <textarea formControlName="description" class="form-control shadow-none text-end"></textarea>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row p-3 mb-3">
+                    <div formArrayName="items">
+                      <div class="row mb-3" *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+                        <div class="col-md-3">
+                          <label class="form-label">الصنف</label>
+                          <select class="form-select shadow-none" formControlName="itemId">
+                            <option disabled selected value="">اختر الصنف</option>
+                            <option *ngFor="let i of allItems" [value]="i.id">{{ i.name }}</option>
+                          </select>
+                        </div>
+                        
+                        <div class="col-md-3">
+                          <label class="form-label">الكمية</label>
+                          <input type="number" class="form-control shadow-none" formControlName="requestedQuantity" readonly>
+                        </div>
+
+                        <div class="col-md-2">
+                          <label class="form-label">السعر</label>
+                          <input type="number" class="form-control shadow-none" formControlName="unitPrice" readonly>
+                        </div>
+
+                        <div class="col-md-3">
+                          <label class="form-label">السعر الإجمالي</label>
+                          <input type="number" class="form-control shadow-none" formControlName="totalPrice" readonly>
+                        </div>
+                    
+                        <div class="col-md-1 d-flex align-items-end">
+                          <button type="button" class="btn btn-danger" (click)="removeItemRow(i)" *ngIf="items.length > 1">
+                            <i class="fa fa-trash"></i>
+                          </button>
+                        </div>
+                      </div>
+                    
+                      <div class="text-end mb-3">
+                        <button type="button" class="btn btn-success" (click)="addItemRow()">
+                          <i class="fa fa-plus"></i> إضافة صنف
+                        </button>
+                      </div>
+                    </div>
+                    
+                  </div>
+
+                  <div class="text-center">
+                      <button type="submit" class="btn-blue px-4" [disabled]="purchaseOrderForm.invalid">
+                          {{ isEditMode ? 'حفظ التعديلات' : 'إضافة أمر توريد ' }}
+                        </button> 
+                        <button class="btn-orange mx-2" data-bs-dismiss="modal" (click)="resetForm()" >خروج</button>                         
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
