@@ -7,15 +7,10 @@ public class StaffResponse : AuditResponse
     public string FullName { get; set; } = string.Empty;
     public string? Code { get; set; }
     public string Email { get; set; } = string.Empty;
-    public string Specialization { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
     public DateOnly HireDate { get; set; }
     public string Status { get; set; } = string.Empty;
     public string? NationalId { get; set; }
-    public int? ClinicId { get; set; }
-    public string? ClinicName { get; set; }
-    public string? DepartmentName { get; set; }
-    public int? DepartmentId { get; set; }
 
     public string? MaritalStatus { get; set; }
     public string? Address { get; set; }
@@ -35,16 +30,16 @@ public class StaffResponse : AuditResponse
 
     public int? BranchId { get; set; }
     public string? BranchName { get; set; }
-    public decimal VariableSalary { get; set; }
     public string? VisaCode { get; set; }
     public decimal Allowances { get; set; } // البدلات
-    public decimal Rewards { get; set; } // المكافأت
 
-
-    public double? BasicSalary { get; set; }
+    public decimal? BasicSalary { get; set; }
     public int? Tax { get; set; }
     public int? Insurance { get; set; }
-    public int? VacationDays { get; set; }
-
+    public int? AnnualDays { get; set; }
     public bool IsAuthorized { get; set; }
+
+    public decimal? NetSalary { get; set; }
+    public decimal? Deductions { get; set; }
+    public DateOnly BirthDate { get; set; }
 }

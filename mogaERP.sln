@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mogaERP.Services", "mogaERP
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "mogaERP.Client", "mogaERP.Client\mogaERP.Client.esproj", "{05C4C76D-F941-4E6C-A62C-9BB72FF544C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mogaERP.Tests", "mogaERP.Tests\mogaERP.Tests.csproj", "{B0F316A2-6105-4AA2-8FD4-BEE56F03902C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{05C4C76D-F941-4E6C-A62C-9BB72FF544C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05C4C76D-F941-4E6C-A62C-9BB72FF544C0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{05C4C76D-F941-4E6C-A62C-9BB72FF544C0}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B0F316A2-6105-4AA2-8FD4-BEE56F03902C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0F316A2-6105-4AA2-8FD4-BEE56F03902C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0F316A2-6105-4AA2-8FD4-BEE56F03902C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0F316A2-6105-4AA2-8FD4-BEE56F03902C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

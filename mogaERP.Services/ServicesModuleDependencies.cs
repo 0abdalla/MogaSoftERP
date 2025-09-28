@@ -1,4 +1,6 @@
-﻿using Mapster;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 using mogaERP.Domain.Interfaces.AccountingModule;
 using mogaERP.Domain.Interfaces.Auth;
@@ -50,8 +52,12 @@ public static class ServicesModuleDependencies
 
 
 
+        // add fluent validation config
+        services
+            .AddFluentValidationAutoValidation()
+            .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-
+        // add mapster configuration
         services.AddMapsterConfig();
 
         return services;

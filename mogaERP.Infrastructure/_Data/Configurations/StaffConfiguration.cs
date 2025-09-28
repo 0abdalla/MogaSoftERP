@@ -36,13 +36,10 @@ public class StaffConfiguration : IEntityTypeConfiguration<Staff>
         builder.Property(s => s.BasicSalary)
             .HasPrecision(18, 2);
 
-        builder.Property(s => s.VariableSalary)
+        builder.Property(s => s.NetSalary)
             .HasPrecision(18, 2);
 
         builder.Property(s => s.Allowances)
-            .HasPrecision(18, 2);
-
-        builder.Property(s => s.Rewards)
             .HasPrecision(18, 2);
     }
 }

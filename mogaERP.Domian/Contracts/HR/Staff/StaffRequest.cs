@@ -10,8 +10,8 @@ public class StaffRequest
     public DateOnly HireDate { get; set; }
     public string Status { get; set; } = string.Empty;
     public string? NationalId { get; set; }
-
-    public string? MaritalStatus { get; set; }
+    public DateOnly BirthDate { get; set; }
+    public string MaritalStatus { get; set; }
     public string? Address { get; set; }
     public string Gender { get; set; }
     public string? Notes { get; set; }
@@ -27,12 +27,11 @@ public class StaffRequest
     public int? JobDepartmentId { get; set; }
 
     public int? BranchId { get; set; }
-    public double? BasicSalary { get; set; }
+    public decimal? BasicSalary { get; set; }
     public int? Tax { get; set; }
     public int? Insurance { get; set; }
-    public int? VacationDays { get; set; }
+    public int? AnnualDays { get; set; }
 
-    public decimal VariableSalary { get; set; }
     public string? VisaCode { get; set; }
     public decimal Allowances { get; set; } // البدلات
     public decimal Rewards { get; set; } // المكافأت
