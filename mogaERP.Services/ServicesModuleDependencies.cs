@@ -7,12 +7,14 @@ using mogaERP.Domain.Interfaces.Auth;
 using mogaERP.Domain.Interfaces.HR_Module;
 using mogaERP.Domain.Interfaces.InventoryModule;
 using mogaERP.Domain.Interfaces.ProcurementModule;
+using mogaERP.Domain.Interfaces.SalesModule;
 using mogaERP.Services.Services.AccountingModule;
 using mogaERP.Services.Services.Auth;
 using mogaERP.Services.Services.Common;
 using mogaERP.Services.Services.HR_Module;
 using mogaERP.Services.Services.InventoryModule;
 using mogaERP.Services.Services.ProcurementModule;
+using mogaERP.Services.Services.SalesModule;
 using System.Reflection;
 
 namespace mogaERP.Services;
@@ -49,6 +51,8 @@ public static class ServicesModuleDependencies
 
         services.AddScoped<IStaffService, StaffService>();
         services.AddScoped<IFileService, FileService>();
+
+        services.AddScoped<ISalesQuotationService, SalesQuotationService>();
 
 
 

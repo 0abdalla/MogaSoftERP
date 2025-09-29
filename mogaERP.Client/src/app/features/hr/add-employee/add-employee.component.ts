@@ -215,7 +215,7 @@ export class AddEmployeeComponent {
               detail: 'تم تعديل بيانات الموظف بنجاح',
             });
             setTimeout(() => {
-              this.router.navigate(['/hms/staff/list']);
+              this.router.navigate(['/hr/employees']);
             }, 1000);
           } else {
             this.messageService.add({
@@ -246,7 +246,7 @@ export class AddEmployeeComponent {
               detail: 'تم إضافة الموظف بنجاح',
             });
             setTimeout(() => {
-              this.router.navigate(['/hms/staff/list']);
+              this.router.navigate(['/hr/employees']);
             }, 1000);
           }else{
             this.messageService.add({

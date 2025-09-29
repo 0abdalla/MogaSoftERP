@@ -45,7 +45,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<EmployeeAdvance> EmployeeAdvances { get; set; }
     public DbSet<AttendanceSalary> AttendanceSalaries { get; set; }
 
-
+    // Sales Module
+    public DbSet<SalesQuotation> SalesQuotations { get; set; }
+    public DbSet<PaymentTerm> PaymentTerms { get; set; }
+    public DbSet<QuotationItem> QuotationItems { get; set; }
+    public DbSet<Invoice> Invoices { get; set; }
+    public DbSet<InvoiceItem> InvoiceItems { get; set; }
 
 
 

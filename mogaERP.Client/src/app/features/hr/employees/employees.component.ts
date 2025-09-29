@@ -36,7 +36,7 @@ export class EmployeesComponent {
   employees : Employee[] = [];
   selectedEmployee!: any;
   // pagination state
-  pageSize: number = 2;
+  pageSize: number = 16;
   totalCount: number = 100;
   currentPage: number = 1;
   searchTerm: string = '';
@@ -120,6 +120,34 @@ export class EmployeesComponent {
       case 'Inactive': return 'bg-danger';
       default: return 'bg-secondary';
     }
+  }
+  getArabicGender(gender: string) {
+    if (gender === 'Male') {
+      return 'ذكر';
+    } else if (gender === 'Female') {
+      return 'أنثى';
+    }
+    return '';
+  }
+  getArabicMaritalStatus(maritalStatus: string) {
+    if (maritalStatus === 'Single') {
+      return 'أعزب';
+    } else if (maritalStatus === 'Married') {
+      return 'متزوج';
+    } else if (maritalStatus === 'Divorced') {
+      return 'مطلق';
+    } else if (maritalStatus === 'Widowed') {
+      return 'أرمل';
+    }
+    return '';
+  }
+  getArabicStatus(status: string) {
+    if (status === 'Active') {
+      return 'نشط';
+    } else if (status === 'Inactive') {
+      return 'غير نشط';
+    }
+    return '';
   }
   // 
   editEmployee(){

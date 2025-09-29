@@ -134,13 +134,13 @@
                         </div>
     
                         <div class="col-lg-4">
-                            <strong>النوع:</strong> <span>{{ selectedEmployee?.gender || '---' }}</span>
+                            <strong>النوع:</strong> <span>{{ getArabicGender(selectedEmployee?.gender) || '---' }}</span>
                         </div>
                         <div class="col-lg-4">
-                            <strong>الحالة الاجتماعية:</strong> <span>{{ selectedEmployee?.maritalStatus || '---' }}</span>
+                            <strong>الحالة الاجتماعية:</strong> <span>{{ getArabicMaritalStatus(selectedEmployee?.maritalStatus) || '---' }}</span>
                         </div>
                         <div class="col-lg-4">
-                            <strong>تاريخ الميلاد:</strong> <span>{{ selectedEmployee?.dateOfBirth || '---' }}</span>
+                            <strong>تاريخ الميلاد:</strong> <span>{{ selectedEmployee?.birthDate || '---' }}</span>
                         </div>
     
                     </div>
@@ -149,20 +149,20 @@
     
                     <h4>💼 معلومات الوظيفة</h4>
                     <div class="row mb-3">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <strong>المسمى الوظيفي:</strong> <span>{{ selectedEmployee?.jobTitleName || '---' }}</span>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <strong>القسم:</strong> <span>{{ selectedEmployee?.jobDepartmentName || '---' }}</span>
                         </div>
-                        <div class="col-lg-4">
-                            <strong>الفرع:</strong> <span>{{ selectedEmployee?.branchName || '---' }}</span>
-                        </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <strong>تاريخ التعيين:</strong> <span>{{ selectedEmployee?.hireDate || '---' }}</span>
                         </div>
-                        <div class="col-lg-4">
-                            <strong>الحالة:</strong> <span> {{ selectedEmployee?.status || '---' }} </span>
+                        <div class="col-lg-3">
+                            <strong>الحالة:</strong> <span> {{ getArabicStatus(selectedEmployee?.status) || '---' }} </span>
+                        </div>
+                        <div class="col-lg-3" *ngIf="selectedEmployee?.branchName">
+                          <strong>الفرع:</strong> <span>{{ selectedEmployee?.branchName || '---' }}</span>
                         </div>
                     </div>
     
