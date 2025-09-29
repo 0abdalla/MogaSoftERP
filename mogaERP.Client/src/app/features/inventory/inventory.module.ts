@@ -6,6 +6,7 @@ import { ReciptPermissionsComponent } from './recipt-permissions/recipt-permissi
 import { SharedModule } from '../../shared/shared.module';
 import { ExchangeRequestComponent } from './exchange-request/exchange-request.component';
 import { ExchangePermissionsComponent } from './exchange-permissions/exchange-permissions.component';
+import { TableUtilityComponent } from "../../shared/table-utility/table-utility.component";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ExchangePermissionsComponent } from './exchange-permissions/exchange-pe
   imports: [
     CommonModule,
     InventoryRoutingModule,
-    SharedModule
-  ]
+    SharedModule,
+    TableUtilityComponent
+]
 })
 export class InventoryModule { }

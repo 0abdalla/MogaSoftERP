@@ -11,6 +11,7 @@ import { Provider } from '../models/system-settings/providers';
 import { StoreType } from '../models/system-settings/storeType';
 import { PagedResult } from '../models/inventory/reciptPermissions';
 import { Department } from '../models/system-settings/departments';
+import { Customers } from '../models/system-settings/customers';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,7 @@ export class SysSettingsService {
   stores = signal<Store[]>([]);
   storeTypes = signal<StoreType[]>([]);
   providers = signal<Provider[]>([]);
+  customers = signal<Customers[]>([]);
   departments = signal<Department[]>([]);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
@@ -420,6 +422,49 @@ export class SysSettingsService {
     return this.http.delete(`${this.baseUrl}JobDepartments/${id}`).pipe(
       tap(() =>
         this.departments.update(list =>
+          list.filter(req => req.id !== id)
+        )
+      )
+    );
+  }
+  // 
+  getCustomers(
+    pageNumber: number,
+    pageSize: number,
+    searchTerm: string = '',
+    sortDescending: boolean = true
+  ): Observable<any> {
+    this.loading.set(true);
+    const url = `${this.baseUrl}Customers?PageNumber=${pageNumber}&PageSize=${pageSize}&SearchTerm=${searchTerm}&SortDescending=${sortDescending}`;
+    
+    return this.http.get<any>(url).pipe(
+      catchError(err => {
+        console.error('Error fetching customers', err);
+        return of({ data: [], totalCount: 0 });
+      })
+    );
+  }
+  getCustomerById(id: number) {
+    return this.http.get<Customers>(`${this.baseUrl}Customers/${id}`);
+  }
+  addCustomer(request: Partial<Customers>) {
+    return this.http.post<Customers>(`${this.baseUrl}Customers`, request).pipe(
+      tap(newReq => this.customers.update(list => [...list, newReq]))
+    );
+  }
+  updateCustomer(id: number, request: Partial<Customers>) {
+    return this.http.put<Customers>(`${this.baseUrl}Customers/${id}`, request).pipe(
+      tap(updated =>
+        this.customers.update(list =>
+          list.map(req => (req.id === id ? updated : req))
+        )
+      )
+    );
+  }
+  deleteCustomer(id: number) {
+    return this.http.delete(`${this.baseUrl}Customers/${id}`).pipe(
+      tap(() =>
+        this.customers.update(list =>
           list.filter(req => req.id !== id)
         )
       )

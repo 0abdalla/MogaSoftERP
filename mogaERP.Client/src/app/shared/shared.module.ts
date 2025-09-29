@@ -8,7 +8,8 @@ import { PaginatorModule } from 'primeng/paginator';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

@@ -18,6 +18,7 @@ import { FinYearComponent } from './finance-settings/fin-year/fin-year.component
 import { CostCenterComponent } from './finance-settings/cost-center/cost-center.component';
 import { SharedModule } from '../../shared/shared.module';
 import { ToastModule } from 'primeng/toast';
+import { TableUtilityComponent } from '../../shared/table-utility/table-utility.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ToastModule } from 'primeng/toast';
     CommonModule,
     SystemSettingsRoutingModule,
     SharedModule,
-    ToastModule
+    ToastModule,
+    TableUtilityComponent
   ]
 })
 export class SystemSettingsModule { }

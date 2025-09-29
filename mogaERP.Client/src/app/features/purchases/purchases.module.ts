@@ -8,6 +8,7 @@ import { PriceQoutationsComponent } from './price-qoutations/price-qoutations.co
 import { SharedModule } from '../../shared/shared.module';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { TableUtilityComponent } from "../../shared/table-utility/table-utility.component";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { InputTextModule } from 'primeng/inputtext';
     PurchasesRoutingModule,
     SharedModule,
     FloatLabelModule,
-    InputTextModule
-  ]
+    InputTextModule,
+    TableUtilityComponent
+]
 })
 export class PurchasesModule { }

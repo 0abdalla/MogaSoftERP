@@ -81,3 +81,10 @@ body {
 .custom-danger {
     color: #BA1A1A !important;
 }
+
+
+table.compact td,
+table.compact th {
+  padding: 0.25rem 0.5rem !important;
+  font-size: 0.875rem !important;
+}

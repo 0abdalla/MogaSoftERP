@@ -9,6 +9,7 @@ import { JobCategoriesComponent } from './job-categories/job-categories.componen
 import { JobsComponent } from './jobs/jobs.component';
 import { SharedModule } from '../../shared/shared.module';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
+import { TableUtilityComponent } from '../../shared/table-utility/table-utility.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { AddEmployeeComponent } from './add-employee/add-employee.component';
   imports: [
     CommonModule,
     HrRoutingModule,
-    SharedModule
+    SharedModule,
+    TableUtilityComponent
   ]
 })
 export class HrModule { }

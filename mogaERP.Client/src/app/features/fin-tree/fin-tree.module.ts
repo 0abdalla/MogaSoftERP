@@ -6,6 +6,7 @@ import { AdditionNotificationsComponent } from './bank-actions/addition-notifica
 import { DebitNotificationsComponent } from './bank-actions/debit-notifications/debit-notifications.component';
 import { SharedModule } from '../../shared/shared.module';
 import { EntriesComponent } from './entries/entries.component';
+import { TableUtilityComponent } from '../../shared/table-utility/table-utility.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { EntriesComponent } from './entries/entries.component';
   imports: [
     CommonModule,
     FinTreeRoutingModule,
-    SharedModule
+    SharedModule,
+    TableUtilityComponent
   ]
 })
 export class FinTreeModule { }
