@@ -1,10 +1,5 @@
 ﻿using mogaERP.Domain.Contracts.SalesModule.SalesQuotation;
 using mogaERP.Domain.Interfaces.SalesModule;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace mogaERP.Services.Services.SalesModule
 {
@@ -52,6 +47,7 @@ namespace mogaERP.Services.Services.SalesModule
             try
             {
                 var existing = await _unitOfWork.Repository<SalesQuotation>().GetByIdAsync(id, cancellationToken);
+
                 if (existing == null)
                     return ApiResponse<string>.Failure(AppErrors.NotFound, "Quotation not found!");
 
@@ -109,16 +105,13 @@ namespace mogaERP.Services.Services.SalesModule
             return $"SQ-{year}-{(count + 1):D5}";
         }
 
-      
-
         public Task<ApiResponse<List<SalesQuotationResponse>>> GetAllAsync(SearchRequest request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
-
         public Task<ApiResponse<SalesQuotationResponse>> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
-        }        
+        }
     }
 }

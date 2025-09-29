@@ -23,6 +23,7 @@ public static class ServicesModuleDependencies
     public static IServiceCollection AddServicesModuleDependencies(this IServiceCollection services)
     {
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ISQLHelper, SQLHelper>();
 
         services.AddScoped<IStoreService, StoreService>();
         services.AddScoped<IItemService, ItemService>();
@@ -53,6 +54,9 @@ public static class ServicesModuleDependencies
         services.AddScoped<IFileService, FileService>();
 
         services.AddScoped<ISalesQuotationService, SalesQuotationService>();
+        services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<IAccountTreeService, AccountTreeService>();
+        services.AddScoped<ICostCenterTreeService, CostCenterTreeService>();
 
 
 

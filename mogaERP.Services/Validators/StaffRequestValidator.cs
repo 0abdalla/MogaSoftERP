@@ -25,15 +25,15 @@ public class StaffRequestValidator : AbstractValidator<StaffRequest>
 
         RuleFor(x => x.Status)
             .NotEmpty().WithMessage("Staff status is required.")
-            .Must(BeAValidEnum<StaffStatus>).WithMessage("Invalid staff status value.");
+            .Must(ValidatorHelper.BeAValidEnum<StaffStatus>).WithMessage("Invalid staff status value.");
 
         RuleFor(x => x.Gender)
             .NotEmpty().WithMessage("Gender is required.")
-            .Must(BeAValidEnum<Gender>).WithMessage("Invalid gender value.");
+            .Must(ValidatorHelper.BeAValidEnum<Gender>).WithMessage("Invalid gender value.");
 
         RuleFor(x => x.MaritalStatus)
             .NotEmpty().WithMessage("Marital status is required.")
-            .Must(BeAValidEnum<MaritalStatus>).WithMessage("Invalid marital status value.");
+            .Must(ValidatorHelper.BeAValidEnum<MaritalStatus>).WithMessage("Invalid marital status value.");
 
         RuleFor(x => x.JobTitleId)
             .GreaterThan(0).WithMessage("JobTitleId must be greater than zero.");
@@ -63,10 +63,5 @@ public class StaffRequestValidator : AbstractValidator<StaffRequest>
                 .NotEmpty().WithMessage("Password is required for authorized staff.")
                 .MinimumLength(6).WithMessage("Password must be at least 6 characters long.");
         });
-    }
-
-    private bool BeAValidEnum<TEnum>(string value) where TEnum : struct
-    {
-        return Enum.TryParse<TEnum>(value, true, out _);
     }
 }
