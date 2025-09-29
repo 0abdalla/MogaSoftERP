@@ -27,6 +27,18 @@ public class StaffService(
             var gender = Enum.Parse<Gender>(request.Gender, true);
             var maritalStatus = Enum.Parse<MaritalStatus>(request.MaritalStatus, true);
 
+
+            var basicSalary = request.BasicSalary;
+            var taxRate = (request.Tax) / 100m;
+            var insuranceRate = (request.Insurance) / 100m;
+            var allowances = request.Allowances;
+
+            var taxDeduction = basicSalary * taxRate;
+            var insuranceDeduction = basicSalary * insuranceRate;
+            var totalDeductions = taxDeduction + insuranceDeduction;
+
+            var netSalary = basicSalary - totalDeductions + allowances;
+
             var staff = new Staff
             {
                 FullName = request.FullName.Trim(),
@@ -53,12 +65,8 @@ public class StaffService(
                 VisaCode = request.VisaCode?.Trim(),
                 Allowances = request.Allowances,
                 BirthDate = request.BirthDate,
-                NetSalary = request.BasicSalary
-                          - (request.BasicSalary * (request.Tax / 100))
-                          - (request.BasicSalary * (request.Insurance / 100))
-                          + (request.Allowances),
-
-                Deductions = (request.BasicSalary * (request.Tax / 100)) + (request.BasicSalary * (request.Insurance / 100))
+                NetSalary = netSalary,
+                Deductions = totalDeductions
             };
 
             await _unitOfWork.Repository<Staff>().AddAsync(staff, cancellationToken);

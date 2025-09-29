@@ -27,12 +27,12 @@ public class StaffRequest
     public int? JobDepartmentId { get; set; }
 
     public int? BranchId { get; set; }
-    public decimal? BasicSalary { get; set; }
-    public int? Tax { get; set; }
-    public int? Insurance { get; set; }
+    public decimal BasicSalary { get; set; }
+    public int Tax { get; set; }
+    public int Insurance { get; set; }
     public int? AnnualDays { get; set; }
 
     public string? VisaCode { get; set; }
     public decimal Allowances { get; set; } // البدلات
-    public decimal Rewards { get; set; } // المكافأت
+    //public decimal Rewards { get; set; } // المكافأت
 }

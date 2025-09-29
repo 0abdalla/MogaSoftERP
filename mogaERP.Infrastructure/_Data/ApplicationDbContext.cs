@@ -44,6 +44,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<StaffAttachments> StaffAttachments { get; set; }
     public DbSet<EmployeeAdvance> EmployeeAdvances { get; set; }
     public DbSet<AttendanceSalary> AttendanceSalaries { get; set; }
+    public DbSet<Customer> Customers { get; set; }
 
     // Sales Module
     public DbSet<SalesQuotation> SalesQuotations { get; set; }

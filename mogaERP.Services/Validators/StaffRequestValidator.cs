@@ -48,12 +48,10 @@ public class StaffRequestValidator : AbstractValidator<StaffRequest>
             .GreaterThanOrEqualTo(0).WithMessage("Vacation days cannot be negative.");
 
         RuleFor(x => x.Tax)
-         .InclusiveBetween(1, 100)
-         .When(x => x.Tax.HasValue);
+         .InclusiveBetween(1, 100);
 
         RuleFor(x => x.Insurance)
-            .InclusiveBetween(1, 100)
-            .When(x => x.Insurance.HasValue);
+            .InclusiveBetween(1, 100);
 
         // Handle authorization case
         When(x => x.IsAuthorized, () =>

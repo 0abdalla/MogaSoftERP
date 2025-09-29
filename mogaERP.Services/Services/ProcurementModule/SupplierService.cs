@@ -13,11 +13,11 @@ public class SupplierService(IUnitOfWork unitOfWork, IMapper mapper) : ISupplier
         {
             var supplier = _mapper.Map<Supplier>(request);
 
-            SupplierPaymentType paymentType = SupplierPaymentType.Cash;
+            PaymentType paymentType = PaymentType.Cash;
 
             // check if payment type is valid as enum
             if (!string.IsNullOrEmpty(request.PaymentType) &&
-                !Enum.TryParse<SupplierPaymentType>(request.PaymentType, out paymentType))
+                !Enum.TryParse<PaymentType>(request.PaymentType, out paymentType))
             {
                 return ApiResponse<string>.Failure(AppErrors.TransactionFailed, "نوع الدفع غير صالح");
             }

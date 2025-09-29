@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 
 namespace mogaERP.Domain.Enums;
-public enum SupplierPaymentType
+public enum PaymentType
 {
     [EnumMember(Value = "Cash")]
     Cash,

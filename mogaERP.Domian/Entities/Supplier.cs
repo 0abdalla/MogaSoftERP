@@ -18,7 +18,7 @@ public class Supplier : BaseEntity
     public string? Website { get; set; }
     public string? Notes { get; set; }
 
-    public SupplierPaymentType PaymentType { get; set; } // Cash, Credit 
+    public PaymentType PaymentType { get; set; } // Cash, Credit 
     public decimal? CreditLimit { get; set; } // حد الائتمان
     public decimal? CurrentBalance { get; set; } // الرصيد الحالي
 }

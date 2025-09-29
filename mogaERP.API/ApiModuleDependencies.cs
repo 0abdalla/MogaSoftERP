@@ -70,7 +70,7 @@ public static class ApiModuleDependencies
                 });
 
             // نخلي SupplierPaymentType يظهر كـ string
-            MapEnumAsString<SupplierPaymentType>(options);
+            MapEnumAsString<PaymentType>(options);
         });
 
 
