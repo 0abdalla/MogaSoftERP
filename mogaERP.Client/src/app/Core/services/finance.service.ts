@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { debitNotification } from '../models/fin-tree/banks/debit';
 import { catchError , Observable, of } from 'rxjs';
 import { DailyEntry } from '../models/fin-tree/entries';
+import { Banks } from '../models/system-settings/banks';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +17,39 @@ export class FinanceService {
   // ======== Signals Usage ========
   debitNotifications = signal<debitNotification[]>([])
   additionNotifications = signal<any[]>([])
-  banks = signal<any[]>([])
+  banks = signal<Banks[]>([])
   accounts = signal<any[]>([])
   dailyEntries = signal<DailyEntry[]>([])
   constructor(private http : HttpClient) { }
 
   // ============================================== Banks ============================================== 
-  getAllBanks(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}Banks`);
+  getAllBanks(
+    pageNumber: number,
+    pageSize: number,
+    searchTerm: string = '',
+    sortDescending: boolean = true
+  ): Observable<any> {
+    this.loading.set(true);
+    const url = `${this.baseUrl}Banks?PageNumber=${pageNumber}&PageSize=${pageSize}&SearchTerm=${searchTerm}&SortDescending=${sortDescending}`;
+    
+    return this.http.get<any>(url).pipe(
+      catchError(err => {
+        console.error('Error fetching banks', err);
+        return of({ data: [], totalCount: 0 });
+      })
+    );
+  }
+  getBankById(id: number) {
+    return this.http.get<any>(`${this.baseUrl}Banks/${id}`);
+  }
+  addBank(bank: any) {
+    return this.http.post<any>(`${this.baseUrl}Banks`, bank);
+  }
+  updateBank(id: number, bank: any) {
+    return this.http.put<any>(`${this.baseUrl}Banks/${id}`, bank);
+  }
+  deleteBank(id: number) {
+    return this.http.delete<any>(`${this.baseUrl}Banks/${id}`);
   }
   // ============================================== Accounts ============================================== 
   getAllAccounts(): Observable<any> {

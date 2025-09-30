@@ -6,7 +6,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ToastModule } from 'primeng/toast';
 import { PaginatorModule } from 'primeng/paginator';
 import { NgSelectModule } from '@ng-select/ng-select';
-
 @NgModule({
   declarations: [
   ],
@@ -17,7 +16,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NgxPaginationModule,
     ToastModule,
     PaginatorModule,
-    NgSelectModule
+    NgSelectModule,
   ],
   exports: [
     CommonModule,
@@ -26,7 +25,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NgxPaginationModule,
     ToastModule,
     PaginatorModule,
-    NgSelectModule
+    NgSelectModule,
   ]
 })
 export class SharedModule { }

@@ -308,37 +308,37 @@ export class MenuService {
             {
               displayName: 'شجرة الحسابات',
               icon: 'fa-solid fa-circle',
-              route: '/settings/account-tree',
+              route: '/system-settings/finance-settings/financial-tree',
               pageName: 'AccountTree'
             },
             {
               displayName: 'التوجيهات المحاسبية',
               icon: 'fa-solid fa-circle',
-              route: '/fin-tree/account-guidance',
+              route: '/system-settings/finance-settings/accounting-guide',
               pageName: 'AccountGuidance'
             },
             {
               displayName: 'الخزائن',
               icon: 'fa-solid fa-circle',
-              route: '/fin-tree/boxes',
+              route: '/system-settings/finance-settings/treasuries',
               pageName: 'Boxes'
             },
             {
               displayName: 'البنوك',
               icon: 'fa-solid fa-circle',
-              route: '/fin-tree/banks',
+              route: '/system-settings/finance-settings/banks',
               pageName: 'Banks'
             },
             {
               displayName: 'السنة المالية',
               icon: 'fa-solid fa-circle',
-              route: '/fin-tree/year-fin-settings',
+              route: '/system-settings/finance-settings/financial-year',
               pageName: 'YeaFinSettings'
             },
             {
               displayName: 'مراكز التكلفة',
               icon: 'fa-solid fa-circle',
-              route: '/settings/cost-center-tree',
+              route: '/system-settings/finance-settings/cost-center',
               pageName: 'CostCenterTree'
             }
           ]

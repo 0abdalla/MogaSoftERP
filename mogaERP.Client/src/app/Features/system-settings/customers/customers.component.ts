@@ -160,14 +160,4 @@ export class CustomersComponent {
       this.addCustomerForm.reset();
       this.isEditMode = false;
     }
-    // 
-    toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        }
-      }
-    }   
 }

@@ -77,7 +77,7 @@ export class DebitNotificationsComponent {
   }
   loadFormData(){
     forkJoin({
-      banks : this.finTreeService.getAllBanks(),
+      banks : this.finTreeService.getAllBanks(1 , 100 , '' , true),
     }).subscribe({
       next : (response : any) => {
         this.banks = response.banks.result.data;

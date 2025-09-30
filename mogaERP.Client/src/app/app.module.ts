@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ChartModule } from 'angular-highcharts';
 import { loadingInterceptor } from './core/interceptors/loading.interceptor';
 import { BadgeModule } from 'primeng/badge';
+import { SearchArryPipe } from './core/pipes/search-arry.pipe';
 
 @NgModule({
   declarations: [

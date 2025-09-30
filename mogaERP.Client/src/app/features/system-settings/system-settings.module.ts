@@ -19,6 +19,10 @@ import { CostCenterComponent } from './finance-settings/cost-center/cost-center.
 import { SharedModule } from '../../shared/shared.module';
 import { ToastModule } from 'primeng/toast';
 import { TableUtilityComponent } from '../../shared/table-utility/table-utility.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FinTreeItemComponent } from './finance-settings/fin-tree-item/fin-tree-item.component';
+import { FinTreeEditItemComponent } from './finance-settings/fin-tree-edit-item/fin-tree-edit-item.component';
+import { GeneralSelectorComponent } from '../../shared/general-selector/general-selector.component';
 
 @NgModule({
   declarations: [
@@ -35,14 +39,18 @@ import { TableUtilityComponent } from '../../shared/table-utility/table-utility.
     TreasuriesComponent,
     BanksComponent,
     FinYearComponent,
-    CostCenterComponent
+    CostCenterComponent,
+    FinTreeItemComponent,
+    FinTreeEditItemComponent
   ],
-  imports: [
+  imports: [    
     CommonModule,
     SystemSettingsRoutingModule,
     SharedModule,
     ToastModule,
-    TableUtilityComponent
+    TableUtilityComponent,
+    NgbModule,
+    GeneralSelectorComponent
   ]
 })
 export class SystemSettingsModule { }
