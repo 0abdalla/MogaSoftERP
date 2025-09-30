@@ -54,6 +54,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<InvoiceItem> InvoiceItems { get; set; }
 
 
+    public DbSet<AdvanceType> AdvanceTypes { get; set; }
+    public DbSet<FiscalYear> FiscalYears { get; set; }
+
+
+
+
 
 
 

@@ -143,7 +143,7 @@ public class AccountTreeService(IUnitOfWork unitOfWork, ISQLHelper sQLHelper) : 
         SqlParameter[] param = new SqlParameter[1];
         param[0] = new SqlParameter("@SearchText", SearchText);
 
-        var lst = _sQLHelper.SQLQuery<AccountTreeModel>("[Finance].[SP_GetAccountTreeData]", param);
+        var lst = _sQLHelper.SQLQuery<AccountTreeModel>("[Accounting].[SP_GetAccountTreeData]", param);
         return lst;
     }
 

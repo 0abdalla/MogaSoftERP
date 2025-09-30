@@ -57,6 +57,8 @@ public static class ServicesModuleDependencies
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IAccountTreeService, AccountTreeService>();
         services.AddScoped<ICostCenterTreeService, CostCenterTreeService>();
+        services.AddScoped<IEmployeeAdvancesService, EmployeeAdvancesService>();
+        services.AddScoped<IFiscalYearService, FiscalYearService>();
 
 
 
