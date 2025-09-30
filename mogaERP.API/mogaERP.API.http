@@ -1,6 +1,11 @@
-@mogaERP.API_HostAddress = http://localhost:5187
+@mogaERP.API_HostAddress = https://localhost:7041
 
 GET {{mogaERP.API_HostAddress}}/weatherforecast/
 Accept: application/json
+
+###
+
+POST {{mogaERP.API_HostAddress}}/api/staff
+Authorization: Bearer {"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ZGI4MDcyMy0zYjVmLTQzZDYtYTY3MC01YmIyYTA3MzRlMDgiLCJlbWFpbCI6ImVzbGFtQGdtYWlsLmNvbSIsImdpdmVuX25hbWUiOiJFc2xhbSBFbHRheWFyIiwianRpIjoiY2JhZjg1NzAtY2FhMi00Y2U3LWEzZTItYWEyNDA0MjZlYzM1IiwiZXhwIjoxNzYwMDA1MDQ4LCJpc3MiOiJtb2dhLUVSUCBBcHAiLCJhdWQiOiJtb2dhLUVSUCBBcHAgdXNlcnMifQ.g0wdBi54GWSQx5yy772525odOvee3BGuo42Iul-t6Co"}
 
 ###

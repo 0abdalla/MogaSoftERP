@@ -1,0 +1,38 @@
+
+<button class="btn-orange me-2" (click)="openExportModal()">تصدير</button>
+<i class="fa-solid fs-5 fa-rotate-right me-2 reload-icon" (click)="reLoad()"></i>
+<i class="fa-solid fs-5 me-2 fullscreen-icon" [ngClass]="{'fa-expand': isFullscreen, 'fa-compress': !isFullscreen}" (click)="toggleFullscreen()"></i>
+<i class="fa-solid fs-5 me-2 compact-icon"
+   [ngClass]="{'fa-list': isCompact, 'fa-table': !isCompact}"
+   (click)="toggleCompact()"></i>
+
+
+
+<div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">تصدير الجدول</h5>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">اختر النوع</label>
+                <select class="form-select shadow-none" [(ngModel)]="exportType">
+                  <option value="excel">Excel</option>
+                  <option value="pdf">PDF</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">اسم الملف</label>
+                <input type="text" class="form-control shadow-none" [(ngModel)]="fileName" placeholder="ادخل اسم الملف">
+              </div>
+          </div>
+        </div>
+        <div class="text-center p-2 ">
+            <button type="button" class="btn-blue me-2" (click)="exportTable()">تصدير</button>
+          <button type="button" class="btn-outline-blue me-2" data-bs-dismiss="modal">إلغاء</button>
+        </div>
+      </div>
+    </div>
+</div>

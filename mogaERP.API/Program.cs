@@ -30,6 +30,7 @@ app.UseSwaggerUI();
 
 
 app.UseCors();
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 

@@ -1,0 +1,47 @@
+.loader {
+  position: fixed;
+  background: white;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  z-index: 99997458;
+}
+
+.loader div {
+  width: 10px;
+  height: 30px;
+  background-color: var(--main-color);
+  border-radius: 5px;
+  animation: loader 1.5s ease-in-out infinite;
+}
+
+.loader .bar1 { animation-delay: 0s; }
+.loader .bar2 { animation-delay: 0.15s; }
+.loader .bar3 { animation-delay: 0.3s; }
+.loader .bar4 { animation-delay: 0.45s; }
+.loader .bar5 { animation-delay: 0.6s; }
+.loader .bar6 { animation-delay: 0.75s; }
+.loader .bar7 { animation-delay: 0.9s; }
+.loader .bar8 { animation-delay: 1.05s; }
+.loader .bar9 { animation-delay: 1.2s; }
+
+@keyframes loader {
+  0% {
+    height: 30px;
+    transform: translateY(0);
+  }
+  50% {
+    height: 70px;
+    transform: translateY(35px);
+  }
+  100% {
+    height: 30px;
+    transform: translateY(0);
+  }
+}
+

@@ -1,1 +1,90 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --main-color: #3D5DA7;
+    --text-blue : #0B5CA3;
+    --second-color: #FAA21A;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--second-color);
+}
+
+body {
+    direction: rtl !important;
+    font-family: "Tajawal", sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+
+
+.btn-blue {
+    background-color: var(--main-color);
+    color: white;
+    border: none;
+    padding: 3px 15px;
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.btn-orange {
+    background-color: var(--second-color);
+    color: white;
+    border: none;
+    padding: 3px 15px;
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.btn-blue:hover {
+    background-color: #283D6A;
+}
+
+.btn-orange:hover {
+    background-color: #e49012;
+}
+
+.btn-outline-blue {
+    background-color: transparent;
+    color: var(--main-color);
+    border: 1px solid var(--main-color);
+    padding: 3px 15px;
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.btn-outline-blue:hover {
+    background-color: var(--main-color);
+    color: white;
+    border: 1px solid var(--main-color);
+}
+
+
+
+.btn-blue:disabled,
+.btn-orange:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.custom-danger {
+    color: #BA1A1A !important;
+}
+
+
+table.compact td,
+table.compact th {
+  padding: 0.25rem 0.5rem !important;
+  font-size: 0.875rem !important;
+}

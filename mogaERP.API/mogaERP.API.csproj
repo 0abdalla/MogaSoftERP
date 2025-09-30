@@ -34,6 +34,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FluentValidation" Version="12.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
@@ -48,6 +49,10 @@
 	<ItemGroup>
 		<ProjectReference Include="..\mogaERP.Infrastructure\mogaERP.Infrastructure.csproj" />
 		<ProjectReference Include="..\mogaERP.Services\mogaERP.Services.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\" />
 	</ItemGroup>
 
 </Project>

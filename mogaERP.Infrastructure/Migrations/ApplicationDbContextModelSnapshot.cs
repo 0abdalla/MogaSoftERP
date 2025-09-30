@@ -31,6 +31,11 @@ namespace mogaERP.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -47,6 +52,10 @@ namespace mogaERP.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityRole");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -157,182 +166,6 @@ namespace mogaERP.Infrastructure.Migrations
 
             modelBuilder.Entity("mogaERP.Domain.Entities.AccountTree", b =>
                 {
-                    b.Property<int>("CostCenterId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CostCenterId"));
-
-                    b.Property<string>("CostCenterNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CostLevel")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("IsExpences")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("IsGroup")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsLocked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsParent")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsPost")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NameAR")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameEN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CostCenterId");
-
-                    b.ToTable("AccountTrees", "Accounting");
-                });
-
-            modelBuilder.Entity("mogaERP.Domain.Entities.AccountingGuidance", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedById")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("UpdatedById");
-
-                    b.ToTable("AccountingGuidances", "Accounting");
-                });
-
-            modelBuilder.Entity("mogaERP.Domain.Entities.ApplicationUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ProfilePictureUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("mogaERP.Domain.Entities.CostCenterTree", b =>
-                {
                     b.Property<int>("AccountId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
@@ -422,7 +255,530 @@ namespace mogaERP.Infrastructure.Migrations
 
                     b.HasKey("AccountId");
 
+                    b.ToTable("AccountTrees", "Accounting");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.AccountingGuidance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("AccountingGuidances", "Accounting");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.AdditionNotice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("BankId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CheckNumber")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DailyRestrictionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("BankId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DailyRestrictionId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("AdditionNotices", "Accounting");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.AdvanceType", b =>
+                {
+                    b.Property<int>("AdvanceTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdvanceTypeId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NameAR")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("NameEN")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasMaxLength(750)
+                        .HasColumnType("nvarchar(750)");
+
+                    b.HasKey("AdvanceTypeId");
+
+                    b.ToTable("AdvanceTypes", "HR");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProfilePictureUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.AttendanceSalary", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("Fridays")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<double?>("OtherDays")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("float(10)");
+
+                    b.Property<int?>("Overtime")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RequiredHours")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("SickDays")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("float(10)");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TotalDays")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("TotalFingerprintHours")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("float(10)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("WorkDays")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("float(10)");
+
+                    b.Property<int?>("WorkHours")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("StaffId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("AttendanceSalaries", "HR");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.Bank", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountNumber")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("InitialBalance")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(550)
+                        .HasColumnType("nvarchar(550)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("Banks", "Accounting");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.Branch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ContactNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Location")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("Branches", "MasterData");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.CostCenterTree", b =>
+                {
+                    b.Property<int>("CostCenterId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CostCenterId"));
+
+                    b.Property<string>("CostCenterNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CostLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("IsExpences")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("IsGroup")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsLocked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsParent")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsPost")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NameAR")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NameEN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CostCenterId");
+
                     b.ToTable("CostCenterTrees", "Accounting");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountCode")
+                        .HasMaxLength(550)
+                        .HasColumnType("nvarchar(550)");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(550)
+                        .HasColumnType("nvarchar(550)");
+
+                    b.Property<string>("CommercialRegistration")
+                        .HasMaxLength(550)
+                        .HasColumnType("nvarchar(550)");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("CreditLimit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(750)
+                        .HasColumnType("nvarchar(750)");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("TaxNumber")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("Customers", "Sales");
                 });
 
             modelBuilder.Entity("mogaERP.Domain.Entities.DailyRestriction", b =>
@@ -476,6 +832,8 @@ namespace mogaERP.Infrastructure.Migrations
 
                     b.HasIndex("CreatedById");
 
+                    b.HasIndex("RestrictionTypeId");
+
                     b.HasIndex("UpdatedById");
 
                     b.ToTable("DailyRestrictions", "Accounting");
@@ -525,6 +883,68 @@ namespace mogaERP.Infrastructure.Migrations
                     b.HasIndex("DailyRestrictionId");
 
                     b.ToTable("DailyRestrictionDetails", "Accounting");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.DebitNotice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("BankId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CheckNumber")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DailyRestrictionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("BankId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DailyRestrictionId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("DebitNotices", "Accounting");
                 });
 
             modelBuilder.Entity("mogaERP.Domain.Entities.DisbursementRequest", b =>
@@ -604,6 +1024,209 @@ namespace mogaERP.Infrastructure.Migrations
                     b.HasIndex("ItemId");
 
                     b.ToTable("DisbursementRequestItems");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.EmployeeAdvance", b =>
+                {
+                    b.Property<int>("StaffAdvanceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffAdvanceId"));
+
+                    b.Property<double>("AdvanceAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
+
+                    b.Property<string>("AdvanceName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("AdvanceNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AdvanceTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Benefit")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<double>("PaymentAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
+
+                    b.Property<DateTime>("PaymentFromDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PaymentToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WorkflowStatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StaffAdvanceId");
+
+                    b.HasIndex("StaffId");
+
+                    b.ToTable("EmployeeAdvances", "HR");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.FiscalYear", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("FiscalYears", "Accounting");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.Invoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTaxIncluded")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("QuotationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("QuotationId")
+                        .IsUnique();
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("Invoices", "Sales");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.InvoiceItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("InvoiceItems", "Sales");
                 });
 
             modelBuilder.Entity("mogaERP.Domain.Entities.Item", b =>
@@ -801,6 +1424,146 @@ namespace mogaERP.Infrastructure.Migrations
                     b.ToTable("JobDepartments", "HR");
                 });
 
+            modelBuilder.Entity("mogaERP.Domain.Entities.JobLevel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("JobLevels", "HR");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.JobTitle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("JobDepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("JobDepartmentId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("JobTitles", "HR");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.JobType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("JobTypes", "HR");
+                });
+
             modelBuilder.Entity("mogaERP.Domain.Entities.MainGroup", b =>
                 {
                     b.Property<int>("Id")
@@ -837,6 +1600,158 @@ namespace mogaERP.Infrastructure.Migrations
                     b.HasIndex("UpdatedById");
 
                     b.ToTable("MainGroups", "Inventory");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.MaterialIssueItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaterialIssuePermissionId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("MaterialIssuePermissionId");
+
+                    b.ToTable("MaterialIssueItems");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.MaterialIssuePermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DailyRestrictionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DisbursementRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DocumentNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("JobDepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(850)
+                        .HasColumnType("nvarchar(850)");
+
+                    b.Property<DateOnly>("PermissionDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("PermissionNumber")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("StoreId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DailyRestrictionId");
+
+                    b.HasIndex("DisbursementRequestId");
+
+                    b.HasIndex("JobDepartmentId");
+
+                    b.HasIndex("StoreId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("MaterialIssuePermissions", "Inventory");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.PaymentTerm", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Condition")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("Percentage")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("SalesQuotationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("SalesQuotationId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("PaymentTerms", "Sales");
                 });
 
             modelBuilder.Entity("mogaERP.Domain.Entities.PriceQuotation", b =>
@@ -1119,6 +2034,58 @@ namespace mogaERP.Infrastructure.Migrations
                     b.ToTable("PurchaseRequestItems", "Procurement");
                 });
 
+            modelBuilder.Entity("mogaERP.Domain.Entities.QuotationItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("QuotationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SalesQuotationId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("SalesQuotationId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("QuotationItems", "Sales");
+                });
+
             modelBuilder.Entity("mogaERP.Domain.Entities.ReceiptPermission", b =>
                 {
                     b.Property<int>("Id")
@@ -1222,6 +2189,275 @@ namespace mogaERP.Infrastructure.Migrations
                     b.HasIndex("ReceiptPermissionId");
 
                     b.ToTable("ReceiptPermissionItems", "Inventory");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.RestrictionType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("RestrictionTypes", "Accounting");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.SalesQuotation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTaxIncluded")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("QuotationNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateOnly>("ValidUntil")
+                        .HasColumnType("date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("SalesQuotations", "Sales");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.Staff", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<decimal>("Allowances")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("AnnualDays")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("BasicSalary")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date");
+
+                    b.Property<int?>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("Deductions")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("HireDate")
+                        .HasColumnType("date");
+
+                    b.Property<int?>("Insurance")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsAuthorized")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("JobDepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("JobLevelId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("JobTitleId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("JobTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MaritalStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NationalId")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<decimal?>("NetSalary")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Tax")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("VisaCode")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("JobDepartmentId");
+
+                    b.HasIndex("JobLevelId");
+
+                    b.HasIndex("JobTitleId");
+
+                    b.HasIndex("JobTypeId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("Staff", "HR");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.StaffAttachments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileUrl")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("StaffId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("StaffAttachments", "HR");
                 });
 
             modelBuilder.Entity("mogaERP.Domain.Entities.Store", b =>
@@ -1422,6 +2658,122 @@ namespace mogaERP.Infrastructure.Migrations
                     b.ToTable("Suppliers", "Procurement");
                 });
 
+            modelBuilder.Entity("mogaERP.Domain.Entities.ApplicationRole", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasDiscriminator().HasValue("ApplicationRole");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "0196ce06-a35d-764c-8e7f-5296e1c570a9",
+                            ConcurrencyStamp = "0196ce08-5df8-732f-9f84-7024b78b0f4d",
+                            Name = "SystemAdmin",
+                            NormalizedName = "SYSTEMADMIN",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = "0196ce06-a360-71e0-b597-893f262003e5",
+                            ConcurrencyStamp = "0196ce08-5df8-732f-9f84-702596f53eb7",
+                            Name = "TopManagement",
+                            NormalizedName = "TOPMANAGEMENT",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = "0196ce06-a360-71e0-b597-89401c1a99a6",
+                            ConcurrencyStamp = "0196ce08-5df8-732f-9f84-7026d200cb76",
+                            Name = "FinanceManager",
+                            NormalizedName = "FINANCEMANAGER",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = "0196ce06-a360-71e0-b597-8941805b5a7e",
+                            ConcurrencyStamp = "0196ce08-5df8-732f-9f84-70271213664d",
+                            Name = "TechnicalManager",
+                            NormalizedName = "TECHNICALMANAGER",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = "0196ce06-a360-71e0-b597-89425e3c917f",
+                            ConcurrencyStamp = "0196ce08-5df8-732f-9f84-7028b1911846",
+                            Name = "HRManager",
+                            NormalizedName = "HRMANAGER",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = "0196ce06-a360-71e0-b597-89431c9fe61b",
+                            ConcurrencyStamp = "0196ce08-5df8-732f-9f84-702986ab7a2b",
+                            Name = "Accountant",
+                            NormalizedName = "ACCOUNTANT",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = "0196ce06-a360-71e0-b597-89441848d7b0",
+                            ConcurrencyStamp = "0196ce08-5df8-732f-9f84-702a00ae8e82",
+                            Name = "StoreKeeper",
+                            NormalizedName = "STOREKEEPER",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = "0196ce06-a360-71e0-b597-89455dd69d97",
+                            ConcurrencyStamp = "0196ce08-5df8-732f-9f84-702b6aab3541",
+                            Name = "ProcurementOfficer",
+                            NormalizedName = "PROCUREMENTOFFICER",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = "0196ce06-a360-71e0-b597-89455dd69d98",
+                            ConcurrencyStamp = "0196ce08-5df8-732f-9f84-702b6aab3542",
+                            Name = "SalesEmployee",
+                            NormalizedName = "SALESEMPLOYEE",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = "0196ce06-a360-71e0-b597-89455dd69d96",
+                            ConcurrencyStamp = "0196ce08-5df8-732f-9f84-702b6aab3540",
+                            Name = "ReservationEmployee",
+                            NormalizedName = "RESERVATIONEMPLOYEE",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = "0196ce06-a360-71e0-b597-894637b7ca29",
+                            ConcurrencyStamp = "0196ce08-5df8-732f-9f84-702cb2a84a7b",
+                            Name = "Cashier",
+                            NormalizedName = "CASHIER",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = "0196ce0b-5aab-766e-9cb1-4e205c0013c7",
+                            ConcurrencyStamp = "0196ce08-5df8-732f-9f84-702d6b892289",
+                            Name = "Auditor",
+                            NormalizedName = "AUDITOR",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = "0196ce0b-5aab-766e-9cb1-4e205c0013c8",
+                            ConcurrencyStamp = "0196ce08-5df8-732f-9f84-702d6b892290",
+                            Name = "Employee",
+                            NormalizedName = "EMPLOYEE",
+                            IsDeleted = false
+                        });
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1490,6 +2842,121 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Navigation("UpdatedBy");
                 });
 
+            modelBuilder.Entity("mogaERP.Domain.Entities.AdditionNotice", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.AccountTree", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.Bank", "Bank")
+                        .WithMany()
+                        .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.DailyRestriction", "DailyRestriction")
+                        .WithMany()
+                        .HasForeignKey("DailyRestrictionId");
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Bank");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DailyRestriction");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.AttendanceSalary", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.Staff", "Staff")
+                        .WithMany("AttendanceSalaries")
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Staff");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.Bank", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.Branch", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.Customer", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
             modelBuilder.Entity("mogaERP.Domain.Entities.DailyRestriction", b =>
                 {
                     b.HasOne("mogaERP.Domain.Entities.AccountingGuidance", "AccountingGuidance")
@@ -1502,6 +2969,10 @@ namespace mogaERP.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("mogaERP.Domain.Entities.RestrictionType", "RestrictionType")
+                        .WithMany("DailyRestrictions")
+                        .HasForeignKey("RestrictionTypeId");
+
                     b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById");
@@ -1509,6 +2980,8 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Navigation("AccountingGuidance");
 
                     b.Navigation("CreatedBy");
+
+                    b.Navigation("RestrictionType");
 
                     b.Navigation("UpdatedBy");
                 });
@@ -1534,6 +3007,45 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Navigation("CostCenter");
 
                     b.Navigation("DailyRestriction");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.DebitNotice", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.AccountTree", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.Bank", "Bank")
+                        .WithMany()
+                        .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.DailyRestriction", "DailyRestriction")
+                        .WithMany()
+                        .HasForeignKey("DailyRestrictionId");
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Bank");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DailyRestriction");
+
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("mogaERP.Domain.Entities.DisbursementRequest", b =>
@@ -1576,6 +3088,92 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Navigation("DisbursementRequest");
 
                     b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.EmployeeAdvance", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.Staff", "Staff")
+                        .WithMany("EmployeeAdvances")
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Staff");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.FiscalYear", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.Invoice", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.SalesQuotation", "Quotation")
+                        .WithOne("Invoice")
+                        .HasForeignKey("mogaERP.Domain.Entities.Invoice", "QuotationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Quotation");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.InvoiceItem", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.Invoice", "Invoice")
+                        .WithMany("Items")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Item");
+
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("mogaERP.Domain.Entities.Item", b =>
@@ -1664,6 +3262,63 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Navigation("UpdatedBy");
                 });
 
+            modelBuilder.Entity("mogaERP.Domain.Entities.JobLevel", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.JobTitle", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.JobDepartment", "JobDepartment")
+                        .WithMany()
+                        .HasForeignKey("JobDepartmentId");
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("JobDepartment");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.JobType", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
             modelBuilder.Entity("mogaERP.Domain.Entities.MainGroup", b =>
                 {
                     b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
@@ -1671,6 +3326,89 @@ namespace mogaERP.Infrastructure.Migrations
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.MaterialIssueItem", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.MaterialIssuePermission", "MaterialIssuePermission")
+                        .WithMany("Items")
+                        .HasForeignKey("MaterialIssuePermissionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("MaterialIssuePermission");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.MaterialIssuePermission", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.DailyRestriction", "DailyRestriction")
+                        .WithMany()
+                        .HasForeignKey("DailyRestrictionId");
+
+                    b.HasOne("mogaERP.Domain.Entities.DisbursementRequest", "DisbursementRequest")
+                        .WithMany()
+                        .HasForeignKey("DisbursementRequestId");
+
+                    b.HasOne("mogaERP.Domain.Entities.JobDepartment", "JobDepartment")
+                        .WithMany()
+                        .HasForeignKey("JobDepartmentId");
+
+                    b.HasOne("mogaERP.Domain.Entities.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DailyRestriction");
+
+                    b.Navigation("DisbursementRequest");
+
+                    b.Navigation("JobDepartment");
+
+                    b.Navigation("Store");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.PaymentTerm", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.SalesQuotation", null)
+                        .WithMany("PaymentTerms")
+                        .HasForeignKey("SalesQuotationId");
 
                     b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
                         .WithMany()
@@ -1834,6 +3572,35 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Navigation("PurchaseRequest");
                 });
 
+            modelBuilder.Entity("mogaERP.Domain.Entities.QuotationItem", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.SalesQuotation", null)
+                        .WithMany("Items")
+                        .HasForeignKey("SalesQuotationId");
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Item");
+
+                    b.Navigation("UpdatedBy");
+                });
+
             modelBuilder.Entity("mogaERP.Domain.Entities.ReceiptPermission", b =>
                 {
                     b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
@@ -1896,6 +3663,112 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Navigation("Item");
 
                     b.Navigation("ReceiptPermission");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.RestrictionType", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.SalesQuotation", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.Staff", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId");
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.JobDepartment", "JobDepartment")
+                        .WithMany()
+                        .HasForeignKey("JobDepartmentId");
+
+                    b.HasOne("mogaERP.Domain.Entities.JobLevel", "JobLevel")
+                        .WithMany("Staffs")
+                        .HasForeignKey("JobLevelId");
+
+                    b.HasOne("mogaERP.Domain.Entities.JobTitle", "JobTitle")
+                        .WithMany("Staffs")
+                        .HasForeignKey("JobTitleId");
+
+                    b.HasOne("mogaERP.Domain.Entities.JobType", "JobType")
+                        .WithMany("Staffs")
+                        .HasForeignKey("JobTypeId");
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("JobDepartment");
+
+                    b.Navigation("JobLevel");
+
+                    b.Navigation("JobTitle");
+
+                    b.Navigation("JobType");
+
+                    b.Navigation("UpdatedBy");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.StaffAttachments", b =>
+                {
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.Staff", "Staff")
+                        .WithMany("StaffAttachments")
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Staff");
+
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("mogaERP.Domain.Entities.Store", b =>
@@ -1965,6 +3838,11 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("mogaERP.Domain.Entities.Invoice", b =>
+                {
+                    b.Navigation("Items");
+                });
+
             modelBuilder.Entity("mogaERP.Domain.Entities.ItemGroup", b =>
                 {
                     b.Navigation("Items");
@@ -1975,9 +3853,29 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Navigation("Items");
                 });
 
+            modelBuilder.Entity("mogaERP.Domain.Entities.JobLevel", b =>
+                {
+                    b.Navigation("Staffs");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.JobTitle", b =>
+                {
+                    b.Navigation("Staffs");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.JobType", b =>
+                {
+                    b.Navigation("Staffs");
+                });
+
             modelBuilder.Entity("mogaERP.Domain.Entities.MainGroup", b =>
                 {
                     b.Navigation("ItemGroups");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.MaterialIssuePermission", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("mogaERP.Domain.Entities.PriceQuotation", b =>
@@ -2000,6 +3898,29 @@ namespace mogaERP.Infrastructure.Migrations
             modelBuilder.Entity("mogaERP.Domain.Entities.ReceiptPermission", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.RestrictionType", b =>
+                {
+                    b.Navigation("DailyRestrictions");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.SalesQuotation", b =>
+                {
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Items");
+
+                    b.Navigation("PaymentTerms");
+                });
+
+            modelBuilder.Entity("mogaERP.Domain.Entities.Staff", b =>
+                {
+                    b.Navigation("AttendanceSalaries");
+
+                    b.Navigation("EmployeeAdvances");
+
+                    b.Navigation("StaffAttachments");
                 });
 #pragma warning restore 612, 618
         }

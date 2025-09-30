@@ -29,6 +29,40 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<CostCenterTree> CostCenterTrees { get; set; }
     public DbSet<JobDepartment> JobDepartments { get; set; }
     public DbSet<DisbursementRequestItem> DisbursementRequestItems { get; set; }
+    public DbSet<DisbursementRequest> DisbursementRequests { get; set; }
+    public DbSet<MaterialIssuePermission> MaterialIssuePermissions { get; set; }
+    public DbSet<MaterialIssueItem> MaterialIssueItems { get; set; }
+    public DbSet<Bank> Banks { get; set; }
+    public DbSet<AdditionNotice> AdditionNotices { get; set; }
+
+
+    public DbSet<JobType> JobTypes { get; set; }
+    public DbSet<JobTitle> JobTitles { get; set; }
+    public DbSet<JobLevel> JobLevels { get; set; }
+    public DbSet<Branch> Branches { get; set; }
+    public DbSet<Staff> Staff { get; set; }
+    public DbSet<StaffAttachments> StaffAttachments { get; set; }
+    public DbSet<EmployeeAdvance> EmployeeAdvances { get; set; }
+    public DbSet<AttendanceSalary> AttendanceSalaries { get; set; }
+    public DbSet<Customer> Customers { get; set; }
+
+    // Sales Module
+    public DbSet<SalesQuotation> SalesQuotations { get; set; }
+    public DbSet<PaymentTerm> PaymentTerms { get; set; }
+    public DbSet<QuotationItem> QuotationItems { get; set; }
+    public DbSet<Invoice> Invoices { get; set; }
+    public DbSet<InvoiceItem> InvoiceItems { get; set; }
+
+
+    public DbSet<AdvanceType> AdvanceTypes { get; set; }
+    public DbSet<FiscalYear> FiscalYears { get; set; }
+
+
+
+
+
+
+
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
