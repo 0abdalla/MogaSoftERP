@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using mogaERP.Domain.Contracts.InventoryModule.DisbursementRequest;
 using mogaERP.Domain.Contracts.SalesModule.SalesQuotation;
 using mogaERP.Domain.Interfaces.SalesModule;
 
@@ -25,18 +26,37 @@ namespace mogaERP.Services.Services.SalesModule
                     QuotationNumber = await GenerateQuotationNumber(cancellationToken),
                     Date = request.QuotationDate,
                     CustomerId = request.CustomerId,
+                    ValidityPeriod = CalculateValidUntil(DateOnly.FromDateTime(request.QuotationDate), request.ValidityPeriod),
+                    IsTaxIncluded = request.IsTaxIncluded,
+                    Description = request.Description,
+
                     Items = request.Items.Select(i => new QuotationItem
                     {
                         ItemId = i.ItemId,
                         Quantity = i.Quantity,
                         UnitPrice = i.UnitPrice
+                    }).ToList(),
+
+                    PaymentTerms = request.PaymentTerms.Select(p => new PaymentTerm
+                    {
+                        Condition = p.Condition,
+                        Percentage = p.Percentage
                     }).ToList()
                 };
+
 
                 await _unitOfWork.Repository<SalesQuotation>().AddAsync(quotation, cancellationToken);
                 await _unitOfWork.CompleteAsync(cancellationToken);
 
-                return ApiResponse<string>.Success(AppErrors.AddSuccess, quotation.QuotationNumber);
+                var response = new QuotationToReturnResponse
+                {
+                    QuotationNumber = quotation.QuotationNumber,
+                    TotalItemsPrice = quotation.TotalItemsPrice
+                };
+
+
+                //return ApiResponse<QuotationToReturnResponse>.Success(AppErrors.Success, response);
+
             }
             catch (Exception)
             {
@@ -56,11 +76,14 @@ namespace mogaERP.Services.Services.SalesModule
                 if (existing == null)
                     return ApiResponse<string>.Failure(AppErrors.NotFound);
 
-                existing.Date = request.QuotationDate;
+                existing.Date =request.QuotationDate;
                 existing.CustomerId = request.CustomerId;
+                existing.Description = request.Description;
+                existing.ValidityPeriod = CalculateValidUntil(DateOnly.FromDateTime(request.QuotationDate), request.ValidityPeriod);
+                existing.IsTaxIncluded = request.IsTaxIncluded;
 
                 existing.Items.Clear();
-
+                existing.PaymentTerms.Clear();
                 foreach (var item in request.Items)
                 {
                     existing.Items.Add(new QuotationItem
@@ -68,6 +91,14 @@ namespace mogaERP.Services.Services.SalesModule
                         ItemId = item.ItemId,
                         Quantity = item.Quantity,
                         UnitPrice = item.UnitPrice
+                    });
+                }
+                foreach (var term in request.PaymentTerms)
+                {
+                    existing.PaymentTerms.Add(new PaymentTerm
+                    {
+                        Condition = term.Condition,
+                        Percentage = term.Percentage
                     });
                 }
 
@@ -123,13 +154,22 @@ namespace mogaERP.Services.Services.SalesModule
                     QuotationDate = q.Date,
                     CustomerId = q.CustomerId,
                     CustomerName = q.Customer != null ? q.Customer.Name : string.Empty,
+                    Description = q.Description,
+                    ValidUntil = q.ValidityPeriod,
+                    IsTaxIncluded = q.IsTaxIncluded,
+                    TotalItemsPrice = q.TotalItemsPrice,
                     Items = q.Items.Select(i => new SalesQuotationItemResponse
                     {
                         ItemId = i.ItemId,
                         ItemName = i.Item != null ? i.Item.Name : string.Empty,
                         Quantity = i.Quantity,
                         UnitPrice = i.UnitPrice
-                    }).ToList()
+                    }).ToList(),
+                    PaymentTerms = q.PaymentTerms.Select(p => new PaymentTermResponse
+                    {
+                        Condition = p.Condition,
+                        Percentage = p.Percentage
+                    }).ToList(),
 
 
                 }).ToList();
@@ -164,16 +204,24 @@ namespace mogaERP.Services.Services.SalesModule
                     Id = quotation.Id,
                     QuotationNumber = quotation.QuotationNumber,
                     QuotationDate = quotation.Date,
-                    CustomerId = quotation.CustomerId,
+                    CustomerId = (int)quotation.CustomerId,
                     CustomerName = quotation.Customer != null ? quotation.Customer.Name : string.Empty,
-
+                    Description = quotation.Description,
+                    ValidUntil = quotation.ValidityPeriod,
+                    IsTaxIncluded = quotation.IsTaxIncluded,
+                    TotalItemsPrice = quotation.TotalItemsPrice,
                     Items = quotation.Items.Select(i => new SalesQuotationItemResponse
                     {
                         ItemId = i.ItemId,
                         ItemName = i.Item != null ? i.Item.Name : string.Empty,
                         Quantity = i.Quantity,
                         UnitPrice = i.UnitPrice
-                    }).ToList()
+                    }).ToList(),
+                    PaymentTerms = quotation.PaymentTerms.Select(p => new PaymentTermResponse
+                    {
+                        Condition = p.Condition,
+                        Percentage = p.Percentage
+                    }).ToList(),
                 };
 
                 return ApiResponse<SalesQuotationResponse>.Success(AppErrors.Success, response);
@@ -194,5 +242,20 @@ namespace mogaERP.Services.Services.SalesModule
 
             return $"SQ-{year}-{(count + 1):D5}";
         }
+        // To Calc the validity date based on the selected validity period
+        private DateOnly CalculateValidUntil(DateOnly quotationDate, string validityPeriod)
+        {
+            int days = validityPeriod switch
+            {
+                "3Days" => 3,
+                "7Days" => 7,
+                "14Days" => 14,
+                "30Days" => 30,
+                _ => 7
+            };
+
+            return quotationDate.AddDays(days);
+        }
+
     }
 }
