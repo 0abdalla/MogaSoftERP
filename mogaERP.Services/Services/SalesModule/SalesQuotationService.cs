@@ -50,9 +50,25 @@ namespace mogaERP.Services.Services.SalesModule
                 var response = new QuotationToReturnResponse
                 {
                     QuotationNumber = quotation.QuotationNumber,
+                    QuotationDate = quotation.Date,
+                    CustomerId = quotation.CustomerId,
+                    Description = quotation.Description,
+                    ValidityPeriod = request.ValidityPeriod,
+                    IsTaxIncluded = quotation.IsTaxIncluded,
+                    Items = quotation.Items.Select(i => new SalesQuotationItemResponse
+                    {
+                        ItemId = i.ItemId,
+                        ItemName = i.Item != null ? i.Item.Name : string.Empty,
+                        Quantity = i.Quantity,
+                        UnitPrice = i.UnitPrice
+                    }).ToList(),
+                    PaymentTerms = quotation.PaymentTerms.Select(p => new QPaymentTermResponse
+                    {
+                        Condition = p.Condition,
+                        Percentage = p.Percentage
+                    }).ToList(),
                     TotalItemsPrice = quotation.TotalItemsPrice
                 };
-
 
                 return ApiResponse<QuotationToReturnResponse>.Success(AppErrors.Success, response);
 

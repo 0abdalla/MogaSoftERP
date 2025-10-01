@@ -8,6 +8,8 @@ import { forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 import { Items } from '../../../core/models/system-settings/item';
 declare var bootstrap : any;
+import html2pdf from 'html2pdf.js';
+
 @Component({
   selector: 'app-quotations',
   templateUrl: './quotations.component.html',
@@ -50,7 +52,7 @@ export class QuotationsComponent {
   // 
   quotationForm: FormGroup;
   // 
-  purNumber: string = '';
+  quotataionData: any;
   constructor(private fb: FormBuilder , private systemSettingsService : SysSettingsService , private salesService : SalesService , private messageService : MessageService){
     this.quotationForm = this.fb.group({
       quotationDate: [new Date().toISOString().substring(0, 10)], // Today Date Validator Required
@@ -189,7 +191,7 @@ export class QuotationsComponent {
       } else {
         this.salesService.addQuotation(formData).subscribe({
           next: (res: any) => {
-            this.purNumber = res.results;
+            this.quotataionData = res.result;
             if (res.isSuccess === true) {
               this.messageService.add({
                 severity: 'success',
@@ -200,6 +202,20 @@ export class QuotationsComponent {
               this.quotationForm.reset();
               console.log(res);
               this.loadQuotations();
+              setTimeout(() => {
+                const element = document.getElementById('printableQuotation');
+                if (element) {
+                  html2pdf()
+                    .from(element)
+                    .set({
+                      margin: 0.5,
+                      filename: `${this.quotataionData.quotationNumber}.pdf`,
+                      html2canvas: { scale: 2 },
+                      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+                    })
+                    .save();
+                }
+              }, 500);        
               // this.generatePurchaseRequestPDFById(res.results);
             } else {
               this.messageService.add({
