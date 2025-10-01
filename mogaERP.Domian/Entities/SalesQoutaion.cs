@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace mogaERP.Domain.Entities
+﻿namespace mogaERP.Domain.Entities
 {
     public class SalesQuotation : BaseEntity
     {
         public string QuotationNumber { get; set; } = string.Empty;
         public DateOnly Date { get; set; }
-        public int CustomerId { get; set; }
-        //public Customer? Customer { get; set; }  to be updated after adding customer entity
+        public int? CustomerId { get; set; }
+        public Customer? Customer { get; set; }
         public DateOnly ValidUntil { get; set; }
         public List<PaymentTerm> PaymentTerms { get; set; } = new();
         public bool IsTaxIncluded { get; set; }

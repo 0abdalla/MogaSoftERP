@@ -56,6 +56,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<AdvanceType> AdvanceTypes { get; set; }
     public DbSet<FiscalYear> FiscalYears { get; set; }
+    public DbSet<Treasury> Treasuries { get; set; }
 
 
 

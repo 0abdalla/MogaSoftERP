@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace mogaERP.Domain.Contracts.SalesModule.SalesQuotation
+﻿namespace mogaERP.Domain.Contracts.SalesModule.SalesQuotation
 {
     public class SalesQuotationRequest
     {
-        public string QuotationNumber { get; set; } = string.Empty;
         public DateOnly QuotationDate { get; set; }
         public int CustomerId { get; set; }
         public string? Description { get; set; }

@@ -1,12 +1,14 @@
-﻿using mogaERP.Domain.Contracts.SalesModule.SalesQuotation;
+﻿using Microsoft.Extensions.Logging;
+using mogaERP.Domain.Contracts.SalesModule.SalesQuotation;
 using mogaERP.Domain.Interfaces.SalesModule;
 
 namespace mogaERP.Services.Services.SalesModule
 {
 
-    public class SalesQuotationService(IUnitOfWork unitOfWork) : ISalesQuotationService
+    public class SalesQuotationService(IUnitOfWork unitOfWork, ILogger<SalesQuotation> logger) : ISalesQuotationService
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly ILogger<SalesQuotation> _logger = logger;
 
         public async Task<ApiResponse<string>> CreateAsync(SalesQuotationRequest request, CancellationToken cancellationToken = default)
         {
@@ -46,15 +48,19 @@ namespace mogaERP.Services.Services.SalesModule
         {
             try
             {
-                var existing = await _unitOfWork.Repository<SalesQuotation>().GetByIdAsync(id, cancellationToken);
+                var existing = await _unitOfWork.Repository<SalesQuotation>()
+                    .Query(x => x.Id == id && !x.IsDeleted)
+                    .Include(x => x.Items)
+                    .FirstOrDefaultAsync(cancellationToken);
 
                 if (existing == null)
-                    return ApiResponse<string>.Failure(AppErrors.NotFound, "Quotation not found!");
+                    return ApiResponse<string>.Failure(AppErrors.NotFound);
 
                 existing.Date = request.QuotationDate;
                 existing.CustomerId = request.CustomerId;
 
                 existing.Items.Clear();
+
                 foreach (var item in request.Items)
                 {
                     existing.Items.Add(new QuotationItem
@@ -82,7 +88,7 @@ namespace mogaERP.Services.Services.SalesModule
             {
                 var existing = await _unitOfWork.Repository<SalesQuotation>().GetByIdAsync(id, cancellationToken);
                 if (existing == null)
-                    return ApiResponse<string>.Failure(AppErrors.NotFound, "Quotation not found!");
+                    return ApiResponse<string>.Failure(AppErrors.NotFound);
 
                 existing.IsDeleted = true;
                 _unitOfWork.Repository<SalesQuotation>().Update(existing);
@@ -96,6 +102,90 @@ namespace mogaERP.Services.Services.SalesModule
             }
         }
 
+        public async Task<ApiResponse<PagedResponse<SalesQuotationResponse>>> GetAllAsync(SearchRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var spec = new SalesQuotationSpecification(request);
+                var countSpec = new SalesQuotationSpecification(request);
+                countSpec.DisablePagination();
+
+                var totalCount = await _unitOfWork.Repository<SalesQuotation>()
+                    .CountBySpecAsync(countSpec, cancellationToken);
+
+                var quotations = _unitOfWork.Repository<SalesQuotation>()
+                    .Query(spec);
+
+                var data = quotations.Select(q => new SalesQuotationResponse
+                {
+                    Id = q.Id,
+                    QuotationNumber = q.QuotationNumber,
+                    QuotationDate = q.Date,
+                    CustomerId = q.CustomerId,
+                    CustomerName = q.Customer != null ? q.Customer.Name : string.Empty,
+                    Items = q.Items.Select(i => new SalesQuotationItemResponse
+                    {
+                        ItemId = i.ItemId,
+                        ItemName = i.Item != null ? i.Item.Name : string.Empty,
+                        Quantity = i.Quantity,
+                        UnitPrice = i.UnitPrice
+                    }).ToList()
+
+
+                }).ToList();
+
+                var pagedResponse = new PagedResponse<SalesQuotationResponse>(data, totalCount, request.PageNumber, request.PageSize);
+
+                return ApiResponse<PagedResponse<SalesQuotationResponse>>.Success(AppErrors.Success, pagedResponse);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching sales quotations");
+                return ApiResponse<PagedResponse<SalesQuotationResponse>>.Failure(
+                    AppErrors.TransactionFailed);
+            }
+        }
+        public async Task<ApiResponse<SalesQuotationResponse>> GetByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var spec = new SalesQuotationSpecification(id);
+
+                var quotation = await _unitOfWork.Repository<SalesQuotation>()
+                    .GetEntityWithSpecAsync(spec, cancellationToken);
+
+                if (quotation == null)
+                {
+                    return ApiResponse<SalesQuotationResponse>.Failure(AppErrors.NotFound);
+                }
+
+                var response = new SalesQuotationResponse
+                {
+                    Id = quotation.Id,
+                    QuotationNumber = quotation.QuotationNumber,
+                    QuotationDate = quotation.Date,
+                    CustomerId = quotation.CustomerId,
+                    CustomerName = quotation.Customer != null ? quotation.Customer.Name : string.Empty,
+
+                    Items = quotation.Items.Select(i => new SalesQuotationItemResponse
+                    {
+                        ItemId = i.ItemId,
+                        ItemName = i.Item != null ? i.Item.Name : string.Empty,
+                        Quantity = i.Quantity,
+                        UnitPrice = i.UnitPrice
+                    }).ToList()
+                };
+
+                return ApiResponse<SalesQuotationResponse>.Success(AppErrors.Success, response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching SalesQuotation by Id {Id}", id);
+                return ApiResponse<SalesQuotationResponse>.Failure(AppErrors.TransactionFailed);
+            }
+        }
+
+
         private async Task<string> GenerateQuotationNumber(CancellationToken cancellationToken)
         {
             var year = DateTime.Now.Year;
@@ -103,15 +193,6 @@ namespace mogaERP.Services.Services.SalesModule
                 .CountAsync(x => x.Date.Year == year, cancellationToken);
 
             return $"SQ-{year}-{(count + 1):D5}";
-        }
-
-        public Task<ApiResponse<List<SalesQuotationResponse>>> GetAllAsync(SearchRequest request, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-        public Task<ApiResponse<SalesQuotationResponse>> GetByIdAsync(int id, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
         }
     }
 }
