@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using mogaERP.Domain.Contracts.InventoryModule.DisbursementRequest;
 using mogaERP.Domain.Contracts.SalesModule.SalesQuotation;
 using mogaERP.Domain.Interfaces.SalesModule;
 
@@ -11,15 +10,15 @@ namespace mogaERP.Services.Services.SalesModule
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly ILogger<SalesQuotation> _logger = logger;
 
-        public async Task<ApiResponse<string>> CreateAsync(SalesQuotationRequest request, CancellationToken cancellationToken = default)
+        public async Task<ApiResponse<QuotationToReturnResponse>> CreateAsync(SalesQuotationRequest request, CancellationToken cancellationToken = default)
         {
             try
             {
-                //var customerExists = await _unitOfWork.Repository<Customer>()
-                //    .AnyAsync(x => x.Id == request.CustomerId, cancellationToken);
+                var customerExists = await _unitOfWork.Repository<Customer>()
+                    .AnyAsync(x => x.Id == request.CustomerId, cancellationToken);
 
-                //if (!customerExists)
-                //    return ApiResponse<string>.Failure(AppErrors.NotFound, "Customer not found!");
+                if (!customerExists)
+                    return ApiResponse<QuotationToReturnResponse>.Failure(AppErrors.NotFound);
 
                 var quotation = new SalesQuotation
                 {
@@ -55,12 +54,12 @@ namespace mogaERP.Services.Services.SalesModule
                 };
 
 
-                //return ApiResponse<QuotationToReturnResponse>.Success(AppErrors.Success, response);
+                return ApiResponse<QuotationToReturnResponse>.Success(AppErrors.Success, response);
 
             }
             catch (Exception)
             {
-                return ApiResponse<string>.Failure(AppErrors.TransactionFailed);
+                return ApiResponse<QuotationToReturnResponse>.Failure(AppErrors.TransactionFailed);
             }
         }
 
@@ -76,7 +75,7 @@ namespace mogaERP.Services.Services.SalesModule
                 if (existing == null)
                     return ApiResponse<string>.Failure(AppErrors.NotFound);
 
-                existing.Date =request.QuotationDate;
+                existing.Date = request.QuotationDate;
                 existing.CustomerId = request.CustomerId;
                 existing.Description = request.Description;
                 existing.ValidityPeriod = CalculateValidUntil(DateOnly.FromDateTime(request.QuotationDate), request.ValidityPeriod);
