@@ -52,7 +52,6 @@ public class SalesQuotationSpecification : BaseSpecification<SalesQuotation>
         Includes.Add(x => x.Items);
 
         AddInclude("Items.Item");
-        AddInclude("Invoice.Quotation");
         AddInclude("Invoice.Items");
         AddInclude("Invoice.Items.Item");
     }
