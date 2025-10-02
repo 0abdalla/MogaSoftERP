@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent , canActivate: [authGuard] },
   { path: 'purchases', loadChildren: () => import('./features/purchases/purchases.module').then(m => m.PurchasesModule) },
   { path: 'inventory', loadChildren: () => import('./features/inventory/inventory.module').then(m => m.InventoryModule) },
+  { path: 'sales', loadChildren: () => import('./features/sales/sales.module').then(m => m.SalesModule) },
   { path: 'fin-tree', loadChildren: () => import('./features/fin-tree/fin-tree.module').then(m => m.FinTreeModule) },
   { path: 'hr', loadChildren: () => import('./features/hr/hr.module').then(m => m.HrModule) },
   { path: 'system-settings', loadChildren: () => import('./features/system-settings/system-settings.module').then(m => m.SystemSettingsModule) },

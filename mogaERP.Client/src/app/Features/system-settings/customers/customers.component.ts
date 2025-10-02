@@ -51,7 +51,8 @@ export class CustomersComponent {
       taxNumber: [''],
       commercialRegistration: [''],
       paymentType: ['Cash'],
-      creditLimit: ['']
+      creditLimit: [''],
+      email: [''],
     });
   }
   ngOnInit(): void {

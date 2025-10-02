@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-using mogaERP.Domain.Contracts.SalesModule.SalesQuotation;
+﻿using mogaERP.Domain.Contracts.SalesModule.SalesQuotation;
 using mogaERP.Domain.Interfaces.SalesModule;
-using mogaERP.Services.Services.SalesModule;
 
 namespace mogaERP.API.Controllers;
 

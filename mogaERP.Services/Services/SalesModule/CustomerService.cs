@@ -20,6 +20,7 @@ public class CustomerService(IUnitOfWork unitOfWork) : ICustomerService
                 PhoneNumber = request.PhoneNumber,
                 TaxNumber = request.TaxNumber,
                 CreditLimit = request.CreditLimit,
+                Email = request.Email
             };
 
             await _unitOfWork.Repository<Customer>().AddAsync(customer, cancellationToken);
@@ -78,12 +79,7 @@ public class CustomerService(IUnitOfWork unitOfWork) : ICustomerService
             Name = x.Name,
             PaymentType = x.PaymentType.ToString(),
             PhoneNumber = x.PhoneNumber,
-            CreatedBy = x.CreatedBy.UserName,
-            CreatedById = x.CreatedById,
-            CreatedOn = x.CreatedOn,
-            UpdatedBy = x.UpdatedBy != null ? x.UpdatedBy.UserName : null,
-            UpdatedById = x.UpdatedById,
-            UpdatedOn = x.UpdatedOn
+            Email = x.Email
 
         }).ToList().AsReadOnly();
 
@@ -117,7 +113,8 @@ public class CustomerService(IUnitOfWork unitOfWork) : ICustomerService
             CreatedOn = customer.CreatedOn,
             UpdatedBy = customer.UpdatedBy != null ? customer.UpdatedBy.UserName : null,
             UpdatedById = customer.UpdatedById,
-            UpdatedOn = customer.UpdatedOn
+            UpdatedOn = customer.UpdatedOn,
+            Email = customer.Email
         };
 
         return ApiResponse<CustomerResponse>.Success(AppErrors.Success, response);
@@ -141,6 +138,7 @@ public class CustomerService(IUnitOfWork unitOfWork) : ICustomerService
             customer.PhoneNumber = request.PhoneNumber;
             customer.PaymentType = Enum.Parse<PaymentType>(request.PaymentType);
             customer.CreditLimit = request.CreditLimit;
+            customer.Email = request.Email;
 
 
             _unitOfWork.Repository<Customer>().Update(customer);

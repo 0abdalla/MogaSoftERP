@@ -1,0 +1,30 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace mogaERP.Infrastructure.Migrations
+{
+    /// <inheritdoc />
+    public partial class AddEmailToCustomerTable : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AddColumn<string>(
+                name: "Email",
+                schema: "Sales",
+                table: "Customers",
+                type: "nvarchar(max)",
+                nullable: true);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "Email",
+                schema: "Sales",
+                table: "Customers");
+        }
+    }
+}

@@ -1,0 +1,485 @@
+<main id="list-quotations">
+    <div class="container-fluid mt-4">
+      <!-- Breadcrumb and Add Button -->
+      <div class="top">
+        <div class="d-flex justify-content-between align-items-center">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 justify-content-center flex-row-reverse" dir="rtl">
+              <li class="breadcrumb-item active" aria-current="page">عروض الأسعار</li>
+              <li class="breadcrumb-item"><a routerLink="/dashboard">إدارة الشركة</a></li>
+            </ol>
+          </nav>
+          <div>
+            <button class="btn-blue" data-bs-toggle="modal" data-bs-target="#addQuotationModal">إضافة عرض سعر</button>
+          </div>
+        </div>
+      </div>
+      <p-toast position="top-left"></p-toast>
+      <hr />
+  
+      <!-- Search and Actions -->
+      <div class="grid-list">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="search-wrapper">
+            <input
+              type="text"
+              class="form-control search-input"
+              [(ngModel)]="searchTerm"
+              (keyup.enter)="search()"
+              placeholder="ابحث برقم العرض..."
+            />
+            <span class="search-icon">
+              <i class="bi bi-search"></i>
+            </span>
+          </div>
+          <div>
+            <button class="btn-outline-blue me-2">فلتر</button>
+              <app-table-utility></app-table-utility>
+  
+          </div>
+        </div>
+  
+        <!-- Table -->
+        <table class="table table-bordered table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>رقم العرض</th>
+              <th>تاريخ العرض</th>
+              <th>اسم العميل</th>
+              
+              <th></th>
+            </tr>
+          </thead>
+          <tbody *ngIf="quotations.length > 0">
+            <tr *ngFor="let quotation of quotations; trackBy: trackByQuotation">
+              <td class="id">{{ quotation.quotationNumber }}</td>
+              <td>{{ quotation.quotationDate | date: 'yyyy-MM-dd' }}</td>
+              <td>{{ quotation.customerName }}</td>
+              <td class="text-center">
+                <div class="dropdown">
+                  <button class="btn p-0 border-0 bg-transparent" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots fs-5" style="color: var(--text-blue);"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end custom-dropdown" dir="rtl">
+                    <li><button class="dropdown-item" (click)="generateQuotationPDFById(quotation.id)">طباعة</button></li>
+                    <hr class="m-0">
+                    <li><button class="dropdown-item" (click)="editQuotation(quotation.id)">تعديل</button></li>
+                    <hr class="m-0">
+                    <li><button class="dropdown-item custom-danger" (click)="deleteQuotation(quotation.id)">حذف</button></li>
+                  </ul>
+                </div>
+              </td>
+              
+              
+            </tr>
+          </tbody>
+          <tbody *ngIf="quotations.length === 0">
+            <tr>
+              <td colspan="4" class="text-center">لا يوجد عروض أسعار</td>
+            </tr>
+          </tbody>
+        </table>
+
+  
+        <!-- Pagination --> 
+        <div class="d-flex justify-content-between align-items-center mt-3" *ngIf="totalCount > pageSize">
+          <nav >
+             <ul class="pagination pagination-sm mb-0"> 
+              <li class="page-item" [class.disabled]="currentPage === 1"> <button class="page-link" (click)="goToPage(currentPage - 1)">&lt;</button> 
+              </li> 
+              <li class="page-item" *ngFor="let p of [].constructor(math.ceil(totalCount / pageSize)); let i = index" [class.active]="currentPage === i + 1" > 
+              <button class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</button> 
+              </li> 
+              <li class="page-item" [class.disabled]="currentPage === math.ceil(totalCount / pageSize)"> 
+              <button class="page-link" (click)="goToPage(currentPage + 1)">&gt;</button> 
+              </li> 
+             </ul> 
+          </nav> 
+          <div class="pagination-counter">
+            <p class="m-0 text-secondary">
+              عرض
+              <span class="mx-1 fw-bold text-blue">{{
+                currentPage
+              }}</span>
+              من
+              <span class="mx-1 fw-bold text-blue">{{ math.ceil(totalCount / pageSize) }}</span>
+            </p>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </main>
+  
+  
+<div class="modal fade" id="addQuotationModal" tabindex="-1" aria-labelledby="addQuotationModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title" id="addQuotationModalLabel">
+                    {{ isEditMode ? 'تعديل عرض سعر' : 'إضافة عرض سعر' }}
+                </h5>                  
+            </div>
+            <div class="modal-body" style="background-image: url('assets/vendors/imgs/pattern.png'); background-size: cover;">
+                <form [formGroup]="quotationForm" (ngSubmit)="addQuotation()">
+                    <div class="row align-items-end p-3 mb-3">
+  
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="form-label">تاريخ الطلب</label>
+                                <input type="date" formControlName="quotationDate" class="form-control shadow-none text-end">
+                                
+                                <div class="text-danger" *ngIf="quotationForm.get('quotationDate')?.errors?.['notToday'] && quotationForm.get('quotationDate')?.touched">
+                                  لا يمكن اختيار تاريخ سابق
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">اسم العميل</label>
+                                <select class="form-select shadow-none" formControlName="customerId">
+                                  <option disabled selected value="">اختر العميل</option>
+                                  <option *ngFor="let c of customers" [value]="c.id">{{ c.name }}</option>
+                                </select>
+                              </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">العرض ساري إلى</label>
+                                <!-- <input type="date" formControlName="validityPeriod" class="form-control shadow-none text-end"> -->
+                                <select name="validityPeriod" id="" formControlName="validityPeriod" class="form-select shadow-none">
+                                  <option disabled selected value="">اختر المدة</option>
+                                  <option value="3Days">3 أيام</option>
+                                  <option value="7Days">7 أيام</option>
+                                  <option value="14Days">14 يوم</option>
+                                  <option value="30Days">30 يوم</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                          <div class="form-group">
+                            <input type="radio" class="form-check-input shadow-none" name="isTaxIncluded" formControlName="isTaxIncluded" [value]="true" id="isTaxIncludedTrue">
+                            <label class="mx-2" for="isTaxIncludedTrue">شامل الضريبة</label>
+                            <br>
+                            <input type="radio" class="form-check-input shadow-none" name="isTaxIncluded" formControlName="isTaxIncluded" [value]="false" id="isTaxIncludedFalse">
+                            <label class="mx-2" for="isTaxIncludedFalse">غير شامل الضريبة</label>
+                          </div>
+                        </div>
+  
+                        <div class="col-md-12 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">ملاحظات</label>
+                                <input type="text" formControlName="description" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+  
+                        <div formArrayName="items" class="mt-3">
+                          <div class="row mb-3" *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+                            <div class="col-md-3">
+                              <label class="form-label">الصنف</label>
+                              <select class="form-select shadow-none" formControlName="itemId">
+                                <option [ngValue]="null" disabled>اختر الصنف</option>
+                                <option *ngFor="let opt of getAvailableItems(i)" [ngValue]="opt.id">
+                                  {{ opt.name }}
+                                </option>
+                              </select>
+                            </div>
+                        
+                            <div class="col-md-2">
+                              <label class="form-label">الكمية</label>
+                              <input type="number" class="form-control shadow-none" formControlName="quantity">
+                            </div>
+                        
+                            <div class="col-md-2">
+                              <label class="form-label">السعر</label>
+                              <input type="number" class="form-control shadow-none" formControlName="unitPrice">
+                            </div>
+                        
+                            <div class="col-md-2">
+                                <label class="form-label">السعر الاجمالي</label>
+                                <input type="number" class="form-control shadow-none" formControlName="totalPrice" readonly>
+                              </div>
+                              
+                              <div class="col-md-2 d-flex align-items-end">
+                                <button type="button" class="btn btn-success" (click)="addItemRow()">
+                                  <i class="fa fa-plus"></i> إضافة صنف
+                                </button>
+                              </div>
+
+
+                            <div class="col-md-1 d-flex align-items-end">
+                              <button type="button" class="btn btn-danger" (click)="removeItemRow(i)" *ngIf="items.length > 1">
+                                <i class="fa fa-trash"></i>
+                              </button>
+                            </div>
+
+                            
+                          
+                          </div>
+                        
+                        </div>
+
+                        <div formArrayName="paymentTerms" class="mt-3">
+                            <div class="row mb-3" *ngFor="let paymentTerm of paymentTerms.controls; let i = index" [formGroupName]="i">
+                              <div class="col-md-4">
+                                <label class="form-label">الشروط</label>
+                                <input type="text" class="form-control shadow-none" formControlName="condition">
+                              </div>
+                          
+                              <div class="col-md-3">
+                                <label class="form-label">النسبة</label>
+                                <input type="number" class="form-control shadow-none" formControlName="percentage">
+                              </div>
+                              
+                              
+                              <div class="col-md-2 d-flex align-items-end">
+                                <button type="button" class="btn btn-success" (click)="addPaymentTermRow()">
+                                  <i class="fa fa-plus"></i> إضافة دفعة
+                                </button>
+                              </div>
+
+                              <div class="col-md-1 d-flex align-items-end">
+                                <button type="button" class="btn btn-danger" (click)="removePaymentTermRow(i)" *ngIf="paymentTerms.length > 1">
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                              </div>
+
+                            </div>
+                          
+                            
+                          </div>
+                    </div>
+  
+                    <div class="text-center">
+                        <button type="submit" class="btn-blue px-4" [disabled]="quotationForm.invalid">
+                            {{ isEditMode ? 'حفظ التعديلات' : 'إضافة عرض سعر' }}
+                          </button>     
+                  <button type="button" class="btn-orange mx-2" data-bs-dismiss="modal" (click)="resetForm()">خروج</button>             
+  
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+<!-- 
+
+  <div id="printableQuotation" dir="rtl" class="p-4 border rounded">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <img src="assets/vendors/imgs/companylogo.png" alt="logo" style="height: 100px;" />
+      <div class="text-center flex-grow-1">
+        <h5 class="fw-bold mb-1">عرض سعر رقم  
+          <span class="text-primary">{{ quotataionData?.quotationNumber }}</span>
+        </h5>
+        <div><strong>التاريخ:</strong> {{ quotataionData?.quotationDate | date: 'yyyy-MM-dd' }}</div>
+      </div>
+    </div>
+  
+    <div class="table-responsive mb-4">
+      <table class="table table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>م</th>
+            <th>اسم الصنف</th>
+            <th>الكمية</th>
+            <th>سعر الوحدة</th>
+            <th>الإجمالي</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of quotataionData?.items; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ item.itemName || '-' }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unitPrice | number:'1.2-2' }} ج.م</td>
+            <td>{{ (item.quantity * item.unitPrice) | number:'1.2-2' }} ج.م</td>
+          </tr>
+        </tbody>
+        <tfoot class="table-light fw-bold">
+          <tr>
+            <td colspan="4" class="text-end">الإجمالي</td>
+            <td>{{ quotataionData?.totalItemsPrice | number:'1.2-2' }} ج.م</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  
+    <div class="mb-4">
+      <h6 class="fw-bold">شروط الدفع:</h6>
+      <ul>
+        <li *ngFor="let term of quotataionData?.paymentTerms">
+          {{ term.condition }} - {{ term.percentage }}%
+        </li>
+      </ul>
+    </div>
+  
+    <div class="mt-5">
+      <strong>الملاحظات:</strong>
+      <p>{{ quotataionData?.description || 'لا يوجد' }}</p>
+      <div class="text-end mt-4">
+        <strong>نرجو أن ينال عرضنا رضاكم وفي خدمتكم</strong><br />
+        <span>شركة موجاسوفت</span>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <p>العنوان: 252 شارع ترعة الجبل - حدائق الزيتون - القاهرة</p>
+        </div>
+        <div class="col-lg-6">
+            <p>الهاتف: 01000201499</p>
+        </div>
+    </div>
+  
+  </div>
+   -->
+
+
+
+
+   <div id="printableQuotation" dir="rtl" class="invoice-box " >
+    <!-- Header -->
+    <div class="invoice-header">
+      <div class="invoice-title px-4">
+        <h3 class="fw-bold">عرض سعر</h3>
+        <small class="text-black">
+          <span class="fw-bold">رقم عرض السعر</span> : {{ quotataionData?.quotationNumber }}
+        </small>
+        <br />
+        <small class="text-black">
+          <span class="fw-bold">تاريخ عرض السعر</span> :
+          {{ quotataionData?.quotationDate | date: 'dd/MM/yyyy' }}
+        </small>
+      </div>
+  
+      <div class="logo">
+        <img src="assets/vendors/imgs/header.png"  width="450" alt="logo" />
+      </div>
+    </div>
+  
+    <!-- Invoice Info -->
+    <div class="d-flex justify-content-between align-items-center mt-4 px-4">
+      <div>
+        <h6 class="section-title">عرض السعر إلى:</h6>
+        <p>
+          {{ quotataionData?.customerData?.name }}<br />
+          س.ت : {{ quotataionData?.customerData?.commercialRegistration }}<br />
+          ب.ض: {{ quotataionData?.customerData?.taxNumber }}<br />
+          {{ quotataionData?.customerData?.email }}
+        </p>
+      </div>
+      <div>
+        <h6 class="section-title">صادر من:</h6>
+        <p>
+          موجاسوفت للحلول المتكاملة<br />
+          س.ت : 16408<br />
+          ب.ض: 123456789<br />
+          info&#64;mogasoft.net
+        </p>
+      </div>
+    </div>
+  
+    <!-- Items Table -->
+    <div class="table-responsive mt-4 px-4">
+      <table class="table table-striped" style="border-collapse: collapse; width: 100%;"> 
+        <thead>
+          <tr>
+            <th class="text-center serial">م</th>
+            <th>المنتج</th>
+            <th class="th-black text-center">السعر</th>
+            <th class="th-black text-center">الكمية</th>
+            <th class="th-black text-center">الإجمالي</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of quotataionData?.items; let i = index">
+            <td class="text-center id-table">{{ i + 1 | number:'2.0' }}</td>
+            <td>{{ item.itemName }}</td>
+            <td class="text-center">{{ item.unitPrice | number:'1.2-2' }}</td>
+            <td class="text-center">{{ item.quantity }}</td>
+            <td class="text-center">{{ (item.quantity * item.unitPrice) | number:'1.2-2' }}</td>
+          </tr>
+        </tbody>
+        <tfoot *ngIf="!quotataionData?.isTaxIncluded">
+          <tr>
+            <th colspan="4" class="text-center">الإجمالي</th>
+            <th class="text-center">
+              {{ quotataionData?.totalItemsPrice | number:'1.2-2' }}
+            </th>
+          </tr>
+        </tfoot>        
+      </table>
+    </div>
+  
+    <div class="row align-items-end px-4">
+      <div class="col-md-4"
+      [ngClass]="{'col-md-6': !quotataionData?.isTaxIncluded}">
+   <h6 class="section-title">طريقة الدفع:</h6>
+   <ul class="mb-0">
+     <li *ngFor="let term of quotataionData?.paymentTerms">
+       {{ term.condition }} - {{ term.percentage }}%
+     </li>
+   </ul>
+ </div>
+ 
+ <div class="col-md-4"
+      [ngClass]="{'col-md-6': !quotataionData?.isTaxIncluded}">
+   <div class="signature text-center mt-4 px-4">
+     <p>التوقيع المعتمد</p>
+     <div class="line"></div>
+   </div>
+ </div>
+ 
+ <div class="col-md-4 total-box" *ngIf="quotataionData?.isTaxIncluded">
+   <p>الإجمالي: <span class="fw-bold">{{ quotataionData?.totalItemsPrice | number:'1.2-2' }}</span></p>
+   <p>الخصم: <span class="fw-bold">0.00</span></p>
+   <p>الضريبة (14%): <span class="fw-bold">{{ quotataionData?.totalItemsPrice | number:'1.2-2' }}</span></p>
+   <h5 class="m-0">الإجمالي : 
+     <span class="fw-bold">{{ quotataionData?.totalItemsPrice | number:'1.2-2' }}</span>
+   </h5>
+ </div>
+ 
+ 
+    </div>
+  
+    <p class="terms mt-4 px-4">
+      <strong>الشروط والأحكام:</strong><br />
+      <span *ngIf="quotataionData?.validityPeriod">
+        هذا العرض ساري لمدة 
+        {{ quotataionData?.validityPeriod.replace('Days', '') }} أيام
+      </span>
+      
+      <br />
+
+      <span>
+        هذا العرض 
+        <ng-container *ngIf="quotataionData?.isTaxIncluded; else notIncluded">
+          شامل الضريبة
+        </ng-container>
+        <ng-template #notIncluded>غير شامل الضريبة</ng-template>
+      </span>
+      
+      <br />
+
+      <span>
+        {{ quotataionData?.description || '' }}
+      </span>
+    </p>
+
+  
+    <div class="text-center mt-5">
+      <h4>نرجو أن ينال عرضنا رضاكم وفي خدمتكم</h4>
+    </div>
+  
+    <!-- Footer -->
+    <div class="footer d-flex justify-content-between align-items-center text-black">
+      <div><i class="bi bi-telephone fs-5"></i> <span dir="ltr">+20 100 0201 499</span></div>
+      <div><i class="bi bi-geo-alt fs-5"></i> 252 ترعة الجبل - حدائق الزيتون - القاهرة</div>
+      <div><i class="bi bi-envelope fs-5"></i> info&#64;mogasoft.net</div>
+    </div>
+  </div>
+  
