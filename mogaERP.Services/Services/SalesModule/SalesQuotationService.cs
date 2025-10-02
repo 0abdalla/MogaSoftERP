@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using mogaERP.Domain.Contracts.SalesModule.Customer;
 using mogaERP.Domain.Contracts.SalesModule.SalesQuotation;
 using mogaERP.Domain.Interfaces.SalesModule;
 
@@ -47,27 +48,49 @@ namespace mogaERP.Services.Services.SalesModule
                 await _unitOfWork.Repository<SalesQuotation>().AddAsync(quotation, cancellationToken);
                 await _unitOfWork.CompleteAsync(cancellationToken);
 
+
+                var spec = new SalesQuotationSpecification(quotation.Id);
+
+                var createdQuotation = await _unitOfWork.Repository<SalesQuotation>()
+                    .GetEntityWithSpecAsync(spec, cancellationToken);
+
                 var response = new QuotationToReturnResponse
                 {
-                    QuotationNumber = quotation.QuotationNumber,
-                    QuotationDate = quotation.Date,
-                    CustomerId = quotation.CustomerId,
-                    Description = quotation.Description,
+                    QuotationNumber = createdQuotation.QuotationNumber,
+                    QuotationDate = createdQuotation.Date,
+                    Description = createdQuotation.Description,
                     ValidityPeriod = request.ValidityPeriod,
-                    IsTaxIncluded = quotation.IsTaxIncluded,
-                    Items = quotation.Items.Select(i => new SalesQuotationItemResponse
+                    IsTaxIncluded = createdQuotation.IsTaxIncluded,
+
+                    Items = createdQuotation.Items.Select(i => new SalesQuotationItemResponse
                     {
                         ItemId = i.ItemId,
                         ItemName = i.Item != null ? i.Item.Name : string.Empty,
                         Quantity = i.Quantity,
                         UnitPrice = i.UnitPrice
                     }).ToList(),
-                    PaymentTerms = quotation.PaymentTerms.Select(p => new QPaymentTermResponse
+
+                    PaymentTerms = createdQuotation.PaymentTerms.Select(p => new QPaymentTermResponse
                     {
                         Condition = p.Condition,
                         Percentage = p.Percentage
                     }).ToList(),
-                    TotalItemsPrice = quotation.TotalItemsPrice
+
+                    TotalItemsPrice = quotation.TotalItemsPrice,
+
+                    CustomerData = createdQuotation.Customer != null ? new CustomerResponse
+                    {
+                        Id = createdQuotation.Customer.Id,
+                        Name = createdQuotation.Customer.Name,
+                        Address = createdQuotation.Customer.Address,
+                        CommercialRegistration = createdQuotation.Customer.CommercialRegistration,
+                        CreditLimit = createdQuotation.Customer.CreditLimit,
+                        Email = createdQuotation.Customer.Email,
+                        PhoneNumber = createdQuotation.Customer.PhoneNumber,
+                        PaymentType = createdQuotation.Customer.PaymentType.ToString(),
+                        TaxNumber = createdQuotation.Customer.TaxNumber,
+                        AccountCode = createdQuotation.Customer.AccountCode
+                    } : new()
                 };
 
                 return ApiResponse<QuotationToReturnResponse>.Success(AppErrors.Success, response);

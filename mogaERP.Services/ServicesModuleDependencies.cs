@@ -45,22 +45,18 @@ public static class ServicesModuleDependencies
         services.AddScoped<IDebitNoticeService, DebitNoticeService>();
         services.AddScoped<IDailyRestrictionService, DailyRestrictionService>();
         services.AddScoped<IRestrictionTypeService, RestrictionTypeService>();
-
         services.AddScoped<IJobLevelService, JobLevelService>();
         services.AddScoped<IJobTitleService, JobTitleService>();
         services.AddScoped<IJobTypeService, JobTypeService>();
-
         services.AddScoped<IStaffService, StaffService>();
         services.AddScoped<IFileService, FileService>();
-
         services.AddScoped<ISalesQuotationService, SalesQuotationService>();
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IAccountTreeService, AccountTreeService>();
         services.AddScoped<ICostCenterTreeService, CostCenterTreeService>();
         services.AddScoped<IEmployeeAdvancesService, EmployeeAdvancesService>();
         services.AddScoped<IFiscalYearService, FiscalYearService>();
-
-
+        services.AddScoped<ITreasuryService, TreasuryService>();
 
         // add fluent validation config
         services

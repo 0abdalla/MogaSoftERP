@@ -64,9 +64,43 @@ public class TreasuryService(IUnitOfWork unitOfWork, ILogger<TreasuryService> lo
         }
     }
 
-    public Task<ApiResponse<PagedResponse<TreasuryResponse>>> GetTreasuriesAsync(SearchRequest searchRequest, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<PagedResponse<TreasuryResponse>>> GetTreasuriesAsync(SearchRequest searchRequest, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var spec = new TreasurySpecification(searchRequest);
+
+            var countSpec = new TreasurySpecification(searchRequest);
+            countSpec.DisablePagination();
+
+            var totalCount = await _unitOfWork.Repository<Treasury>().CountBySpecAsync(countSpec, cancellationToken);
+
+            var treasuries = await _unitOfWork.Repository<Treasury>().ListAsync(spec, cancellationToken);
+
+            var treasuryResponses = treasuries.Select(treasury => new TreasuryResponse
+            {
+                Id = treasury.Id,
+                Code = treasury.Code,
+                Name = treasury.Name,
+                BranchId = treasury.BranchId,
+                BranchName = treasury.Branch?.Name,
+                Currency = treasury.Currency,
+                OpeningBalance = treasury.OpeningBalance,
+            });
+
+            var pagedResponse = new PagedResponse<TreasuryResponse>(
+                treasuryResponses,
+                totalCount,
+                searchRequest.PageNumber,
+                searchRequest.PageSize);
+
+            return ApiResponse<PagedResponse<TreasuryResponse>>.Success(AppErrors.Success, pagedResponse);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"An error occurred while getting treasuries: {ex}");
+            return ApiResponse<PagedResponse<TreasuryResponse>>.Failure(AppErrors.TransactionFailed);
+        }
     }
 
     public async Task<ApiResponse<TreasuryResponse>> GetTreasuryByIdAsync(int id, CancellationToken cancellationToken = default)
@@ -97,7 +131,6 @@ public class TreasuryService(IUnitOfWork unitOfWork, ILogger<TreasuryService> lo
                 CreatedOn = treasury.CreatedOn,
                 UpdatedBy = treasury.UpdatedBy?.UserName,
                 UpdatedOn = treasury.UpdatedOn
-
             };
 
             return ApiResponse<TreasuryResponse>.Success(AppErrors.Success, response);

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using mogaERP.Domain.Contracts.SalesModule.Customer;
 
 namespace mogaERP.Domain.Contracts.SalesModule.SalesQuotation
 {
@@ -10,7 +6,6 @@ namespace mogaERP.Domain.Contracts.SalesModule.SalesQuotation
     {
         public string QuotationNumber { get; set; } = string.Empty;
         public DateTime QuotationDate { get; set; }
-        public int? CustomerId { get; set; }
         public string? Description { get; set; }
         public string ValidityPeriod { get; set; } = string.Empty;
         public bool IsTaxIncluded { get; set; }
@@ -18,6 +13,8 @@ namespace mogaERP.Domain.Contracts.SalesModule.SalesQuotation
         public List<QPaymentTermResponse> PaymentTerms { get; set; } = new();
 
         public decimal TotalItemsPrice { get; set; }
+
+        public CustomerResponse CustomerData { get; set; } = new();
     }
     public class QuotationItemResponse
     {

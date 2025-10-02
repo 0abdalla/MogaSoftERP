@@ -8,6 +8,7 @@ public class Customer : BaseEntity
     public string? PhoneNumber { get; set; } // هاتف العميل
     public string? TaxNumber { get; set; } // الرقم الضريبي
     public string? CommercialRegistration { get; set; } // السجل التجاري 
+    public string? Email { get; set; }
 
 
     public PaymentType PaymentType { get; set; } = PaymentType.Cash;
