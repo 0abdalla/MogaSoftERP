@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mogaERP.Infrastructure._Data;
 
@@ -11,9 +12,11 @@ using mogaERP.Infrastructure._Data;
 namespace mogaERP.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251002120305_AddTreasryMovementAndOperations")]
+    partial class AddTreasryMovementAndOperations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1148,9 +1151,6 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
@@ -1165,13 +1165,7 @@ namespace mogaERP.Infrastructure.Migrations
                     b.Property<bool>("IsTaxIncluded")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("QuotationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RevenueTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TaxId")
+                    b.Property<int>("QuotationId")
                         .HasColumnType("int");
 
                     b.Property<string>("UpdatedById")
@@ -1184,15 +1178,8 @@ namespace mogaERP.Infrastructure.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.HasIndex("CustomerId");
-
                     b.HasIndex("QuotationId")
-                        .IsUnique()
-                        .HasFilter("[QuotationId] IS NOT NULL");
-
-                    b.HasIndex("RevenueTypeId");
-
-                    b.HasIndex("TaxId");
+                        .IsUnique();
 
                     b.HasIndex("UpdatedById");
 
@@ -2705,46 +2692,6 @@ namespace mogaERP.Infrastructure.Migrations
                     b.ToTable("Suppliers", "Procurement");
                 });
 
-            modelBuilder.Entity("mogaERP.Domain.Entities.Tax", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedById")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Percentage")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UpdatedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("UpdatedById");
-
-                    b.ToTable("Taxes");
-                });
-
             modelBuilder.Entity("mogaERP.Domain.Entities.Treasury", b =>
                 {
                     b.Property<int>("Id")
@@ -3384,25 +3331,11 @@ namespace mogaERP.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("mogaERP.Domain.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("mogaERP.Domain.Entities.SalesQuotation", "Quotation")
                         .WithOne("Invoice")
-                        .HasForeignKey("mogaERP.Domain.Entities.Invoice", "QuotationId");
-
-                    b.HasOne("mogaERP.Domain.Entities.AccountTree", "RevenueType")
-                        .WithMany()
-                        .HasForeignKey("RevenueTypeId")
+                        .HasForeignKey("mogaERP.Domain.Entities.Invoice", "QuotationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("mogaERP.Domain.Entities.Tax", "Tax")
-                        .WithMany()
-                        .HasForeignKey("TaxId");
 
                     b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
                         .WithMany()
@@ -3410,13 +3343,7 @@ namespace mogaERP.Infrastructure.Migrations
 
                     b.Navigation("CreatedBy");
 
-                    b.Navigation("Customer");
-
                     b.Navigation("Quotation");
-
-                    b.Navigation("RevenueType");
-
-                    b.Navigation("Tax");
 
                     b.Navigation("UpdatedBy");
                 });
@@ -4115,23 +4042,6 @@ namespace mogaERP.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("mogaERP.Domain.Entities.Supplier", b =>
-                {
-                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "UpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("UpdatedById");
-
-                    b.Navigation("CreatedBy");
-
-                    b.Navigation("UpdatedBy");
-                });
-
-            modelBuilder.Entity("mogaERP.Domain.Entities.Tax", b =>
                 {
                     b.HasOne("mogaERP.Domain.Entities.ApplicationUser", "CreatedBy")
                         .WithMany()
