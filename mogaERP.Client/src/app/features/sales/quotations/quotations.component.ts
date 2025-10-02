@@ -288,11 +288,22 @@ export class QuotationsComponent {
   // Handlers
   generateQuotationPDFById(id: number) {
     this.salesService.getQuotationById(id).subscribe({
-      next: (res:any) => {
-        this.quotation = res.result;
-        console.log(this.quotation);
-        const modal = new bootstrap.Modal(document.getElementById('addQuotationModal')!);
-        modal.show();
+      next: (res: any) => {
+        this.quotataionData = res.result;
+        console.log(this.quotataionData);
+        setTimeout(() => {
+          const element = document.getElementById('printableQuotation');
+          if (element) {
+            const opt = {
+              margin: 0,
+              filename: `${this.quotataionData.quotationNumber}.pdf`,
+              image: { type: 'jpeg' as const, quality: 0.98 },
+              html2canvas: { scale: 2 },
+              jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' as const }
+            };            
+            html2pdf().set(opt).from(element).save();
+          }
+        }, 500);
       },
       error: (err) => {
         console.error('فشل تحميل بيانات عرض السعر:', err);

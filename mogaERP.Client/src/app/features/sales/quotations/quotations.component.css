@@ -179,7 +179,11 @@
   }
 
 
-
+  #printableQuotation {
+    position: relative;
+    min-height: 1122px;
+  }
+  
   
   .invoice-box {
     background: #fff;
@@ -208,13 +212,19 @@
       margin-top: 20px;
     }
     table th , table td {
-        border: 5px solid white;
+      white-space: nowrap;
+      text-align: center;
+      vertical-align: middle;
+      border: 3px solid white;
     }
     table.table th {
       background-color: #CC1E79;
       color: white !important;
       padding: 10px 15px;
     }
+    tbody tr:nth-child(odd) {
+      background-color: red !important;
+    }       
     .serial{
         width: 10%;
     }
@@ -263,6 +273,12 @@
       margin-top: 40px;
       margin-inline: auto;
     }
+    .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }    
     .footer .bi{
         background-color: #CC1E79;
         color: white;

@@ -57,6 +57,7 @@ public static class ServicesModuleDependencies
         services.AddScoped<IEmployeeAdvancesService, EmployeeAdvancesService>();
         services.AddScoped<IFiscalYearService, FiscalYearService>();
         services.AddScoped<ITreasuryService, TreasuryService>();
+        services.AddScoped<ISalesInvoiceService, SalesInvoiceService>();
 
         // add fluent validation config
         services

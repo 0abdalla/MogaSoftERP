@@ -223,7 +223,7 @@ namespace mogaERP.Services.Services.SalesModule
                     AppErrors.TransactionFailed);
             }
         }
-        public async Task<ApiResponse<SalesQuotationResponse>> GetByIdAsync(int id, CancellationToken cancellationToken)
+        public async Task<ApiResponse<QuotationToReturnResponse>> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             try
             {
@@ -234,20 +234,17 @@ namespace mogaERP.Services.Services.SalesModule
 
                 if (quotation == null)
                 {
-                    return ApiResponse<SalesQuotationResponse>.Failure(AppErrors.NotFound);
+                    return ApiResponse<QuotationToReturnResponse>.Failure(AppErrors.NotFound);
                 }
 
-                var response = new SalesQuotationResponse
+                var response = new QuotationToReturnResponse
                 {
-                    Id = quotation.Id,
                     QuotationNumber = quotation.QuotationNumber,
                     QuotationDate = quotation.Date,
-                    CustomerId = (int)quotation.CustomerId,
-                    CustomerName = quotation.Customer != null ? quotation.Customer.Name : string.Empty,
                     Description = quotation.Description,
-                    ValidUntil = quotation.ValidityPeriod,
+                    ValidityPeriod = $"{(quotation.ValidityPeriod.DayNumber - DateOnly.FromDateTime(quotation.Date).DayNumber)}Days",
                     IsTaxIncluded = quotation.IsTaxIncluded,
-                    TotalItemsPrice = quotation.TotalItemsPrice,
+
                     Items = quotation.Items.Select(i => new SalesQuotationItemResponse
                     {
                         ItemId = i.ItemId,
@@ -255,21 +252,39 @@ namespace mogaERP.Services.Services.SalesModule
                         Quantity = i.Quantity,
                         UnitPrice = i.UnitPrice
                     }).ToList(),
-                    PaymentTerms = quotation.PaymentTerms.Select(p => new PaymentTermResponse
+
+                    PaymentTerms = quotation.PaymentTerms.Select(p => new QPaymentTermResponse
                     {
                         Condition = p.Condition,
                         Percentage = p.Percentage
                     }).ToList(),
+
+                    TotalItemsPrice = quotation.TotalItemsPrice,
+
+                    CustomerData = quotation.Customer != null ? new CustomerResponse
+                    {
+                        Id = quotation.Customer.Id,
+                        Name = quotation.Customer.Name,
+                        Address = quotation.Customer.Address,
+                        CommercialRegistration = quotation.Customer.CommercialRegistration,
+                        CreditLimit = quotation.Customer.CreditLimit,
+                        Email = quotation.Customer.Email,
+                        PhoneNumber = quotation.Customer.PhoneNumber,
+                        PaymentType = quotation.Customer.PaymentType.ToString(),
+                        TaxNumber = quotation.Customer.TaxNumber,
+                        AccountCode = quotation.Customer.AccountCode
+                    } : new()
                 };
 
-                return ApiResponse<SalesQuotationResponse>.Success(AppErrors.Success, response);
+                return ApiResponse<QuotationToReturnResponse>.Success(AppErrors.Success, response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching SalesQuotation by Id {Id}", id);
-                return ApiResponse<SalesQuotationResponse>.Failure(AppErrors.TransactionFailed);
+                return ApiResponse<QuotationToReturnResponse>.Failure(AppErrors.TransactionFailed);
             }
         }
+
 
 
         private async Task<string> GenerateQuotationNumber(CancellationToken cancellationToken)

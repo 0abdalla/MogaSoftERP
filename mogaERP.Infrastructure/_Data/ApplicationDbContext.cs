@@ -52,7 +52,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<QuotationItem> QuotationItems { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<InvoiceItem> InvoiceItems { get; set; }
-
+    public DbSet<Tax> Taxes { get; set; }
+    // End Sales Module
 
     public DbSet<AdvanceType> AdvanceTypes { get; set; }
     public DbSet<FiscalYear> FiscalYears { get; set; }

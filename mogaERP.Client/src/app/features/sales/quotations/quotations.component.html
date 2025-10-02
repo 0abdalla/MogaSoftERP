@@ -345,7 +345,7 @@
     <!-- Header -->
     <div class="invoice-header">
       <div class="invoice-title px-4">
-        <h2 class="fw-bold">عرض سعر</h2>
+        <h3 class="fw-bold">عرض سعر</h3>
         <small class="text-black">
           <span class="fw-bold">رقم عرض السعر</span> : {{ quotataionData?.quotationNumber }}
         </small>
@@ -357,7 +357,7 @@
       </div>
   
       <div class="logo">
-        <img src="assets/vendors/imgs/header.png"  width="300" alt="logo" />
+        <img src="assets/vendors/imgs/header.png"  width="450" alt="logo" />
       </div>
     </div>
   
@@ -404,17 +404,20 @@
             <td class="text-center">{{ (item.quantity * item.unitPrice) | number:'1.2-2' }}</td>
           </tr>
         </tbody>
-        <tfoot *ngIf="quotataionData?.isTaxIncluded === 'false'">
-          <th colspan="4" class="text-center">الإجمالي</th>
-          <th class="text-center">{{ quotataionData?.totalItemsPrice | number:'1.2-2' }}</th>
-        </tfoot>
+        <tfoot *ngIf="!quotataionData?.isTaxIncluded">
+          <tr>
+            <th colspan="4" class="text-center">الإجمالي</th>
+            <th class="text-center">
+              {{ quotataionData?.totalItemsPrice | number:'1.2-2' }}
+            </th>
+          </tr>
+        </tfoot>        
       </table>
     </div>
   
-    <!-- Totals + Payment -->
     <div class="row align-items-end px-4">
       <div class="col-md-4"
-      [ngClass]="{'col-md-6': quotataionData?.isTaxIncluded !== 'true'}">
+      [ngClass]="{'col-md-6': !quotataionData?.isTaxIncluded}">
    <h6 class="section-title">طريقة الدفع:</h6>
    <ul class="mb-0">
      <li *ngFor="let term of quotataionData?.paymentTerms">
@@ -424,14 +427,14 @@
  </div>
  
  <div class="col-md-4"
-      [ngClass]="{'col-md-6': quotataionData?.isTaxIncluded !== 'true'}">
+      [ngClass]="{'col-md-6': !quotataionData?.isTaxIncluded}">
    <div class="signature text-center mt-4 px-4">
      <p>التوقيع المعتمد</p>
      <div class="line"></div>
    </div>
  </div>
  
- <div class="col-md-4 total-box" *ngIf="quotataionData?.isTaxIncluded === 'true'">
+ <div class="col-md-4 total-box" *ngIf="quotataionData?.isTaxIncluded">
    <p>الإجمالي: <span class="fw-bold">{{ quotataionData?.totalItemsPrice | number:'1.2-2' }}</span></p>
    <p>الخصم: <span class="fw-bold">0.00</span></p>
    <p>الضريبة (14%): <span class="fw-bold">{{ quotataionData?.totalItemsPrice | number:'1.2-2' }}</span></p>
@@ -440,9 +443,9 @@
    </h5>
  </div>
  
+ 
     </div>
   
-    <!-- Terms -->
     <p class="terms mt-4 px-4">
       <strong>الشروط والأحكام:</strong><br />
       <span *ngIf="quotataionData?.validityPeriod">
@@ -459,6 +462,7 @@
         </ng-container>
         <ng-template #notIncluded>غير شامل الضريبة</ng-template>
       </span>
+      
       <br />
 
       <span>
