@@ -74,7 +74,7 @@
           </tbody>
           <tbody *ngIf="customers.length === 0">
             <tr>
-              <td colspan="6" class="text-center">لا يوجد موردين</td>
+              <td colspan="6" class="text-center">لا يوجد عميلين</td>
             </tr>
           </tbody>
         </table>
@@ -117,7 +117,7 @@
         <div class="modal-content">
             <div class="modal-header justify-content-center">
                 <h5 class="modal-title" id="addCustomerModalLabel">
-                    {{ isEditMode ? 'تعديل مورد' : 'إضافة مورد' }}
+                    {{ isEditMode ? 'تعديل عميل' : 'إضافة عميل' }}
                 </h5>                  
             </div>
             <div class="modal-body" style="background-image: url('assets/vendors/imgs/pattern.png'); background-size: cover;">
@@ -137,7 +137,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12 mt-3">
+                        <div class="col-md-6 mt-3">
                             <div class="form-group">
                                 <label class="form-label">العنوان</label>
                                 <input type="text" formControlName="address" class="form-control shadow-none text-end">
@@ -180,6 +180,13 @@
                                 <input type="number" formControlName="creditLimit" class="form-control shadow-none text-end">
                             </div>
                         </div>
+                        <div class="col-md-6 mt-3">
+                            <div class="form-group">
+                                <label class="form-label">الايميل</label>
+                                <input type="email" formControlName="email" class="form-control shadow-none text-end">
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="text-center">

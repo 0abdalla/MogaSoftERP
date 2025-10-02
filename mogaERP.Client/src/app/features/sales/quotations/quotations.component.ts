@@ -41,7 +41,7 @@ export class QuotationsComponent {
   quotations: any[] = [];
 
   // pagination state
-  pageSize: number = 2;
+  pageSize: number = 16;
   totalCount: number = 100;
   currentPage: number = 1;
   
@@ -96,7 +96,7 @@ export class QuotationsComponent {
       itemId: [null, Validators.required],
       quantity: [0, [Validators.required, Validators.min(1)]],
       unitPrice: [0, [Validators.required, Validators.min(1)]],
-      totalPrice: [{ value: 0, disabled: true }]
+      totalPrice: [{ value: 0}]
     });
   }
   createPaymentTermGroup(): FormGroup {
@@ -112,7 +112,9 @@ export class QuotationsComponent {
     return this.quotationForm.get('paymentTerms') as FormArray;
   }
   addItemRow() {
-    this.items.push(this.createItemGroup());
+    const group = this.createItemGroup();
+    this.items.push(group);
+    this.setupTotalCalculation(group);
     
   }
   addPaymentTermRow() {
@@ -208,10 +210,10 @@ export class QuotationsComponent {
                   html2pdf()
                     .from(element)
                     .set({
-                      margin: 0.5,
+                      margin: [0, 0, 0, 0],
                       filename: `${this.quotataionData.quotationNumber}.pdf`,
                       html2canvas: { scale: 2 },
-                      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+                      jsPDF: { unit: 'px', format: 'a4', orientation: 'portrait' }
                     })
                     .save();
                 }
@@ -256,7 +258,7 @@ export class QuotationsComponent {
           modal.show();
         },
         error: (err) => {
-          console.error('فشل تحميل بيانات طلب الشراء:', err);
+          console.error('فشل تحميل بيانات عرض السعر:', err);
         }
       });
   }
@@ -289,24 +291,27 @@ export class QuotationsComponent {
       next: (res:any) => {
         this.quotation = res.result;
         console.log(this.quotation);
-        this.quotationForm.patchValue({
-          quotationDate: this.quotation.quotationDate,
-          customerId: this.quotation.customerId,
-          description: this.quotation.description,
-          validityPeriod: this.quotation.validityPeriod,
-          isTaxIncluded: this.quotation.isTaxIncluded,
-          items: this.quotation.items,
-          paymentTerms: this.quotation.paymentTerms
-        });
-    
         const modal = new bootstrap.Modal(document.getElementById('addQuotationModal')!);
         modal.show();
       },
       error: (err) => {
-        console.error('فشل تحميل بيانات طلب الشراء:', err);
+        console.error('فشل تحميل بيانات عرض السعر:', err);
       }
     });
   }
+  getSelectedItemIds(): any[] {
+    return this.items.controls
+      .map(g => g.get('itemId')?.value)
+      .filter(v => v !== null && v !== undefined && v !== '');
+  }
+  getAvailableItems(rowIndex: number) {
+    const selected = this.getSelectedItemIds().map(v => String(v));
+    const currentValue = String(this.items.at(rowIndex).get('itemId')?.value ?? '');
+    return this.allItems.filter(it => {
+      const idStr = String(it.id);
+      return idStr === currentValue || !selected.includes(idStr);
+    });
+  }  
   resetForm() {
     this.quotationForm.reset();
     this.isEditMode = false;
